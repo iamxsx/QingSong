@@ -5,9 +5,15 @@ Rails.application.routes.draw do
 
   get 'register-employee' => 'users#register_employee'
 
+  # post 'register-employee' => 'users#register_employee'
+
   get 'register-company' => 'users#register_company'
 
+  # post 'register-company' => 'users#register_company'
+
   get 'login' => 'sessions#login'
+
+  post 'login' => 'sessions#create'
 
   resources :scores
   resources :roles

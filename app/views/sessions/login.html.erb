@@ -1,1 +1,18 @@
-<h1>这是首页，我在 app/views/sessions/login.html.erb</h1>
+<h1>这是登录页，我在 app/views/sessions/login.html.erb</h1>
+
+<%= form_for(:session, url: login_path, class: 'col s12') do |f| %>
+
+    <div class="field">
+      <%= f.label :username %>
+      <%= f.text_field :username %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %>
+      <%= f.text_field :password %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit '登录' %>
+    </div>
+<% end %>
