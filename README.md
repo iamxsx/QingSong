@@ -1,24 +1,16 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+部分路由：
+    
+http://localhost:3000/  ->  首页
 
-Things you may want to cover:
+http://localhost:3000/register-choose  ->  注册选择页
 
-* Ruby version
+http://localhost:3000/register-employee  ->  注册员工
 
-* System dependencies
+http://localhost:3000/register-company  ->  注册高管
 
-* Configuration
+http://localhost:3000/login  ->  登录
 
-* Database creation
 
-* Database initialization
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
