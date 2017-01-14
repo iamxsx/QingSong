@@ -1,7 +1,12 @@
 class User < ApplicationRecord
 
+  # 一个用户
+  belongs_to :role
+
   # 在保存前将邮箱改为小写
   before_save { self.email = self.email.downcase }
+  # 创建前先生成激活摘要
+  before_create :create_activation_digest
 
   # 添加安全密码
   has_secure_password
@@ -14,6 +19,32 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true, format: {with: VALID_EMAIL_REGEX}
 
+  # 数据库里不存在，但是需要用到的属性
+  attr_accessor :activation_token
 
+  # 生成随机token
+  def User.generate_random_token
+    SecureRandom.urlsafe_base64
+  end
+
+  # 生成传入字符串的摘要
+  def User.generate_digest(token)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    BCrypt::Password.create(token, cost: cost)
+  end
+
+  # 为用户创建激活token和摘要
+  def create_activation_digest
+    self.activation_token = User.generate_random_token
+    self.activation_digest = User.generate_digest(self.activation_token)
+  end
+
+  # 根据传入的属性认证用户
+  def authenticated?(attr, token)
+    return false if token.nil?
+    digest = self.send("#{attr}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
+  end
 
 end
