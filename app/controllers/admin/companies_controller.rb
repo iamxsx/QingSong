@@ -1,4 +1,4 @@
-class Admin::CompaniesController < ApplicationController
+class Admin::CompaniesController < Admin::AdminApplicationController
   before_action :set_company, only: [:show, :edit, :update, :destroy]
   layout 'admin'
 

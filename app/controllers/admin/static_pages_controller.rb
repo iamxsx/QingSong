@@ -1,10 +1,9 @@
-class Admin::StaticPagesController < ApplicationController
+class Admin::StaticPagesController < Admin::AdminApplicationController
+
   layout 'admin'
+
   def index
   end
 
-  def login_page
-
-  end
 
 end

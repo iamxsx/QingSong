@@ -6,7 +6,7 @@
         登录您的管理账户
       </div>
     </h2>
-    <%= form_for '/admin/sessions', url: {action: :create}, :html => {class: 'ui large form'} do %>
+    <%= form_for :admin_user, url: '/admin/admin_users', :html => {class: 'ui large form'} do %>
         <div class="ui stacked segment">
           <div class="field">
             <div class="ui left icon input">

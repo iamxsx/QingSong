@@ -1,18 +1,18 @@
 <p id="notice"><%= notice %></p>
-
-<div class="ui container">
+<div class="ui grid">
   <div class="row">
-    <div class="eight grid column">
+    <div class="one wide column"></div>
+    <div class="fourteen wide column">
       <h1>Companies</h1>
-      <table>
+      <table class="ui basic table">
         <thead>
         <tr>
-          <th>Company id</th>
-          <th>Company name</th>
-          <th>Company desc</th>
-          <th>Company logo</th>
-          <th>Activated</th>
-          <th>Activated at</th>
+          <th>公司编号</th>
+          <th>公司名</th>
+          <th>公司简介</th>
+          <th>公司 logo</th>
+          <th>是否激活</th>
+          <th>激活时间</th>
           <th colspan="3"></th>
         </tr>
         </thead>
@@ -23,15 +23,33 @@
               <td><%= company.id %></td>
               <td><%= company.company_name %></td>
               <td><%= company.company_desc %></td>
-              <td><%= image_tag(company.company_logo, width: 100) %></td>
-              <td><%= company.activated %></td>
+              <td><%= image_tag(company.company_logo, width: 100) if company.company_logo? %></td>
+              <td>
+                <% if company.activated?  %>
+                    <i class="large green checkmark icon"></i>
+                    <% else %>
+                    <i class="large red remove icon"></i>
+                <% end %>
+              </td>
               <td><%= company.activated_at %></td>
               <td><%= link_to "Show", {controller: "admin/companies", action: "show", id: company} %></td>
               <td><%= link_to 'Edit', edit_admin_company_path(company) %></td>
-              <td><%= link_to 'Destroy',{ controller: "admin/companies",action: "destroy",id: company}, data: {method: :delete,confirm: 'Are you sure?' } %></td>
+              <td><%= link_to 'Destroy', {controller: "admin/companies", action: "destroy", id: company}, data: {method: :delete, confirm: 'Are you sure?'} %></td>
             </tr>
         <% end %>
         </tbody>
+        <tfoot class="full-width">
+        <tr>
+          <th></th>
+          <th colspan="16">
+            <%= link_to 'sd',href: '/admin/companies/new' do %>
+                <div class="ui right floated small primary labeled icon button">
+                  <i class="upload icon"></i> 添加新公司
+                </div>
+            <% end %>
+          </th>
+        </tr>
+        </tfoot>
       </table>
 
       <br>
@@ -40,4 +58,5 @@
     </div>
   </div>
 </div>
+
 

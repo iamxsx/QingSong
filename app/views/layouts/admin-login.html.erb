@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QingSong</title>
+  <%= csrf_meta_tags %>
+
+  <%= stylesheet_link_tag 'admin/application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'admin/application', 'data-turbolinks-track': 'reload' %>
+  <style type="text/css">
+    body {
+      background-image: url("<%= image_url('login-bg.jpg') %>");
+      background-size: cover;
+      background-position: center;
+    }
+
+    body > .grid {
+      height: 100%;
+    }
+
+    .image {
+      margin-top: -100px;
+    }
+
+    .column {
+      max-width: 450px;
+    }
+  </style>
+
+</head>
+<body>
+<%= yield %>
+</body>
+</html>

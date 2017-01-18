@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
 
-  resources :companies
+
   # 后台管理系统的控制器
   namespace :admin do
     root 'static_pages#index'
-    get 'login' => 'static_pages#login'
+    get 'sessions/create'
+    get 'login' => 'login_and_register#login' #登录页
+    get 'logout' => 'sessions#destroy'  #注销
+    get 'register' => 'login_and_register#register' #注册页
+    post 'login' => 'sessions#create' #登录操作
     resources :users
     resources :lessons
     resources :companies
+    resources :admin_users
   end
 
 
@@ -24,9 +29,7 @@ Rails.application.routes.draw do
   resources :users
   resources :account_activations, only: [:edit]
   resources :invitation_codes
-
-
-
+  resources :companies
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

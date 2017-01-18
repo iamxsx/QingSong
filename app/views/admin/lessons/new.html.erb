@@ -1,0 +1,53 @@
+<div class="ui  grid">
+  <div class="row">
+
+    <div class="four wide column"></div>
+    <div class="eight wide column">
+      <h1>发布课程</h1>
+      <%= form_for('lesson', url: {action: 'create'}) do |f| %>
+          <div class="ui form">
+            <div class="field">
+              <%= f.label :lesson_name, '课程名' %>
+              <%= f.text_field :lesson_name %>
+            </div>
+            <div class="field">
+              <%= f.label :lesson_desc,'课程简介' %>
+              <%= f.text_field :lesson_desc %>
+            </div>
+            <div class="field">
+              <%= f.label :company_id,'选择公司' %>
+              <%= f.select :company_id, options_from_collection_for_select(Company.all, :id, :company_name) %>
+            </div>
+            <div class="field">
+              <%= f.label :lesson_cover,'课程封面' %>
+              <%= f.file_field :lesson_cover, accept: 'image/jpeg,image/gif,image/png' %>
+            </div>
+            <div class="field">
+              <%= f.label :lesson_html_url,'课程 html 文件' %>
+              <%= f.file_field :lesson_html_url, accept: 'text/html' %>
+            </div>
+            <div class="field">
+              <%= f.label :lesson_css_url,'课程 css 文件' %>
+              <%= f.file_field :lesson_css_url, accept: 'text/stylesheet' %>
+            </div>
+            <div class="field">
+              <%= f.label :lesson_js_url,'课程 js 文件' %>
+              <%= f.file_field :lesson_js_url, accept: 'text/javascript' %>
+            </div>
+            <div class="field">
+              <%= f.label :lesson_json_url,'课程 json 文件' %>
+              <%= f.file_field :lesson_json_url, accept: 'application/json' %>
+            </div>
+            <button class="fluid ui blue submit button">确认发布</button>
+          </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>
+<script type="text/javascript" charset="utf-8">
+    $(document)
+        .ready(function () {
+            $('.dropdown').dropdown();
+        })
+</script>
