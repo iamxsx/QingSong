@@ -1,5 +1,6 @@
 class LessonsController < ApplicationController
   before_action :set_lesson, only: [:show, :edit, :update, :destroy]
+  layout 'lesson'
 
   # GET /lessons
   # GET /lessons.json
@@ -10,11 +11,19 @@ class LessonsController < ApplicationController
   # GET /lessons/1
   # GET /lessons/1.json
   def show
+    url = "/home/iamxsx/RubymineProjects/QingSong/public#{@lesson.lesson_html_url}"
+    file = File.new(url, 'r')
+    if file
+      @html_content = file.readlines().join('')
+    else
+      puts '无法打开文件'
+    end
   end
 
   # GET /lessons/new
   def new
     @lesson = Lesson.new
+    @companies = Company.all
   end
 
   # GET /lessons/1/edit
@@ -62,13 +71,13 @@ class LessonsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_lesson
-      @lesson = Lesson.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_lesson
+    @lesson = Lesson.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def lesson_params
-      params.require(:lesson).permit(:lesson_name, :image_url)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def lesson_params
+    params.require(:lesson).permit(:lesson_name, :lesson_desc, :lesson_cover, :lesson_json_url, :lesson_html_url, :lesson_js_url, :lesson_css_url, :company_id)
+  end
 end

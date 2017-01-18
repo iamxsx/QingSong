@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>QingSong</title>
+  <%= csrf_meta_tags %>
+
+  <%= stylesheet_link_tag 'frontend/application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'frontend/application', 'data-turbolinks-track': 'reload' %>
+
+  <link rel="stylesheet" href="<%= yield(:css_url) %>">
+  <script src="<%= yield(:js_url) %>"></script>
+</head>
+
+<body>
+<%= yield %>
+</body>
+<script>
+    $.ajax({
+        url: '<%= yield(:json_url) %>',
+        success: function (data, status) {
+            console.log('data= ' + data)
+            console.log('status= ' + status)
+        }
+    })
+</script>
+</html>

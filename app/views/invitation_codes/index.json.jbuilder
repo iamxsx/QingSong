@@ -1,0 +1,1 @@
+json.array! @invitation_codes, partial: 'invitation_codes/invitation_code', as: :invitation_code

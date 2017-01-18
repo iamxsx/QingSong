@@ -2,11 +2,17 @@
 
 <h1>Lessons</h1>
 
-<table>
+<table class="ui table">
   <thead>
     <tr>
       <th>Lesson name</th>
-      <th>Image url</th>
+      <th>Lesson desc</th>
+      <th>Lesson cover</th>
+      <th>Lesson json url</th>
+      <th>Lesson html url</th>
+      <th>Lesson js url</th>
+      <th>Lesson css url</th>
+      <th>Company</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -15,7 +21,13 @@
     <% @lessons.each do |lesson| %>
       <tr>
         <td><%= lesson.lesson_name %></td>
-        <td><%= lesson.image_url %></td>
+        <td><%= lesson.lesson_desc %></td>
+        <td><%= image_tag(lesson.lesson_cover,width: 40) %></td>
+        <td><%= link_to '点击下载',"#{lesson.lesson_json_url}" %></td>
+        <td><%= link_to '点击下载',"#{lesson.lesson_js_url}" %></td>
+        <td><%= link_to '点击下载',"#{lesson.lesson_css_url}" %></td>
+        <td><%= link_to '点击下载',"#{lesson.lesson_json_url}" %></td>
+        <td><%= lesson.company.company_name %></td>
         <td><%= link_to 'Show', lesson %></td>
         <td><%= link_to 'Edit', edit_lesson_path(lesson) %></td>
         <td><%= link_to 'Destroy', lesson, method: :delete, data: { confirm: 'Are you sure?' } %></td>

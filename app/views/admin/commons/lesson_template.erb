@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="<%= @css_url %>">
+  <script src="<%= @js_url %>"></script>
+  <title>Document</title>
+</head>
+<body>
+  <h1>我是sys.html页面</h1>
+  <div id="course">
+    <%= @html_file %>
+  </div>
+  <script type="text/javascript" charset="utf-8">
+    $.ajax({
+        url:'<%= json_url %>',
+        success:function (json) {
+
+        }
+    })
+  </script>
+</body>
+</html>

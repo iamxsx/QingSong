@@ -2,8 +2,20 @@
 
 one:
   lesson_name: MyString
-  image_url: MyString
+  lesson_desc: MyString
+  lesson_cover: MyString
+  lesson_json_url: MyString
+  lesson_html_url: MyString
+  lesson_js_url: MyString
+  lesson_css_url: MyString
+  company: one
 
 two:
   lesson_name: MyString
-  image_url: MyString
+  lesson_desc: MyString
+  lesson_cover: MyString
+  lesson_json_url: MyString
+  lesson_html_url: MyString
+  lesson_js_url: MyString
+  lesson_css_url: MyString
+  company: two

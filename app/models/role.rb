@@ -1,5 +1,5 @@
 class Role < ApplicationRecord
   # 一个角色可以有多个用户
-  has_many :user
+  has_many :users
 
 end

@@ -1,27 +1,56 @@
 <%= form_for(lesson) do |f| %>
-  <% if lesson.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(lesson.errors.count, "error") %> prohibited this lesson from being saved:</h2>
+    <% if lesson.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(lesson.errors.count, "error") %> prohibited this lesson from being saved:</h2>
 
-      <ul>
-      <% lesson.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+          <ul>
+            <% lesson.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :lesson_name %>
+      <%= f.text_field :lesson_name %>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :lesson_name %>
-    <%= f.text_field :lesson_name %>
-  </div>
+    <div class="field">
+      <%= f.label :lesson_desc %>
+      <%= f.text_field :lesson_desc %>
+    </div>
 
-  <div class="field">
-    <%= f.label :image_url %>
-    <%= f.text_field :image_url %>
-  </div>
+    <div class="field">
+      <%= f.label :lesson_cover %>
+      <%= f.file_field :lesson_cover, accept: 'image/jpeg,image/gif' %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="field">
+      <%= f.label :lesson_json_url %>
+      <%= f.file_field :lesson_json_url, accept: 'application/json' %>
+    </div>
+
+    <div class="field">
+      <%= f.label :lesson_html_url %>
+      <%= f.file_field :lesson_html_url, accept: 'text/html' %>
+    </div>
+
+    <div class="field">
+      <%= f.label :lesson_js_url %>
+      <%= f.file_field :lesson_js_url, accept: 'text/javascript' %>
+    </div>
+    <div class="field">
+      <%= f.label :lesson_css_url %>
+      <%= f.file_field :lesson_css_url, accept: 'text/stylesheet' %>
+    </div>
+
+    <div class="field">
+      <%= f.label :company_id %>
+      <%= f.select :company_id, options_from_collection_for_select(Company.all, :id, :company_name) %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
 <% end %>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  used: false
+  invited_at: 2017-01-13 21:13:09
+
+two:
+  code: MyString
+  used: false
+  invited_at: 2017-01-13 21:13:09

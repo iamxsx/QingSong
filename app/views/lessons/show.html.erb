@@ -1,13 +1,46 @@
+<% provide(:css_url,@lesson.lesson_css_url) %>
+<% provide(:js_url,@lesson.lesson_js_url) %>
+<% provide(:json_url,@lesson.lesson_json_url) %>
 <p id="notice"><%= notice %></p>
-
 <p>
   <strong>Lesson name:</strong>
   <%= @lesson.lesson_name %>
 </p>
 
 <p>
-  <strong>Image url:</strong>
-  <%= @lesson.image_url %>
+  <strong>Lesson desc:</strong>
+  <%= @lesson.lesson_desc %>
+</p>
+<%= raw @html_content %>
+
+<p>
+  <strong>Lesson cover:</strong>
+  <%= @lesson.lesson_cover %>
+</p>
+
+<p>
+  <strong>Lesson json url:</strong>
+  <%= @lesson.lesson_json_url %>
+</p>
+
+<p>
+  <strong>Lesson html url:</strong>
+  <%= @lesson.lesson_html_url %>
+</p>
+
+<p>
+  <strong>Lesson js url:</strong>
+  <%= @lesson.lesson_js_url %>
+</p>
+
+<p>
+  <strong>Lesson css url:</strong>
+  <%= @lesson.lesson_css_url %>
+</p>
+
+<p>
+  <strong>Company:</strong>
+  <%= @lesson.company %>
 </p>
 
 <%= link_to 'Edit', edit_lesson_path(@lesson) %> |

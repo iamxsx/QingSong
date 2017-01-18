@@ -40,6 +40,8 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    # 根据页面决定是哪种身注册方式
+    @user.role_id = 1
     respond_to do |format|
       if @user.save
         # 发送邮件，等待激活

@@ -1,2 +1,2 @@
-json.extract! lesson, :id, :lesson_name, :image_url, :created_at, :updated_at
+json.extract! lesson, :id, :lesson_name, :lesson_desc, :lesson_cover, :lesson_json_url, :lesson_html_url, :lesson_js_url, :lesson_css_url, :company_id, :created_at, :updated_at
 json.url lesson_url(lesson, format: :json)

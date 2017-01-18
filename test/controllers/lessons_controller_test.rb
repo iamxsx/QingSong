@@ -17,7 +17,7 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create lesson" do
     assert_difference('Lesson.count') do
-      post lessons_url, params: { lesson: { image_url: @lesson.image_url, lesson_name: @lesson.lesson_name } }
+      post lessons_url, params: { lesson: { company_id: @lesson.company_id, lesson_cover: @lesson.lesson_cover, lesson_css_url: @lesson.lesson_css_url, lesson_desc: @lesson.lesson_desc, lesson_html_url: @lesson.lesson_html_url, lesson_js_url: @lesson.lesson_js_url, lesson_json_url: @lesson.lesson_json_url, lesson_name: @lesson.lesson_name } }
     end
 
     assert_redirected_to lesson_url(Lesson.last)
@@ -34,7 +34,7 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update lesson" do
-    patch lesson_url(@lesson), params: { lesson: { image_url: @lesson.image_url, lesson_name: @lesson.lesson_name } }
+    patch lesson_url(@lesson), params: { lesson: { company_id: @lesson.company_id, lesson_cover: @lesson.lesson_cover, lesson_css_url: @lesson.lesson_css_url, lesson_desc: @lesson.lesson_desc, lesson_html_url: @lesson.lesson_html_url, lesson_js_url: @lesson.lesson_js_url, lesson_json_url: @lesson.lesson_json_url, lesson_name: @lesson.lesson_name } }
     assert_redirected_to lesson_url(@lesson)
   end
 
