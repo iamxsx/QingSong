@@ -10,6 +10,10 @@ module Admin::SessionsHelper
     end
   end
 
+  def logout
+    session.delete(:admin_user_id)
+  end
+
 
 
 end

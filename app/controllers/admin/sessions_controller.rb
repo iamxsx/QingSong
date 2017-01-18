@@ -1,9 +1,9 @@
 class Admin::SessionsController < Admin::AdminApplicationController
 
-  def new
-  end
+  before_filter :logging?, :except => :create
 
   def destroy
+    logout
   end
 
   def create
