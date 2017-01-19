@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>青松 - 工作实训青松上手</title>
-  <script src="/src/lib/js/jquery_1_9_1.js"></script>
-  <link href="/src/lib/css/grid.css" rel="stylesheet">
-  <link href="/src/lib/css/normalize.css" rel="stylesheet">
-  <link href="/src/assets/less/common.less" rel="stylesheet">
-  <link href="/src/assets/less/index.less" rel="stylesheet">
+  <%= javascript_include_tag "jquery" %>
+  <%= stylesheet_link_tag 'grid' %>
+  <%= stylesheet_link_tag 'normalize' %>
+  <%= stylesheet_link_tag '/client/indexpages/common'%>
+  <%= stylesheet_link_tag '/client/indexpages/index/index' %>
 </head>
 <body>
 <div class="main_bg">
