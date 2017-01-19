@@ -1,5 +1,5 @@
 class StaticPagesController < ApplicationController
-  layout nil
+  layout false
   def index
   end
 
