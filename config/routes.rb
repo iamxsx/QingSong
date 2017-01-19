@@ -6,9 +6,10 @@ Rails.application.routes.draw do
     root 'static_pages#index'
     get 'sessions/create'
     get 'login' => 'login_and_register#login' #登录页
+    post 'login' => 'sessions#create' #登录操作
     get 'logout' => 'sessions#destroy'  #注销
     get 'register' => 'login_and_register#register' #注册页
-    post 'login' => 'sessions#create' #登录操作
+    post 'register' => 'admin_users#create'
     resources :users
     resources :lessons
     resources :companies

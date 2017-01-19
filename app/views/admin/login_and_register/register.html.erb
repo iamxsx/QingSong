@@ -6,7 +6,7 @@
         注册管理账户
       </div>
     </h2>
-    <%= form_for(:admin_user, url: '/admin/admin_users', :html => {class: 'ui large form'}) do |f| %>
+    <%= form_for(:admin_user, url: '/admin/register', :html => {class: 'ui large form'}) do |f| %>
         <div class="ui stacked segment">
           <div class="field">
             <div class="ui left icon input">
@@ -71,7 +71,7 @@
                             identifier: 'admin_user[password_confirmation]',
                             rules: [
                                 {
-                                    type: 'match[admin_admin_user[password]]',
+                                    type: 'match[admin_user[password]]',
                                     prompt: '请输入相同的密码'
                                 }
                             ]

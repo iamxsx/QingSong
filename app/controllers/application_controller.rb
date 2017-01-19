@@ -4,8 +4,5 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include InvitationCodesHelper
 
-  def set_admin_locale
-    I18n.locale = :"zh-CN"
-  end
 
 end

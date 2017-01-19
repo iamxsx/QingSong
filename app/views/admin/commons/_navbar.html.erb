@@ -9,21 +9,34 @@
     <a href="/admin/admin_users" class="item">后台用户管理 </a>
     <a href="/admin/lessons" class="item">课程管理 </a>
     <a href="/admin/companies" class="item">公司管理 </a>
-    <a href="javascript:void(0)" class="ui right floated dropdown item">
-      欢迎您：<%= current_user.email %> <i class="dropdown icon"></i>
-      <div class="menu">
-        <div class="item">注销</div>
-        <div class="item">个人中心</div>
-      </div>
-    </a>
+    <% if current_user %>
+        <a href="javascript:void(0)" class="ui right floated dropdown item">
+          欢迎您：<%= current_user.email %>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="item" onclick="logout()">注销</div>
+            <div class="item">个人中心</div>
+          </div>
+        </a>
+    <% end %>
   </div>
 </div>
 <script type="text/javascript" charset="utf-8">
-    $(document)
-        .ready(function() {
-            // show dropdown on hover
-            $('.main.menu  .ui.dropdown').dropdown({
-                on: 'hover'
-            });
+    $(document).ready(function () {
+        // show dropdown on hover
+        $('.main.menu  .ui.dropdown').dropdown({
+            on: 'hover'
+        });
+    })
+
+    function logout() {
+        $.ajax({
+            url: '/admin/logout',
+            success: function (data, status) {
+                if (status == 'success') {
+                    window.location.href = '/admin/login'
+                }
+            }
         })
+    }
 </script>
