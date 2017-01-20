@@ -16,11 +16,11 @@
         <li><a>服务流程</a></li>
         <li><a>联系我们</a></li>
         <li><a class="loginbtn">登录</a></li>
-        <li><a href="/src/choosereg.html">注册</a></li>
+        <li><%= link_to '注册',register_choose_url %></li>
       </ul>
     </nav>
     <h1>工作实训从未如此轻松</h1>
-    <a class="big_regbtn" href="/src/choosereg.html">免费注册</a>
+    <%= link_to '免费注册',register_choose_url, class: "big_regbtn" %>
   </div>
 </div>
 

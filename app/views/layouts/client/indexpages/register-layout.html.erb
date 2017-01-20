@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= yield(:title) %></title>
+  <%= javascript_include_tag 'client/indexpages/register' %>
+  <%= stylesheet_link_tag 'client/indexpages/index/register' %>
+</head>
+<body>
+<!--导航栏-->
+<nav class="color_nav">
+  <div class="container">
+    <a class="brand_logo"></a>
+    <ul>
+      <li><a>功能</a></li>
+      <li><a>服务流程</a></li>
+      <li><a>联系我们</a></li>
+      <li><a class="loginbtn">登录</a></li>
+    </ul>
+  </div>
+</nav>
+<!--导航栏完毕-->
+<%= yield %>
+</body>
+</html>

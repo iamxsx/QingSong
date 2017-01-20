@@ -1,7 +1,13 @@
+@ff : "HanHei SC","PingHei","PingFang SC","STHeitiSC-Light","Helvetica Neue","Helvetica","微软雅黑","黑体","Arial",sans-serif;
+@normaltext_color: #4A4A4A;
+@darkbluetext_color: #34495e;
+
+
+@color_btn_green: #61d09c;
 body{
     margin: 0;
-    font-family: "思源黑体","微软雅黑","黑体",Arial;
-    background-color: #eff3f5;
+    font-family: @ff;
+    background-color: #fafafa;
 }
 
 a{
@@ -10,6 +16,11 @@ a{
     transition: background-color 280ms cubic-bezier(.4,0,.2,1),
                 color 280ms cubic-bezier(.4,0,.2,1),
                 border-color 280ms cubic-bezier(.4,0,.2,1);
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family:@ff;
+  color:@darkbluetext_color;
 }
 
 
@@ -110,28 +121,51 @@ a{
     }
 }
 
-.bigblock{
-    display: block;
-    width:100%;
-    background-color: #fff;
-    min-height: 100px;
-    border:1px solid #e1e1e1;
 
-    .bigblock_title_container{
-        display: block;
-        background-color: #fff;
-        padding:20px;
-        overflow: hidden;
-        h1{
-            color:#555;
-            font-size: 20px;
-            font-weight: normal;
-            margin: 0;
-        }
-    }
+.pagetitle{
+  font-family: @ff;
+  color: @normaltext_color;
+  font-weight: bold;
+  margin: 61px 0;
+  text-align: center;
 
-    .bigblock_content{
-        padding: 18px;
-        background-color: #f7f7f7;
-    }
+}
+
+.panelcontainer{
+  display: inline-block;
+  background-color: #fff;
+  border: 1px solid #E7E7E7;
+  font-size: 36px;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.panelcontainer-an-greenborder{
+  .panelcontainer;
+  transition: border-color 280ms cubic-bezier(.4,0,.2,1);
+
+  &:hover,&focus{
+    border-color: @color_btn_green;
+  }
+}
+
+.center{
+  text-align:center;
+}
+
+.btn-green{
+  display: inline-block;
+  transition: background-color 280ms cubic-bezier(.4,0,.2,1);
+  color:#fff;
+  background-color:@color_btn_green;
+  border-radius: 5px;
+  padding:8px 12px;
+
+  &:hover,&:focus{
+    background-color: darken(@color_btn_green,20%);
+  }
+
+  &:active{
+    background-color: darken(@color_btn_green,40%);
+  }
 }

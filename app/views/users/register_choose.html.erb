@@ -1,1 +1,43 @@
-<h1>我是注册选择页，我在　app/views/users/register_choose.html.erb</h1>
+<% provide :title ,'青松 - 选择注册类型' %>
+
+
+<h1 class="pagetitle">选择注册类型</h1>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-2 col-md-3 panelcontainer-an-greenborder center">
+      <%= image_tag "indexpages/picicon_normaluser.png", alt: "普通员工",class: "headpic" %>
+      <h2>我是普通员工</h2>
+      <ul class="career_dolist">
+        <li>入职青松培训</li>
+        <li>进行公司课程</li>
+        <li>进行系统考核</li>
+      </ul>
+      <%= link_to "选择",register_employee_path,class: "btn-green choosebtn"%>
+    </div>
+
+
+    <div class="col-md-offset-1 col-md-3 panelcontainer-an-greenborder center">
+      <%= image_tag "indexpages/picicon_admin.png", alt: "普通员工",class: "headpic" %>
+      <h2>我是公司高管</h2>
+      <ul class="career_dolist">
+        <li>入驻青松实训</li>
+        <li>分配培训课程</li>
+        <li>管理员工资料</li>
+      </ul>
+      <%= link_to "选择",register_company_path,class: "btn-green choosebtn"%>
+    </div>
+
+    <br style="clear:both">
+
+    <div class="col-md-offset-2 extratips">
+
+      <h3>注册遇到困难?</h3>
+      <p>
+        1. 如若您想入驻青松平台并开发属于贵公司的办公系统使用教程,请选择 “我是公司高管” 面板的 “选择” 按钮.<br>
+        2. 如果您想加入您所在公司的培训,请选择 “我是普通员工” 面板的 “选择” 按钮.
+      </p>
+    </div>
+
+  </div>
+</div>
