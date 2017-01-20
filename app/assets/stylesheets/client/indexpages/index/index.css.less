@@ -2,27 +2,27 @@
 
  * = require grid
  * = require normalize
- * = require /client/indexpages/index/common
+ * = require client/indexpages/common
  * = require_self
  */
 
-@ff = "思源黑体","微软雅黑","黑体",Arial;
+@ff : "思源黑体","微软雅黑","黑体","Arial";
 .main_bg{
     text-align: center;
-    background: url(/src/assets/img/bg.png) no-repeat;
+    background: asset-url("indexpages/bg.png") no-repeat;
     background-position: center center;
     background-size: cover;
     width: 100%;
     min-height: 700px;
-    
+
     .container{
         padding-top: 10px;
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     h1{
         text-align: center;
         letter-spacing: .2em;
@@ -33,7 +33,7 @@
         margin-bottom: 60px;
         clear: both;
     }
-    
+
     a.big_regbtn{
         padding:12px 40px;
         border-radius: 3px;

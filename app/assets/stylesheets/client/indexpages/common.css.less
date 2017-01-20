@@ -15,7 +15,7 @@ a{
 
 
 ._nav(@logourl){
-    
+
     a.brand_logo{
         float: left;
         display: block;
@@ -26,30 +26,30 @@ a{
         margin-top: 20px;
         margin-left: 20px;
     }
-    
+
     ul{
         float: right;
         list-style:none;
         margin: 0;
-        
+
         li{
             float: left;
             color: #fff;
             line-height: 80px;
-            
+
             a{
                 color: #fff;
                 border-radius: 3px;
                 padding: 8px 20px;
                 font-weight: normal;
             }
-            
+
             a:hover,a:focus{
                 background-color: rgb(255,255,255);
                 background-color: rgba(255,255,255,.2);
-                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);    /*IE8支持*/
+              filter: ~"progid:DXImageTransform.Microsoft.gradient(startColorstr=#33333333,endColorstr=#33333333)";    /*IE8支持*/
             }
-            
+
             a.loginbtn{
                 margin: 0 10px;
                 border:1px solid #fff;
@@ -58,16 +58,16 @@ a{
                     border-color: transparent;
                 }
             }
-            
+
         }
     }
 }
 
 //带有大图片的首页的nav样式
 .pic_nav{
-    
-    ._nav("/src/assets/img/logo.png");
-    
+
+    ._nav(asset-path("indexpages/logo.png"));
+
 }
 
 //常规页的nav样式
@@ -78,23 +78,23 @@ a{
     height: 70px;
     border-bottom: 1px solid #eee;
     padding-top: 0;
-    ._nav("/src/assets/img/color-logo.png");
-    
+    ._nav(asset-path("indexpages/color-logo.png"));
+
     a.brand_logo{
-        margin-top: 17px;   
+        margin-top: 17px;
     }
     ul{
         li{
             a{
                 color: #34495e;
             }
-            
+
             a:hover,a:focus{
                 background-color: rgb(180,180,180);
                 background-color: rgba(180,180,180,.2);
-                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33333333,endColorstr=#33333333);    /*IE8支持*/
+                filter: ~"progid:DXImageTransform.Microsoft.gradient(startColorstr=#33333333,endColorstr=#33333333)";    /*IE8支持*/
             }
-            
+
             a.loginbtn{
                 margin: 0 10px;
                 border:1px solid #5CD776;
@@ -105,7 +105,7 @@ a{
                     color:#fff;
                 }
             }
-            
+
         }
     }
 }
@@ -116,7 +116,7 @@ a{
     background-color: #fff;
     min-height: 100px;
     border:1px solid #e1e1e1;
-    
+
     .bigblock_title_container{
         display: block;
         background-color: #fff;
@@ -129,7 +129,7 @@ a{
             margin: 0;
         }
     }
-    
+
     .bigblock_content{
         padding: 18px;
         background-color: #f7f7f7;
