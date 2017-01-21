@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+
+  layout 'client/indexpages/register-layout' ,only: [:register_choose,:register_company,:register_employee]
   # GET /register_choose
   # POST /register_choose
   def register_choose
