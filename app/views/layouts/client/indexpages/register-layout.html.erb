@@ -11,7 +11,7 @@
 <!--导航栏-->
 <nav class="color_nav">
   <div class="container">
-    <a class="brand_logo"></a>
+    <%= link_to "",root_path,class:"brand_logo" %>
     <ul>
       <li><a>功能</a></li>
       <li><a>服务流程</a></li>
@@ -19,6 +19,7 @@
       <li><a class="loginbtn">登录</a></li>
     </ul>
   </div>
+  <br style="clear:both">
 </nav>
 <!--导航栏完毕-->
 <%= yield %>

@@ -681,3 +681,13 @@
   clear: both;
 }
 
+/*自己添加的为了修正bootstrap的内边距用的*/
+.no-padding{
+  padding:0 0 0 0;
+}
+.no-padding-left{
+  padding-left:0;
+}
+.no-padding-right{
+  padding-right:0;
+}

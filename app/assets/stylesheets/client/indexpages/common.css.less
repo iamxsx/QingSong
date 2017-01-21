@@ -1,6 +1,7 @@
 @ff : "HanHei SC","PingHei","PingFang SC","STHeitiSC-Light","Helvetica Neue","Helvetica","微软雅黑","黑体","Arial",sans-serif;
 @normaltext_color: #4A4A4A;
 @darkbluetext_color: #34495e;
+@errortext_color: #e14a4a;
 
 
 @color_btn_green: #61d09c;
@@ -89,6 +90,7 @@ h1,h2,h3,h4,h5,h6{
     height: 70px;
     border-bottom: 1px solid #eee;
     padding-top: 0;
+  margin-bottom:20px;
     ._nav(asset-path("indexpages/color-logo.png"));
 
     a.brand_logo{
@@ -132,7 +134,7 @@ h1,h2,h3,h4,h5,h6{
 }
 
 .panelcontainer{
-  display: inline-block;
+  display: block;
   background-color: #fff;
   border: 1px solid #E7E7E7;
   font-size: 36px;
@@ -153,10 +155,15 @@ h1,h2,h3,h4,h5,h6{
   text-align:center;
 }
 
+.left{
+  text-align: left;
+}
+
 .btn-green{
   display: inline-block;
   transition: background-color 280ms cubic-bezier(.4,0,.2,1);
   color:#fff;
+  border: 0;
   background-color:@color_btn_green;
   border-radius: 5px;
   padding:8px 12px;
@@ -168,4 +175,55 @@ h1,h2,h3,h4,h5,h6{
   &:active{
     background-color: darken(@color_btn_green,40%);
   }
+}
+.input_group{
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+.icon_inputcontainer{
+
+  transition: border-bottom-color 280ms cubic-bezier(.4,0,.2,1),
+  color 280ms cubic-bezier(.4,0,.2,1);
+
+  display:block;
+  color:#ccc;
+  font-size: 18px;
+  font-weight: lighter;
+  border-bottom: 1px solid #b1b1b1;
+  text-align: left;
+  overflow: hidden;
+  padding-bottom: 5px;
+
+
+  label{
+    display: inline-block;
+    margin-left:1px;
+    margin-right: 10px;
+    font-size:20px;
+    width:20px;
+  }
+
+  input{
+    outline: 0;
+    outline-style: none;
+    box-shadow: 0;
+    border: 0;
+    display: inline-block;
+    font-weight: lighter;
+    width: ~'calc(100% - 39px)';
+  }
+
+}
+
+.input_errorbox{
+  font-size: 14px;
+  margin:0;
+  margin-top: 5px;
+  color:@errortext_color;
+  min-height: 16px;
+}
+
+.icon_inputcontainer.active{
+  color:@color_btn_green;
+  border-bottom-color: @color_btn_green;
 }
