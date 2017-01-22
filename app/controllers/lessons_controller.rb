@@ -11,7 +11,7 @@ class LessonsController < ApplicationController
   # GET /lessons/1
   # GET /lessons/1.json
   def show
-    url = "/home/iamxsx/RubymineProjects/QingSong/public#{@lesson.lesson_html_url}"
+    url = "public#{@lesson.lesson_html_url}"
     file = File.new(url, 'r')
     if file
       @html_content = file.readlines().join('')
