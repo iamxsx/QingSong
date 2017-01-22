@@ -1,17 +1,46 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  layout 'client/indexpages/register-layout', only: [:register_choose, :register_company, :register_employee]
+
   # GET /register_choose
-  # POST /register_choose
   def register_choose
-
   end
 
+  # GET /register_employee
   def register_employee
-
+    @user = User.new
   end
 
+  # GET /register_company
   def register_company
+  end
+
+  # POST /register_employee
+  def create_employee
+    # 查询邀请码
+    invite_code = params[:user][:invite_code]
+    # 邀请码存在且没有被使用
+    if (invite_code && (code = InvitationCode.find_by_code(invite_code)) && !code.used?)
+      @user = User.new(user_params)
+      @user.role_id = 1
+      if @user.save
+        flash.now[:success] = '注册成功'
+        code.update_attribute(:used, true)
+        code.update_attribute(:invited_at, Time.zone.now)
+        redirect_to root_path
+      else
+        flash.now[:error] = '注册失败'
+        render :register_employee
+      end
+    else
+      flash.now[:invite_code_error] = '查无此邀请码'
+      render :register_employee
+    end
+  end
+
+  # POST /register_company
+  def create_company
 
   end
 
@@ -80,13 +109,13 @@ class UsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user
+    @user = User.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
-      params.require(:user).permit(:username, :email, :password, :password_confirmation)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def user_params
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :invite_code)
+  end
 end

@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   root 'static_pages#index'
   get 'register-choose' => 'users#register_choose'
   get 'register-employee' => 'users#register_employee'
+  post 'register-employee' => 'users#create_employee'
   get 'register-company' => 'users#register_company'
+  post 'register-company' => 'users#create_company'
   get 'login' => 'sessions#login'
   post 'login' => 'sessions#create'
   # 注意resources 后面是有个s的，没有加s生成的url不一样

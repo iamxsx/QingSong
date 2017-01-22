@@ -19,8 +19,10 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true, format: {with: VALID_EMAIL_REGEX}
 
+  validates_uniqueness_of :email, message: '邮箱已注册'
+
   # 数据库里不存在，但是需要用到的属性
-  attr_accessor :activation_token
+  attr_accessor :activation_token, :invite_code
 
   # 生成随机token
   def User.generate_random_token
