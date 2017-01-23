@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  layout 'client/indexpages/register-layout', only: [:register_choose, :register_company, :register_employee]
+  layout 'client/indexpages/register-layout', only: [:register_choose, :register_company, :register_employee,:register_success,:register_suspend]
 
   # GET /register_choose
   def register_choose
@@ -14,6 +14,14 @@ class UsersController < ApplicationController
 
   # GET /register_company
   def register_company
+  end
+
+  # 注册成功页面
+  def register_success
+  end
+
+  #注册后待审核页面
+  def register_suspend
   end
 
   # POST /register_employee
