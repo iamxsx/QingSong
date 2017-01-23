@@ -29,6 +29,8 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jquery-rails','4.2.2'
 # 表单验证
 gem 'jquery-validation-rails'
+# jquery-ui support
+gem 'jquery-ui-rails', '~> 6.0', '>= 6.0.1'
 # 图标依赖
 gem 'font-awesome-less', '~> 4.7'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks

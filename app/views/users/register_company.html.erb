@@ -1,1 +1,142 @@
-<h1>我是注册高级员工页，我在　app/views/users/register_company.html.erb</h1>
+<% provide :title, '青松 - 公司入驻' %>
+<%
+  #表单提交链接
+  provide :reg_form_submit_to, "user"
+  #表单提交方法
+  provide :reg_submit_method, "post"
+
+%>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <h1 class="pagetitle">公司入驻</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="panelcontainer center">
+        <%= form_for(yield(:reg_form_submit_to), :html => {id: "company_regform"}) do |f| %>
+
+            <div class="formfieldtitle">
+              <div class="formfieldtitle_line"></div>
+              <div class="formfieldtitle_content">账号基础信息</div>
+            </div>
+
+            <div class="input_group">
+              <div class="icon_inputcontainer" title="以后登录都将使用这个账号进行登录">
+                <%= f.label(:email,
+                            content_tag(:i, nil, class: "fa fa-envelope"))
+                %>
+                <%= f.email_field(:email, placeholder: "邮箱(以后用于登录)") %>
+              </div>
+              <p class="input_errorbox left" id="err_email" data-usefor="errbox">
+              </p>
+            </div>
+
+            <div class="input_group">
+              <div class="icon_inputcontainer" title="我们将发送一封验证短信给您,请前往您的邮箱查找验证码">
+                <%= f.label(:verifycode,
+                            content_tag(:i, nil, class: "fa fa-link"))
+                %>
+                <%= f.email_field(:verifycode, placeholder: "验证码") %>
+                <div class="btn-ghost-green" id="sendverifycode">发送验证码</div>
+              </div>
+              <p class="input_errorbox left" id="err_verifycode" data-usefor="errbox">
+              </p>
+            </div>
+
+            <div class="input_group">
+              <div class="icon_inputcontainer" title="管理员将有权掌管您公司的后台.当然,一个公司允许有多个管理员,可以在注册成功后操作.">
+                <%= f.label(:username,
+                            content_tag(:i, nil, class: "fa fa-user"))
+                %>
+                <%= f.text_field(:username, placeholder: "管理员姓名",) %>
+              </div>
+              <p class="input_errorbox left" id="err_name" data-usefor="errbox"></p>
+            </div>
+
+            <div class="input_group">
+              <div class="icon_inputcontainer">
+                <%= f.label(:password,
+                            content_tag(:i, nil, class: "fa fa-lock"))
+                %>
+                <%= f.password_field(:password, placeholder: "密码") %>
+              </div>
+              <p class="input_errorbox left" id="err_password" data-usefor="errbox"></p>
+            </div>
+
+            <div class="input_group">
+              <div class="icon_inputcontainer">
+                <%= f.label(:password_confirmation,
+                            content_tag(:i, nil, class: "fa fa-lock"))
+                %>
+                <%= f.password_field(:password_confirmation, placeholder: "请重复输入密码") %>
+              </div>
+              <p class="input_errorbox left" id="err_password_confirm" data-usefor="errbox"></p>
+            </div>
+
+            <div class="formfieldtitle">
+              <div class="formfieldtitle_line"></div>
+              <div class="formfieldtitle_content">公司基础资料</div>
+            </div>
+
+            <div class="input_group">
+              <div class="icon_inputcontainer" title="要申请入驻青松的公司全称">
+                <%= f.label(:companyname,
+                            content_tag(:i, nil, class: "fa fa-building"))
+                %>
+                <%= f.email_field(:companyname, placeholder: "公司全称") %>
+              </div>
+              <p class="input_errorbox left" id="err_companyname" data-usefor="errbox">
+              </p>
+            </div>
+
+            <div class="input_group">
+              <div class="icon_inputcontainer" title="请填入行政省/市区县及所在街道等具体位置信息">
+                <%= f.label(:companyaddress,
+                            content_tag(:i, nil, class: "fa fa-map-marker"))
+                %>
+                <%= f.email_field(:companyaddress, placeholder: "地址") %>
+              </div>
+              <p class="input_errorbox left" id="err_companyaddress" data-usefor="errbox">
+              </p>
+            </div>
+
+            <div class="input_group">
+              <div class="icon_inputcontainer" title="我们将在之后与您取得联系">
+                <%= f.label(:tel,
+                            content_tag(:i, nil, class: "fa fa-phone"))
+                %>
+                <%= f.email_field(:tel, placeholder: "公司联系电话") %>
+              </div>
+              <p class="input_errorbox left" id="err_tel" data-usefor="errbox">
+              </p>
+            </div>
+
+
+
+            <%= f.submit("入驻青松", class: "btn-green choosebtn") %>
+            <p class="input_errorbox center" id="err_submit" data-usefor="errbox">
+              <%= flash.now[:error] %>
+            </p>
+
+        <% end %>
+      </div>
+    </div>
+
+
+    <br style="clear:both">
+
+    <div class="col-md-offset-2 extratips">
+
+      <h3>注册遇到困难?</h3>
+      <p>
+        1. 入驻申请过后我们将通过您留下的联系方式联系您.<br>
+        2. 本账号注册后相当于一个高级管理员的账号,具有将普通员工账号升级为高级账号的权限.
+      </p>
+    </div>
+
+  </div>
+</div>

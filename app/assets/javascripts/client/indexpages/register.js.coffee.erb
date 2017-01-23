@@ -1,0 +1,169 @@
+#= require jquery
+#= require jquery.validate
+#= require jquery-ui/widgets/tooltip
+#= require_self
+
+<%
+
+#普通员工注册表单前缀
+@normaluser_regform_prefix = "user";
+#公司注册表单前缀
+@company_regform_prefix = "user";
+#发送验证码ajax的url
+@company_regform_verifycode_url = "/what";
+#发送验证码ajax的方法
+@company_regform_verifycode_method = "get";
+
+%>
+
+$ ->
+
+  $("input").focus ->
+    $(this).parent().addClass("active")
+
+  $("input").blur ->
+    $(this).parent().removeClass("active")
+
+  $("#normaluser_regform").validate(
+    rules:
+      '<%= @normaluser_regform_prefix %>[email]':
+        required:true
+        email: true
+      '<%= @normaluser_regform_prefix %>[username]':
+        required: true
+        minlength: 6
+      '<%= @normaluser_regform_prefix %>[password]':
+        required: true
+        minlength: 6
+      '<%= @normaluser_regform_prefix %>[password_confirmation]':
+        required: true
+        equalTo: "#user_password"
+      '<%= @normaluser_regform_prefix %>[invite_code]':
+        required: true
+    messages:
+      '<%= @normaluser_regform_prefix %>[email]':
+        required:"请输入邮箱"
+        email: "邮箱格式有误"
+      '<%= @normaluser_regform_prefix %>[username]':
+        required: "请输入姓名"
+        minlength: "姓名位数要大于6位"
+      '<%= @normaluser_regform_prefix %>[password]':
+        required: "密码不能为空"
+        minlength: "密码位数要大于6位"
+      '<%= @normaluser_regform_prefix %>[password_confirmation]':
+        required: "密码不能为空"
+        equalTo: "两次密码输入不一致,请仔细检查"
+      '<%= @normaluser_regform_prefix %>[invite_code]':
+        required: "邀请码不能为空"
+    errorPlacement: (error,element) ->
+      element.parent().next().html(error)
+
+  )
+
+
+  companyvalidator = $("#company_regform").validate(
+    debug: true
+    rules:
+      '<%= @company_regform_prefix %>[email]':
+        required:true
+        email: true
+      '<%= @company_regform_prefix %>[username]':
+        required: true
+        minlength: 6
+      '<%= @company_regform_prefix %>[verifycode]':
+        required: true
+      '<%= @company_regform_prefix %>[password]':
+        required: true
+        minlength: 6
+      '<%= @company_regform_prefix %>[password_confirmation]':
+        required: true
+        equalTo: "#user_password"
+      '<%= @company_regform_prefix %>[companyname]':
+        required:true
+        minlength: 4
+      '<%= @company_regform_prefix %>[companyaddress]':
+        required: true
+        minlength: 4
+      '<%= @company_regform_prefix %>[tel]':
+        required: true
+        number: true
+        rangelength: [6,13]
+    messages:
+      '<%= @company_regform_prefix %>[email]':
+        required:"请输入邮箱"
+        email: "邮箱格式有误"
+      '<%= @company_regform_prefix %>[verifycode]':
+        required: "验证码不能为空"
+      '<%= @company_regform_prefix %>[username]':
+        required: "请输入姓名"
+        minlength: "姓名位数要大于6位"
+      '<%= @company_regform_prefix %>[password]':
+        required: "密码不能为空"
+        minlength: "密码位数要大于6位"
+      '<%= @company_regform_prefix %>[password_confirmation]':
+        required: "密码不能为空"
+        equalTo: "两次密码输入不一致,请仔细检查"
+      '<%= @company_regform_prefix %>[companyname]':
+        required:"公司全称不能为空"
+        minlength: "公司全称不足四个字请按 省份+城市+公司全称 命名"
+      '<%= @company_regform_prefix %>[companyaddress]':
+        required: "公司地址不能为空"
+        minlength: "无效的地址"
+      '<%= @company_regform_prefix %>[tel]':
+        required: "联系方式不能为空"
+        number: "联系方式只能有数字"
+        rangelength: "无效的联系方式"
+    errorPlacement: (error,element) ->
+      element.parent().next().html(error)
+
+  )
+
+  $("#icon_inputcontainer").tooltip(
+    position:
+      my: "left top"
+      at: "right+20 top-10"
+      collision: "none"
+  )
+
+  #发送验证码
+  $("#sendverifycode").click ->
+
+    email = $("input[name='<%= @company_regform_prefix %>[email]']").val().trim();
+    if email == ""
+      $("#err_verifycode").html("邮箱不能为空")
+    else if !companyvalidator.element( "input[name='<%= @company_regform_prefix %>[email]']" )
+      $("#err_verifycode").html("邮箱格式有误")
+    else
+
+      if $("#sendverifycode").hasClass("disabled")
+        return
+
+      $("#sendverifycode").addClass("disabled")
+      $("#sendverifycode").html("已发送(60s)")
+      counter = 60
+      checktimer = setInterval(()->
+        if counter > 0
+          counter--
+          $("#sendverifycode").html("已发送("+counter+"s)")
+        else
+          $("#sendverifycode").removeClass("disabled")
+          $("#sendverifycode").html("发送验证码")
+          clearInterval(this)
+      ,1000)
+
+      $.ajax(
+        url: "<%= @company_regform_verifycode_url %>"
+        type: "<%= @company_regform_verifycode_method %>"
+        data:{
+          "email":email,
+          "do":"sendverifycode"
+        }
+        dataType: 'json'
+        error: ->
+          $("#err_verifycode").html("发送验证码的时候出现了一点小问题~请重试")
+          clearInterval(checktimer)
+          $("#sendverifycode").removeClass("disabled")
+          $("#sendverifycode").html("发送验证码")
+      )
+
+
