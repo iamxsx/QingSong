@@ -176,6 +176,29 @@ h1,h2,h3,h4,h5,h6{
     background-color: darken(@color_btn_green,40%);
   }
 }
+.btn-ghost-green{
+  display: inline-block;
+  transition: background-color 280ms cubic-bezier(.4,0,.2,1)
+              ,color 280ms cubic-bezier(.4,0,.2,1)
+              ,border-color 280ms cubic-bezier(.4,0,.2,1);
+  color:@color_btn_green;
+  border: 1px solid @color_btn_green;
+  background-color:transparent;
+  border-radius: 3px;
+  padding:8px 12px;
+
+  &:hover,&:focus{
+    background-color: darken(@color_btn_green,20%);
+    color:#fff;
+    border-color: transparent;
+  }
+
+  &:active{
+    background-color: darken(@color_btn_green,40%);
+    color:#fff;
+    border-color: transparent;
+  }
+}
 .input_group{
   margin-top: 20px;
   margin-bottom: 40px;
@@ -186,6 +209,7 @@ h1,h2,h3,h4,h5,h6{
   color 280ms cubic-bezier(.4,0,.2,1);
 
   display:block;
+  position: relative;
   color:#ccc;
   font-size: 18px;
   font-weight: lighter;
@@ -226,4 +250,42 @@ h1,h2,h3,h4,h5,h6{
 .icon_inputcontainer.active{
   color:@color_btn_green;
   border-bottom-color: @color_btn_green;
+}
+
+.formfieldtitle{
+
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 40px;
+
+  .formfieldtitle_line{
+    display: block;
+    width:100%;
+    height: 1px;
+    border-bottom:1px dashed #ccc;
+    margin-bottom: -30px;
+  }
+  
+  .formfieldtitle_content{
+    display: inline-block;
+    color:#ccc;
+    background-color:#fff;
+    font-size: 14px;
+    font-weight: lighter;
+    text-align: center;
+    padding: 0 15px;
+  }
+
+}
+
+
+.ui-tooltip {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 14px;
+  text-transform: uppercase;
+  color:@darkbluetext_color;
+  background-color: #fff;
+  border:1px solid #ccc;
+  border-radius: 3px;
 }
