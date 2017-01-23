@@ -19,6 +19,8 @@ Rails.application.routes.draw do
 
   root 'static_pages#index'
   get 'register-choose' => 'users#register_choose'
+  get 'register-success' => 'users#register_success'
+  get 'register-suspend' => 'users#register_suspend'
   get 'register-employee' => 'users#register_employee'
   post 'register-employee' => 'users#create_employee'
   get 'register-company' => 'users#register_company'
