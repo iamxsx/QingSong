@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
 
   root 'static_pages#index'
+  get 'login' => 'sessions#login'
+  post 'login' => 'sessions#create'
   get 'register-choose' => 'users#register_choose'
   get 'register-success' => 'users#register_success'
   get 'register-suspend' => 'users#register_suspend'
@@ -25,8 +27,7 @@ Rails.application.routes.draw do
   post 'register-employee' => 'users#create_employee'
   get 'register-company' => 'users#register_company'
   post 'register-company' => 'users#create_company'
-  get 'login' => 'sessions#login'
-  post 'login' => 'sessions#create'
+  get '/company/send-verify-code' => 'companies#send_verify_code'
   # 注意resources 后面是有个s的，没有加s生成的url不一样
   resources :scores
   resources :roles
