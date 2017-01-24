@@ -26,8 +26,6 @@ class UsersController < ApplicationController
   def register_suspend
   end
 
-
-
   # POST /register_employee
   def create_employee
     # 查询邀请码
@@ -50,6 +48,11 @@ class UsersController < ApplicationController
       flash.now[:invite_code_error] = '查无此邀请码'
       render :register_employee
     end
+  end
+
+  # 用户个人中心
+  def user_center
+
   end
 
 
