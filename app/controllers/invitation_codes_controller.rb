@@ -38,22 +38,12 @@ class InvitationCodesController < ApplicationController
   # POST /invitation_codes.json
   def create
     @invitation_code = InvitationCode.new()
+    @invitation_code.company_id = params[:invitation_code][:company_id]
     if @invitation_code.save
       render json: {
           invitation_code: @invitation_code.code
       }
     end
-
-    # respond_to do |format|
-    #   if @invitation_code.save
-    #     format.html { redirect_to @invitation_code, notice: 'Invitation code was successfully created.' }
-    #     format.js {}
-    #     format.json { render :show, status: :created, location: @invitation_code }
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @invitation_code.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # PATCH/PUT /invitation_codes/1
@@ -88,6 +78,6 @@ class InvitationCodesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def invitation_code_params
-    params.require(:invitation_code).permit(:code, :used, :invited_at)
+    params.require(:invitation_code).permit(:company_id)
   end
 end

@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   get 'register-employee' => 'users#register_employee'
   post 'register-employee' => 'users#create_employee'
   get 'register-company' => 'users#register_company'
-  post 'register-company' => 'users#create_company'
+  post 'register-company' => 'companies#create_company'
   get '/company/send-verify-code' => 'companies#send_verify_code'
   # 注意resources 后面是有个s的，没有加s生成的url不一样
   resources :scores

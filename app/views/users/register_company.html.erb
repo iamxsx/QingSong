@@ -6,7 +6,34 @@
   provide :reg_submit_method, "post"
 
 %>
+<% if Rails.env.development? %>
+    <% if !@user.nil? %>
+        <% if @user.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@user.errors.count, "error") %> prohibited this company from being saved:</h2>
 
+              <ul>
+                <% @user.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+    <% end %>
+    <% if !@company.nil? %>
+        <% if @company.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@company.errors.count, "error") %> prohibited this company from being saved:</h2>
+
+              <ul>
+                <% @company.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
+    <% end %>
+<% end %>
 
 <div class="container">
   <div class="row">
@@ -31,6 +58,7 @@
                 <%= email_field_tag(:email, nil, placeholder: "邮箱(以后用于登录)") %>
               </div>
               <p class="input_errorbox left" id="err_email" data-usefor="errbox">
+                <%= @user.errors[:email][1] if !@user.nil? && @user.errors[:email].count != 0 %>
               </p>
             </div>
 

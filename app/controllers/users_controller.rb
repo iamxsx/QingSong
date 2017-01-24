@@ -14,6 +14,8 @@ class UsersController < ApplicationController
 
   # GET /register_company
   def register_company
+    @user = User.new
+    @company = Company.new
   end
 
   # 注册成功页面
@@ -34,11 +36,12 @@ class UsersController < ApplicationController
     if (invite_code && (code = InvitationCode.find_by_code(invite_code)) && !code.used?)
       @user = User.new(user_params)
       @user.role_id = 1
+      @user.company_id = code.company_id
       if @user.save
         flash.now[:success] = '注册成功'
         code.update_attribute(:used, true)
         code.update_attribute(:invited_at, Time.zone.now)
-        redirect_to :register_suspend
+        redirect_to :register_success
       else
         flash.now[:error] = '注册失败'
         render :register_employee
@@ -47,11 +50,6 @@ class UsersController < ApplicationController
       flash.now[:invite_code_error] = '查无此邀请码'
       render :register_employee
     end
-  end
-
-  # POST /register_company
-  def create_company
-
   end
 
 

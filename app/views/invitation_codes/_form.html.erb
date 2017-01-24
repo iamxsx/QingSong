@@ -12,7 +12,12 @@
         </div>
     <% end %>
 
+    <div class="field">
+      <%= f.label :company_id,'选择公司' %>
+      <%= f.select :company_id, options_from_collection_for_select(Company.all, :id, :company_name) %>
+    </div>
+    <br>
     <div class="actions">
-      <%= f.submit %>
+      <%= f.submit '生成邀请码' %>
     </div>
 <% end %>

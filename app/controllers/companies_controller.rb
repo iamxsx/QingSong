@@ -6,7 +6,7 @@ class CompaniesController < ApplicationController
     email = params[:email]
     random_token = User.generate_random_token[0, 4].downcase
     UserMailer.account_activation(email, random_token).deliver_now
-    session[:company_verify_code] = email
+    session[:company_verify_code] = random_token
   end
 
   # POST /register-company
@@ -24,8 +24,10 @@ class CompaniesController < ApplicationController
                          :email => params[:email]
         )
         @user.company_id = @company.id
+        @user.role_id = 2
         if @user.save
-          render root_path
+          render 'users/register_suspend'
+          return
         else
           flash.now[:error] = '高级管理员注册失败'
         end
@@ -35,7 +37,7 @@ class CompaniesController < ApplicationController
     else
       flash.now[:verify_code_error] = '邮箱验证码错误'
     end
-    render '/register-company'
+    render 'users/register_company'
   end
 
   # GET /companies
