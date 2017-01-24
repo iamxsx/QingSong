@@ -1,18 +1,53 @@
-<h1>这是登录页，我在 app/views/sessions/login.html.erb</h1>
+<%
+  provide :title, '青松 - 登录'
+  provide :page_tag, @page_tag
+%>
 
-<%= form_for(:session, url: login_path, class: 'col s12') do |f| %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <h1 class="pagetitle">登录</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <div class="panelcontainer center">
+        <%= form_for(:session, url: login_path, :html => {id: "login_form"}) do |f| %>
 
-    <div class="field">
-      <%= f.label :username %>
-      <%= f.text_field :username %>
+            <div class="input_group">
+              <div class="icon_inputcontainer">
+                <%= f.label(:email,
+                            content_tag(:i, nil, class: "fa fa-envelope"))
+                %>
+                <%= f.email_field(:email, placeholder: "邮箱") %>
+              </div>
+              <p class="input_errorbox left" id="err_email" data-usefor="errbox">
+
+              </p>
+            </div>
+
+            <div class="input_group">
+              <div class="icon_inputcontainer">
+                <%= f.label(:password,
+                            content_tag(:i, nil, class: "fa fa-lock"))
+                %>
+                <%= f.password_field(:password, placeholder: "密码") %>
+              </div>
+              <p class="input_errorbox left" id="err_password" data-usefor="errbox">
+
+              </p>
+            </div>
+            <%= f.submit("登录", class: "btn-green choosebtn") %>
+            <p class="input_errorbox center" id="err_submit" data-usefor="errbox">
+            <p class="login_hasaccount_p">没有账号?<%= link_to '前往注册',register_choose_url %></p>
+            </p>
+
+        <% end %>
+      </div>
     </div>
 
-    <div class="field">
-      <%= f.label :password %>
-      <%= f.text_field :password %>
-    </div>
 
-    <div class="actions">
-      <%= f.submit '登录' %>
-    </div>
-<% end %>
+    <br style="clear:both">
+
+  </div>
+</div>

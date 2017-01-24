@@ -1,7 +1,8 @@
 class SessionsController < ApplicationController
-
+  layout 'client/indexpages/register-layout'
   # get /login
   def login
+    @page_tag = "login";
   end
 
   def create
