@@ -8,9 +8,9 @@
 #普通员工注册表单前缀
 @normaluser_regform_prefix = "user";
 #公司注册表单前缀
-@company_regform_prefix = "user";
+@company_regform_prefix = "";
 #发送验证码ajax的url
-@company_regform_verifycode_url = "/what";
+@company_regform_verifycode_url = "/company/send-verify-code";
 #发送验证码ajax的方法
 @company_regform_verifycode_method = "get";
 
@@ -64,52 +64,52 @@ $ ->
   companyvalidator = $("#company_regform").validate(
     debug: true
     rules:
-      '<%= @company_regform_prefix %>[email]':
+      'email':
         required:true
         email: true
-      '<%= @company_regform_prefix %>[username]':
+      'username':
         required: true
         minlength: 6
-      '<%= @company_regform_prefix %>[verifycode]':
+      'verifycode':
         required: true
-      '<%= @company_regform_prefix %>[password]':
+      'password':
         required: true
         minlength: 6
-      '<%= @company_regform_prefix %>[password_confirmation]':
+      'password_confirmation':
         required: true
-        equalTo: "#user_password"
-      '<%= @company_regform_prefix %>[companyname]':
+        equalTo: "#password"
+      'company_name':
         required:true
         minlength: 4
-      '<%= @company_regform_prefix %>[companyaddress]':
+      'company_address':
         required: true
         minlength: 4
-      '<%= @company_regform_prefix %>[tel]':
+      'company_tel':
         required: true
         number: true
         rangelength: [6,13]
     messages:
-      '<%= @company_regform_prefix %>[email]':
+      'email':
         required:"请输入邮箱"
         email: "邮箱格式有误"
-      '<%= @company_regform_prefix %>[verifycode]':
+      'verifycode':
         required: "验证码不能为空"
-      '<%= @company_regform_prefix %>[username]':
+      'username':
         required: "请输入姓名"
         minlength: "姓名位数要大于6位"
-      '<%= @company_regform_prefix %>[password]':
+      'password':
         required: "密码不能为空"
         minlength: "密码位数要大于6位"
-      '<%= @company_regform_prefix %>[password_confirmation]':
+      'password_confirmation':
         required: "密码不能为空"
         equalTo: "两次密码输入不一致,请仔细检查"
-      '<%= @company_regform_prefix %>[companyname]':
+      'company_name':
         required:"公司全称不能为空"
         minlength: "公司全称不足四个字请按 省份+城市+公司全称 命名"
-      '<%= @company_regform_prefix %>[companyaddress]':
+      'company_address':
         required: "公司地址不能为空"
         minlength: "无效的地址"
-      '<%= @company_regform_prefix %>[tel]':
+      'company_tel':
         required: "联系方式不能为空"
         number: "联系方式只能有数字"
         rangelength: "无效的联系方式"
@@ -128,10 +128,10 @@ $ ->
   #发送验证码
   $("#sendverifycode").click ->
 
-    email = $("input[name='<%= @company_regform_prefix %>[email]']").val().trim();
+    email = $("input[name=email]").val().trim();
     if email == ""
       $("#err_verifycode").html("邮箱不能为空")
-    else if !companyvalidator.element( "input[name='<%= @company_regform_prefix %>[email]']" )
+    else if !companyvalidator.element( "input[name=email]" )
       $("#err_verifycode").html("邮箱格式有误")
     else
 

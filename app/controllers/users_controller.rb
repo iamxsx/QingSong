@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  layout 'client/indexpages/register-layout', only: [:register_choose, :register_company, :register_employee,:register_success,:register_suspend]
+  layout 'client/indexpages/register-layout', only: [:register_choose, :register_company, :register_employee, :register_success, :register_suspend]
 
   # GET /register_choose
   def register_choose
@@ -24,6 +24,8 @@ class UsersController < ApplicationController
   def register_suspend
   end
 
+
+
   # POST /register_employee
   def create_employee
     # 查询邀请码
@@ -36,7 +38,7 @@ class UsersController < ApplicationController
         flash.now[:success] = '注册成功'
         code.update_attribute(:used, true)
         code.update_attribute(:invited_at, Time.zone.now)
-        redirect_to root_path
+        redirect_to :register_suspend
       else
         flash.now[:error] = '注册失败'
         render :register_employee
