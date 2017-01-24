@@ -142,6 +142,27 @@ h1,h2,h3,h4,h5,h6{
   padding: 15px;
 }
 
+.withicon_panelcontainer{
+  .panelcontainer;
+  border-radius: 0 0 5px 5px;
+  border-top-color: #3eaf6a;
+  border-top-width: 2px;
+  position: relative;
+}
+
+.panel_icon{
+  width:80px;
+  height:80px;
+  line-height:80px;
+  display: inline-block;
+  border-radius: 80px;
+  background-color: #3eaf6a;
+  color:#fff;
+  top: -40px;
+  left: ~'calc(50% - 40px)';
+  position: absolute;
+  font-weight: lighter;
+}
 .panelcontainer-an-greenborder{
   .panelcontainer;
   transition: border-color 280ms cubic-bezier(.4,0,.2,1);
