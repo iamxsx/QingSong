@@ -6,8 +6,12 @@
  * = require client/indexpages/common
  * = require_self
  */
+@normaltext_color: #4A4A4A;
+@darkbluetext_color: #34495e;
+@darkgreentext_color: #53898e;
+@errortext_color: #e14a4a;
 
-
+@color_btn_green: #61d09c;
 h2{
   font-size: 24px;
 }
@@ -85,5 +89,103 @@ form{
     border:transparent;
     color:#fff;
     background-color: #ccc;
+  }
+}
+
+.su_username{
+  margin-top: 70px;
+  margin-bottom: 21px;
+  font-size: 36px;
+  color: #686868;
+  font-weight: normal;
+  &:before{
+    content:"- ";
+  }
+  &:after{
+    content:" -";
+  }
+}
+.su_company_name{
+  margin-top: 20px;
+  margin-bottom: 80px;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.su_email{
+  margin-top: 21px;
+  margin-bottom:43px;
+  font-size: 20px;
+  color: #B5B5B5;
+  font-weight:lighter;
+}
+.su_tips{
+  margin-top: 7px;
+  font-size:14px;
+  color:#B5B5B5;
+  font-weight: lighter;
+}
+.panel_hr{
+  display: block;
+  height:1px;
+  width:100%;
+  border-top: 1px dashed #efefef;
+}
+
+.btn-login{
+  font-size:16px;
+  width:60%;
+  margin-bottom: 30px;
+  padding:15px;
+}
+
+.sus_info{
+  margin-top:70px;
+  font-size: 20px;
+  font-weight: bold;
+  color: @darkbluetext_color;
+}
+
+.sus_companyname{
+  margin-top: 40px;
+  margin-bottom: 21px;
+  font-size: 26px;
+  color: #686868;
+  font-weight: normal;
+  &:before{
+    content:"- ";
+  }
+  &:after{
+    content:" -";
+  }
+}
+
+.basicinfo_warp{
+  display: inline-block;
+  width:50%;
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.sus_basicinfo{
+  font-size:16px;
+  color: @darkbluetext_color;
+  overflow: hidden;
+
+  span{
+    width: 16px;
+    margin-right: 8px;
+  }
+}
+
+.login_hasaccount_p{
+  margin:0;
+  font-size:16px;
+  color: #b5b5b5;
+  a{
+    color:@darkgreentext_color;
+
+    text-decoration: underline;
+    margin-left: 5px;
   }
 }

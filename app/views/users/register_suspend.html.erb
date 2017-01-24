@@ -1,4 +1,17 @@
 <% provide :title, '青松 - 等待审核' %>
+<%
+  #这些变量名你可以自己改掉..看到这行之后删掉这行
+
+  #姓名
+  @result_name = "张三";
+  #邮箱
+  @result_email = "1234568789@xx.com"
+  #联系电话
+  @result_phone = "18813973123"
+  #公司名称
+  @result_companyname = "梅州市地税局"
+
+%>
 <div class="container">
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
@@ -7,7 +20,17 @@
   </div>
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
-      <div class="panelcontainer center">
+      <div class="withicon_panelcontainer_yellow center">
+        <div class="panel_icon_yellow"><span class="fa fa-exclamation"></span></div>
+        <p class="sus_info">账号资料已提交!<br>我们将与您取得联系并进行审核</p>
+        <div class="panel_hr"></div>
+        <h2 class="sus_companyname"><%= @result_companyname %></h2>
+        <div class="basicinfo_warp">
+          <p class="sus_basicinfo"><span class="fa fa-envelope"></span><%= @result_email %></p>
+          <p class="sus_basicinfo"><span class="fa fa-user"></span><%= @result_name %></p>
+          <p class="sus_basicinfo"><span class="fa fa-phone"></span><%= @result_phone %></p>
+        </div>
+
 
       </div>
     </div>

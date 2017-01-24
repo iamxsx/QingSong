@@ -5,6 +5,8 @@
 
 <%
 
+#登录表单前缀
+@login_form_prefix = "session";
 #普通员工注册表单前缀
 @normaluser_regform_prefix = "user";
 #公司注册表单前缀
@@ -166,3 +168,21 @@ $ ->
       )
 
 
+  #登录表单验证
+  $("#login_form").validate(
+    rules:
+      '<%= @login_form_prefix %>[email]':
+        required:true
+        email: true
+      '<%= @login_form_prefix %>[password]':
+        required: true
+    messages:
+      '<%= @login_form_prefix %>[email]':
+        required:"请输入邮箱"
+        email: "邮箱格式有误"
+      '<%= @login_form_prefix %>[password]':
+        required: "密码不能为空"
+    errorPlacement: (error,element) ->
+      element.parent().next().html(error)
+
+  )
