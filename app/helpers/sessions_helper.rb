@@ -1,13 +1,13 @@
 module SessionsHelper
 
   # 是否已登录
-  def is_logging
-
+  def is_login?
+      # redirect_to root_path if current_user
   end
 
   # 获得当前用户
-  def get_current_user
-
+  def current_user
+    User.find(session[:user_id])
   end
 
   # 将已登录的用户存储在session中

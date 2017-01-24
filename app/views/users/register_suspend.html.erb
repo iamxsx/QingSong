@@ -1,15 +1,14 @@
 <% provide :title, '青松 - 等待审核' %>
 <%
-  #这些变量名你可以自己改掉..看到这行之后删掉这行
 
   #姓名
-  @result_name = "张三";
+  @result_name = @user.username
   #邮箱
-  @result_email = "1234568789@xx.com"
+  @result_email = @user.email
   #联系电话
-  @result_phone = "18813973123"
+  @result_phone = @company.company_tel
   #公司名称
-  @result_companyname = "梅州市地税局"
+  @result_companyname = @company.company_name
 
 %>
 <div class="container">

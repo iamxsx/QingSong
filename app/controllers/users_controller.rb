@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :register_success]
 
   layout 'client/indexpages/register-layout', only: [:register_choose, :register_company, :register_employee, :register_success, :register_suspend]
 
@@ -28,18 +28,19 @@ class UsersController < ApplicationController
 
   # POST /register_employee
   def create_employee
+    @user = User.new(user_params)
     # 查询邀请码
     invite_code = params[:user][:invite_code]
     # 邀请码存在且没有被使用
     if (invite_code && (code = InvitationCode.find_by_code(invite_code)) && !code.used?)
-      @user = User.new(user_params)
       @user.role_id = 1
       @user.company_id = code.company_id
       if @user.save
         flash.now[:success] = '注册成功'
         code.update_attribute(:used, true)
         code.update_attribute(:invited_at, Time.zone.now)
-        redirect_to :register_success
+        render 'users/register_success'
+        # redirect_to action: register_success, id: @user.id
       else
         flash.now[:error] = '注册失败'
         render :register_employee

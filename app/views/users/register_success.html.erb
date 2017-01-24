@@ -1,13 +1,12 @@
 <% provide :title, '青松 - 注册成功' %>
 <%
-  #这些变量名你可以自己改掉..看到这行之后删掉这行
 
   #姓名
-  @result_name = "张三";
+  @result_name = @user.username
   #邮箱
-  @result_email = "1234568789@xx.com"
+  @result_email = @user.email
   #公司名称
-  @result_companyname = "梅州市地税局"
+  @result_companyname = @user.company.company_name
 
 %>
 <div class="container">
@@ -26,7 +25,7 @@
         <p class="su_tips">根据您的邀请码,您将被自动分配到以下公司名下</p>
         <h2 class="su_company_name"><%= @result_companyname %></h2>
 
-        <a class="btn-ghost-green btn-login">去登录</a>
+        <a href="/login" class="btn-ghost-green btn-login">去登录</a>
       </div>
     </div>
 

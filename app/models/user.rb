@@ -2,6 +2,7 @@ class User < ApplicationRecord
 
   # 一个用户
   belongs_to :role
+  belongs_to :company
 
   # 在保存前将邮箱改为小写
   before_save { self.email = self.email.downcase }

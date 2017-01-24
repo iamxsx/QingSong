@@ -8,7 +8,7 @@
 %>
 
 <% if Rails.env.development? %>
-    <% if @user.errors.any? %>
+    <% if !@user.nil? && @user.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(@user.errors.count, "error") %> prohibited this company from being saved:</h2>
 
