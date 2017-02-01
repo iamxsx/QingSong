@@ -3,6 +3,8 @@ class UsersController < ApplicationController
 
   layout 'client/indexpages/register-layout', only: [:register_choose, :register_company, :register_employee, :register_success, :register_suspend]
 
+  layout 'client/usercenter/usercenter', only: [:user_center]
+
   # GET /register_choose
   def register_choose
   end

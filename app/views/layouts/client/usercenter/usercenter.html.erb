@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= yield(:title) %></title>
+  <%= javascript_include_tag 'client/usercenter/usercenter' %>
+  <%= stylesheet_link_tag 'client/usercenter/usercenter' %>
+</head>
+<body>
+<!--导航栏-->
+<%= yield %>
+</body>
+</html>
