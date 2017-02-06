@@ -1,18 +1,26 @@
-# README
+# 青松实训平台
 
-部分路由：
+小小的毕业设计 ^-^
+
+
+
+#### 部分路由：
     
-http://localhost:3000/  ->  首页
+服务器使用 3000 端口
 
-http://localhost:3000/register-choose  ->  注册选择页
+url | name
+--- | ----
+`/` | 首页
+`/register-choose` | 注册选择页
+`/register-employee` | 注册员工
+`/register-company` | 注册高管
+`/login` | 登录
+`/admin/login` | 青松运营后台登录
+`/admin/register` | 青松运营后台注册
 
-http://localhost:3000/register-employee  ->  注册员工
 
-http://localhost:3000/register-company  ->  注册高管
+#### 课程设计规范
 
-http://localhost:3000/login  ->  登录
-
-http://localhost:3000/admin/login  ->  后台登录
-http://localhost:3000/admin/register    ->  后台注册
+这里有关于[课程的设计规范](coursedesignguide),所有的课程设计要按照这个来
 
 
