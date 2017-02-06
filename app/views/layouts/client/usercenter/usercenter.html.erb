@@ -1,3 +1,8 @@
+<%
+  #用户类型 com(公司高管) 还是 emp(普通员工)
+usertype = "com"
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,6 +48,8 @@
                   :users_user_center,
                   :class => set_active_class(yield(:page_tag),"user_center")
       %>
+
+      <% if usertype == "com" %>
       <!--公司管理模块-->
       <div class="nav_gutter">公司管理</div>
 
@@ -71,7 +78,7 @@
       %>
 
       <div class="nav_gutter">我的账号</div>
-
+      <% end %>
       <%= link_to (content_tag(:div) do
         concat content_tag(:span,nil,:class => "fa fa-book")
         concat content_tag(:span,"我的课程")
