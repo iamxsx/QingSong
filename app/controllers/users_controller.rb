@@ -55,7 +55,7 @@ class UsersController < ApplicationController
 
   # 用户个人中心
   def user_center
-
+    @page_tag = "user_center"
   end
 
 

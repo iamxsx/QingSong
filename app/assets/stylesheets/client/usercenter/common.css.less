@@ -1,3 +1,5 @@
+@ff : "HanHei SC","PingHei","PingFang SC","STHeitiSC-Light","Helvetica Neue","Helvetica","微软雅黑","黑体","Arial",sans-serif;
+
 @normaltext_color: #4A4A4A;
 @darkbluetext_color: #34495e;
 @darkgreentext_color: #53898e;
@@ -5,6 +7,94 @@
 
 @color_btn_green: #61d09c;
 
-html,body{
+body{
   margin: 0;
+  font-family: @ff;
+  background-color: #fafafa;
+}
+
+.warp{
+  display: block;
+  overflow: hidden;
+}
+
+@nav_width : 200px;
+nav{
+  display: block;
+  position:fixed;
+  width: @nav_width;
+  height:100%;
+  background-color: @darkbluetext_color;
+  text-align: center;
+  overflow: hidden;
+
+  .nav_warp{
+    display: block;
+    width:220px;
+    height:100%;
+    overflow-y: scroll;
+  }
+
+
+  .logo{
+    display: inline-block;
+    @logourl: asset-path("indexpages/logo.png");
+    background: url(@logourl) no-repeat;
+    background-size:contain;
+    width: 80px;
+    height: 30px;
+    margin-top:30px;
+    margin-bottom: 20px;
+  }
+
+  .nav_gutter{
+    display: block;
+    width:100%;
+    height:25px;
+    line-height:25px;
+    background-color:#23313F;
+    color:#475F76;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  a.item{
+    display: block;
+    width:100%;
+    height:60px;
+    line-height: 60px;
+    cursor: pointer;
+
+    &:hover,&:focus{
+      background-color: lighten(@darkbluetext_color,20%);
+    }
+
+    &:active{
+      background-color: darken(@darkbluetext_color,20%);
+    }
+
+    div{
+      display: inline-block;
+      width:100px;
+      color:#fff;
+      font-weight: lighter;
+      text-align: left;
+      font-size: 16px;
+
+      span:first-child{
+        margin-right: 16px;
+      }
+    }
+  }
+
+  a.active{
+    background-color: @color_btn_green !important;
+  }
+}
+
+
+
+.main{
+  margin-left: @nav_width;
+  overflow: hidden;
 }
