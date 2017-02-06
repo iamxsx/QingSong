@@ -4,8 +4,29 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= yield(:title) %></title>
-  <%= javascript_include_tag 'client/usercenter/usercenter' %>
-  <%= stylesheet_link_tag 'client/usercenter/usercenter' %>
+  <% case yield(:page_tag) %>
+  <% when "user_center" %>
+      <%= javascript_include_tag 'client/usercenter/usercenter' %>
+      <%= stylesheet_link_tag 'client/usercenter/usercenter' %>
+  <% when "com_profile" %>
+      <%= javascript_include_tag 'client/usercenter/com_profile' %>
+      <%= stylesheet_link_tag 'client/usercenter/com_profile' %>
+  <% when "com_course" %>
+      <%= javascript_include_tag 'client/usercenter/com_course' %>
+      <%= stylesheet_link_tag 'client/usercenter/com_course' %>
+  <% when "com_employee" %>
+      <%= javascript_include_tag 'client/usercenter/com_employee' %>
+      <%= stylesheet_link_tag 'client/usercenter/com_employee' %>
+  <% when "emp_course" %>
+      <%= javascript_include_tag 'client/usercenter/emp_course' %>
+      <%= stylesheet_link_tag 'client/usercenter/emp_course' %>
+  <% when "emp_exam" %>
+      <%= javascript_include_tag 'client/usercenter/emp_exam' %>
+      <%= stylesheet_link_tag 'client/usercenter/emp_exam' %>
+  <% when "emp_profile" %>
+      <%= javascript_include_tag 'client/usercenter/emp_profile' %>
+      <%= stylesheet_link_tag 'client/usercenter/emp_profile' %>
+  <% end %>
 </head>
 <body>
 <!--导航栏-->
@@ -29,7 +50,7 @@
         concat content_tag(:span,nil,:class => "fa fa-building")
         concat content_tag(:span,"公司资料")
       end),
-                  :users_user_center,
+                  :users_com_profile,
                   :class => set_active_class(yield(:page_tag),"com_profile")
       %>
 
@@ -37,7 +58,7 @@
         concat content_tag(:span,nil,:class => "fa fa-users")
         concat content_tag(:span,"员工管理")
       end),
-                  :users_user_center,
+                  :users_com_employee,
                   :class => set_active_class(yield(:page_tag),"com_employee")
       %>
 
@@ -45,7 +66,7 @@
         concat content_tag(:span,nil,:class => "fa fa-book")
         concat content_tag(:span,"课程管理")
       end),
-                  :users_user_center,
+                  :users_com_course,
                   :class => set_active_class(yield(:page_tag),"com_course")
       %>
 
@@ -55,7 +76,7 @@
         concat content_tag(:span,nil,:class => "fa fa-book")
         concat content_tag(:span,"我的课程")
       end),
-                  :users_user_center,
+                  :users_emp_course,
                   :class => set_active_class(yield(:page_tag),"emp_course")
       %>
 
@@ -63,15 +84,15 @@
         concat content_tag(:span,nil,:class => "fa fa-pencil")
         concat content_tag(:span,"我的考核")
       end),
-                  :users_user_center,
-                  :class => set_active_class(yield(:page_tag),"emp_test")
+                  :users_emp_exam,
+                  :class => set_active_class(yield(:page_tag),"emp_exam")
       %>
 
       <%= link_to (content_tag(:div) do
         concat content_tag(:span,nil,:class => "fa fa-user")
         concat content_tag(:span,"个人资料")
       end),
-                  :users_user_center,
+                  :users_emp_profile,
                   :class => set_active_class(yield(:page_tag),"emp_profile")
       %>
     </div>

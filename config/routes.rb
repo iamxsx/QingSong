@@ -28,7 +28,17 @@ Rails.application.routes.draw do
   get 'register-company' => 'users#register_company'
   post 'register-company' => 'companies#create_company'
   get '/company/send-verify-code' => 'companies#send_verify_code'
+
+  #后台页面
   get '/users/user-center' => 'users#user_center'
+  get '/users/com-profile' => 'users#com_profile'
+  get '/users/com-employee' => 'users#com_employee'
+  get '/users/com-course' => 'users#com_course'
+  get '/users/emp-profile' => 'users#emp_profile'
+  get '/users/emp-course' => 'users#emp_course'
+  get '/users/emp-exam' => 'users#emp_exam'
+
+
   # 注意resources 后面是有个s的，没有加s生成的url不一样
   resources :scores
   resources :roles

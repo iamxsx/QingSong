@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   layout 'client/indexpages/register-layout', only: [:register_choose, :register_company, :register_employee, :register_success, :register_suspend]
 
-  layout 'client/usercenter/usercenter', only: [:user_center]
+  layout 'client/usercenter/usercenter', only: [:user_center,:com_course,:com_employee,:com_profile,:emp_course,:emp_exam,:emp_profile]
 
   # GET /register_choose
   def register_choose
@@ -53,9 +53,41 @@ class UsersController < ApplicationController
     end
   end
 
+
+  ####################################################
+  ####################################################
+  ####################################################
+  ####################################################
+  ####################################################
+  # 后台页面
+
   # 用户个人中心
   def user_center
     @page_tag = "user_center"
+  end
+  # 公司-管理页面
+  def com_profile
+    @page_tag = "com_profile"
+  end
+  # 公司-员工管理页面
+  def com_employee
+    @page_tag = "com_employee"
+  end
+  # 公司-课程管理页面
+  def com_course
+    @page_tag = "com_course"
+  end
+  # 用户-个人资料页面
+  def emp_profile
+    @page_tag = "emp_profile"
+  end
+  # 用户-我的课程页面
+  def emp_course
+    @page_tag = "emp_course"
+  end
+  # 用户-我的考核页面
+  def emp_exam
+    @page_tag = "emp_exam"
   end
 
 
