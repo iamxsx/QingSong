@@ -82,6 +82,7 @@ nav{
       font-size: 16px;
 
       span:first-child{
+        width:16px;
         margin-right: 16px;
       }
     }
@@ -91,10 +92,89 @@ nav{
     background-color: @color_btn_green !important;
   }
 }
-
-
-
 .main{
   margin-left: @nav_width;
   overflow: hidden;
+  min-height: 700px;
+  min-height: 100vh;
+}
+.secondary_nav{
+  position:relative;
+  display: block;
+  width:100%;
+  height:80px;
+  cursor: default;
+
+
+
+  div.ac_display{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+
+    z-index: 555;
+    width: 250px;
+  }
+  div.ac_dropdown{
+    display: none;
+    position: absolute;
+    right: 0px;
+    top: -15px;
+    padding-top: 50px;
+    padding-bottom: 20px;
+
+    width: 250px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+
+    z-index: 550;
+  }
+
+  div.ac_dropdown_btn{
+    width:70%;
+  }
+
+  div.account_dropdownmenu{
+    position: absolute;
+    right: 70px;
+    top: 35px;
+
+    width: 250px;
+    height: 40px;
+
+    color: #b8b8b8;
+    text-align: center;
+
+    &:hover,&:focus{
+      .ac_dropdown {
+        display: block;
+      }
+    }
+  }
+}
+
+.btn_red{
+  display: inline-block;
+  transition: background-color 280ms cubic-bezier(.4,0,.2,1);
+  color:#fff;
+  border: 0;
+  background-color:@errortext_color;
+  border-radius: 5px;
+  padding:8px 12px;
+  cursor: pointer;
+
+  //不许选中文字
+  -moz-user-select:none;
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  -khtml-user-select:none;
+  user-select:none;
+
+  &:hover,&:focus{
+    background-color: darken(@errortext_color,20%);
+  }
+
+  &:active{
+    background-color: darken(@errortext_color,40%);
+  }
 }

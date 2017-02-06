@@ -77,6 +77,18 @@
     </div>
   </nav>
   <div class="main">
+    <div class="secondary_nav">
+      <div class="account_dropdownmenu">
+        <div class="ac_display">
+          <span class="fa fa-user"></span>&nbsp;&nbsp;
+          <span><%= yield(:user_email)%></span>&nbsp;&nbsp;
+          <span class="fa fa-angle-down"></span>
+        </div>
+        <div class="ac_dropdown">
+          <div class="btn_red ac_dropdown_btn" id="logout">注销账号</div>
+        </div>
+      </div>
+    </div>
     <%= yield %>
   </div>
 </div>
