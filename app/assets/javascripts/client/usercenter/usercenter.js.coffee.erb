@@ -1,0 +1,24 @@
+#= require jquery
+#= require jquery.validate
+#= require jquery-ui/widgets/tooltip
+#= require_self
+#这里的代码用于 layout 本身和 users/user_center 本身
+
+<%
+#登出的url
+@logout_url = "/xxx"
+#登出方法
+@logout_method = "post"
+#登出后请后端跳转到登录页!
+%>
+
+$ ->
+  $("#logout").click ->
+    $.ajax(
+      url: "<%= @logout_url %>"
+      type: "<%= @logout_method %>"
+      data:{
+        "do":"logout"
+      }
+      dataType: 'json'
+    )

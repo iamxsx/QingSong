@@ -1,0 +1,124 @@
+<%
+  #用户类型 com(公司高管) 还是 emp(普通员工)
+usertype = "com"
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= yield(:title) %></title>
+  <% case yield(:page_tag) %>
+  <% when "user_center" %>
+      <%= javascript_include_tag 'client/usercenter/usercenter' %>
+      <%= stylesheet_link_tag 'client/usercenter/usercenter' %>
+  <% when "com_profile" %>
+      <%= javascript_include_tag 'client/usercenter/com_profile' %>
+      <%= stylesheet_link_tag 'client/usercenter/com_profile' %>
+  <% when "com_course" %>
+      <%= javascript_include_tag 'client/usercenter/com_course' %>
+      <%= stylesheet_link_tag 'client/usercenter/com_course' %>
+  <% when "com_employee" %>
+      <%= javascript_include_tag 'client/usercenter/com_employee' %>
+      <%= stylesheet_link_tag 'client/usercenter/com_employee' %>
+  <% when "emp_course" %>
+      <%= javascript_include_tag 'client/usercenter/emp_course' %>
+      <%= stylesheet_link_tag 'client/usercenter/emp_course' %>
+  <% when "emp_exam" %>
+      <%= javascript_include_tag 'client/usercenter/emp_exam' %>
+      <%= stylesheet_link_tag 'client/usercenter/emp_exam' %>
+  <% when "emp_profile" %>
+      <%= javascript_include_tag 'client/usercenter/emp_profile' %>
+      <%= stylesheet_link_tag 'client/usercenter/emp_profile' %>
+  <% end %>
+</head>
+<body>
+<!--导航栏-->
+<div class="warp">
+  <nav>
+    <div class="nav_warp">
+      <div class="logo"></div>
+
+      <!--后台主页-->
+      <%= link_to (content_tag(:div) do
+                    concat content_tag(:span,nil,:class => "fa fa-dashboard")
+                    concat content_tag(:span,"管理中心")
+                  end),
+                  :users_user_center,
+                  :class => set_active_class(yield(:page_tag),"user_center")
+      %>
+
+      <% if usertype == "com" %>
+      <!--公司管理模块-->
+      <div class="nav_gutter">公司管理</div>
+
+      <%= link_to (content_tag(:div) do
+        concat content_tag(:span,nil,:class => "fa fa-building")
+        concat content_tag(:span,"公司资料")
+      end),
+                  :users_com_profile,
+                  :class => set_active_class(yield(:page_tag),"com_profile")
+      %>
+
+      <%= link_to (content_tag(:div) do
+        concat content_tag(:span,nil,:class => "fa fa-users")
+        concat content_tag(:span,"员工管理")
+      end),
+                  :users_com_employee,
+                  :class => set_active_class(yield(:page_tag),"com_employee")
+      %>
+
+      <%= link_to (content_tag(:div) do
+        concat content_tag(:span,nil,:class => "fa fa-book")
+        concat content_tag(:span,"课程管理")
+      end),
+                  :users_com_course,
+                  :class => set_active_class(yield(:page_tag),"com_course")
+      %>
+
+      <div class="nav_gutter">我的账号</div>
+      <% end %>
+      <%= link_to (content_tag(:div) do
+        concat content_tag(:span,nil,:class => "fa fa-book")
+        concat content_tag(:span,"我的课程")
+      end),
+                  :users_emp_course,
+                  :class => set_active_class(yield(:page_tag),"emp_course")
+      %>
+
+      <%= link_to (content_tag(:div) do
+        concat content_tag(:span,nil,:class => "fa fa-pencil")
+        concat content_tag(:span,"我的考核")
+      end),
+                  :users_emp_exam,
+                  :class => set_active_class(yield(:page_tag),"emp_exam")
+      %>
+
+      <%= link_to (content_tag(:div) do
+        concat content_tag(:span,nil,:class => "fa fa-user")
+        concat content_tag(:span,"个人资料")
+      end),
+                  :users_emp_profile,
+                  :class => set_active_class(yield(:page_tag),"emp_profile")
+      %>
+    </div>
+  </nav>
+  <div class="main">
+    <div class="secondary_nav">
+      <div class="account_dropdownmenu">
+        <div class="ac_display">
+          <span class="fa fa-user"></span>&nbsp;&nbsp;
+          <span><%= yield(:user_email)%></span>&nbsp;&nbsp;
+          <span class="fa fa-angle-down"></span>
+        </div>
+        <div class="ac_dropdown">
+          <div class="btn_red ac_dropdown_btn" id="logout">注销账号</div>
+        </div>
+      </div>
+    </div>
+    <%= yield %>
+  </div>
+</div>
+</body>
+</html>
