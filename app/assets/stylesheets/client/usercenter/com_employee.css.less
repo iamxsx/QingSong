@@ -5,3 +5,64 @@
  * = require client/usercenter/common
  * = require_self
  */
+
+.page_warp{
+  text-align: left;
+  padding-right: 70px;
+  padding-left: 40px;
+  padding-top:20px;
+}
+
+#addemployee{
+  position: absolute;
+  right:22px;
+  top:20px;
+  font-size:14px;
+}
+
+.panel{
+  table{
+
+    th,td{
+      width:15%;
+    }
+
+    th:first-child,td:first-child{
+      width:10%;
+    }
+  }
+}
+
+#invitecodecontainer{
+  background-color: #F6F6F6;
+  margin-bottom:20px;
+  overflow: hidden;
+  padding:20px;
+}
+
+.invitecode{
+  display: inline-block;
+  background-color: #fff;
+  padding:8px;
+  color:#555;
+
+  .in_id{
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 10px;
+  }
+
+  .in_closebtn{
+    display: inline-block;
+    visibility: hidden;
+    margin-top: -4px;
+    margin-right: 5px;
+    color: #cbcbcb;
+  }
+
+  &:hover,&:focus{
+    .in_closebtn{
+      visibility: visible;
+    }
+  }
+}
