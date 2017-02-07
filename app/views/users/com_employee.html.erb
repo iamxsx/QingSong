@@ -4,26 +4,28 @@
   provide :user_email, "1234567890@xxx.com"
 
   @last_login_time = "2017-01-02"
+
+  #员工数量
+  @employeecount = 123
+
+  #高管账号数量
+  @comcount = 12
 %>
 
 <div class="page_warp">
   <div class="panel">
     <div class="panelcontainer">
       <h1>概况</h1>
-      <p>本公司名下目前有 123 名员工, 其中高级管理员有 12 名.</p>
+      <p>本公司名下目前有 <%= @employeecount %> 名员工, 其中高级管理员有 <%= @comcount %> 名.</p>
     </div>
 
   </div>
 
 
-  <div class="panel">
+  <div class="panel" id="invitecode_panel">
     <div class="panelcontainer">
       <h1>未被使用的邀请码</h1>
       <div id="invitecodecontainer">
-        <div class="invitecode">
-          <div class="in_id">A23E2Q</div>
-          <div class="fa fa-times in_closebtn"></div>
-        </div>
       </div>
     </div>
 
@@ -33,9 +35,10 @@
     <div class="panelcontainer">
       <h1>员工列表</h1>
       <div class="btn-ghost-green" id="addemployee"><span class="fa fa-user-plus"></span>&nbsp;&nbsp;邀请员工</div>
+      <div class="flycode" id="flycode"></div>
     </div>
 
-    <table>
+    <table id="employee_list">
       <tr>
         <th>id</th>
         <th>姓名</th>
@@ -45,14 +48,19 @@
         <th>账号类型</th>
         <th>操作</th>
       </tr>
+
+      <!--以下是员工列表数据的mockup-->
       <tr>
         <td>1</td>
         <td>张三</td>
         <td>123457987@xxx.com</td>
         <td>18813973778</td>
         <td>2017-01-02</td>
-        <td>普通员工</td>
-        <td>-</td>
+        <td>高级管理员</td>
+        <td class="manage_btn_column">
+          <div class="employee_manage_btn fa fa-user-times" data-toggle="tooltip" title="解约员工"></div>
+          <div class="employee_manage_btn fa fa-arrow-down" data-toggle="tooltip" title="降级为普通员工"></div>
+        </td>
       </tr>
       <tr>
         <td>1</td>
@@ -61,7 +69,22 @@
         <td>18813973778</td>
         <td>2017-01-02</td>
         <td>普通员工</td>
-        <td>-</td>
+        <td class="manage_btn_column">
+          <div class="employee_manage_btn fa fa-user-times" data-toggle="tooltip"  title="解约员工"></div>
+          <div class="employee_manage_btn fa fa-arrow-up" data-toggle="tooltip"  title="升级为高级管理员"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>张三</td>
+        <td>123457987@xxx.com</td>
+        <td>18813973778</td>
+        <td>2017-01-02</td>
+        <td>高级管理员</td>
+        <td class="manage_btn_column">
+          <div class="employee_manage_btn fa fa-user-times" data-toggle="tooltip" title="解约员工"></div>
+          <div class="employee_manage_btn fa fa-arrow-down" data-toggle="tooltip" title="降级为普通员工"></div>
+        </td>
       </tr>
       <tr>
         <td>1</td>
@@ -70,17 +93,12 @@
         <td>18813973778</td>
         <td>2017-01-02</td>
         <td>普通员工</td>
-        <td>-</td>
+        <td class="manage_btn_column">
+          <div class="employee_manage_btn fa fa-user-times" data-toggle="tooltip"  title="解约员工"></div>
+          <div class="employee_manage_btn fa fa-arrow-up" data-toggle="tooltip"  title="升级为高级管理员"></div>
+        </td>
       </tr>
-      <tr>
-        <td>1</td>
-        <td>张三</td>
-        <td>123457987@xxx.com</td>
-        <td>18813973778</td>
-        <td>2017-01-02</td>
-        <td>普通员工</td>
-        <td>-</td>
-      </tr>
+
     </table>
 
   </div>

@@ -1,2 +1,123 @@
 #= require client/usercenter/usercenter
+#= require parabola
+#= require tooltips
 #= require_self
+
+<%
+#####################################
+#####################################
+#####################################
+#####################################
+#####################################
+
+#关于邀请码
+
+#邀请码的url
+@get_invitecode_url = "/xxx"
+#请求的方法
+@get_invitecode_method = "get"
+
+# 前端发送的请求
+# {
+#   do: "getverifycode"
+# }
+
+# 返回的json规定
+# {
+#   invitecodeid: 邀请码在数据库中的id,
+#   invitecode: 邀请码
+# }
+
+
+#####################################
+#####################################
+#####################################
+#####################################
+#####################################
+%>
+
+
+$ ->
+
+  #飞行动画
+  _flycodeAnimate = (element,target,invitecodeid) ->
+    parabola = funParabola(element,target,
+        {
+          curvature:0.0005
+          speed:1200
+          complete: ->
+            #当动画执行完毕就执行这里
+            $("#addemployee").html "<span class=\"fa fa-user-plus\"></span>&nbsp;&nbsp;邀请员工"
+            $("#invitecode_#{invitecodeid}").css "visibility","visible"
+            $("#flycode").css "display","none"
+
+            return
+
+        }).mark()
+    parabola.init()
+
+
+
+  invitecodeid = 0
+  #邀请员工事件
+  $("#addemployee").click ->
+
+    if $("#addemployee").html() == "<span class=\"fa fa-user-plus\"></span>&nbsp;&nbsp;邀请员工"
+      $("#addemployee").html "<span class=\"fa fa-spinner fa-spin fa-fw\"></span>&nbsp;&nbsp;邀请员工"
+    else
+      return
+
+
+
+    invitecodeid = 0
+    invitecode = "FFFFFF"
+
+    #生成新的邀请码
+    $.ajax
+      url: "<%= @get_invitecode_url %>"
+      type: "<%= @get_invitecode_method %>"
+      data:
+        "do":"getverifycode"
+      dataType: 'json'
+      success: (data) ->
+        invitecodepack = JSON.parse data
+        invitecodeid = invitecodepack.invitecodeid
+        invitecode = invitecodepack.invitecode
+
+        $("#invitecodecontainer").append "<div class=\"invitecode\" id=\"invitecode_#{invitecodeid}\" style=\"visibility: hidden;\">
+                                        <div class=\"in_id\">#{invitecode}</div>
+                                      </div>"
+
+        #初始化 飞行动画 的各个元素的位置
+        btn = document.getElementById("addemployee")
+        element = document.getElementById("flycode")
+        target = document.getElementById("invitecode_#{invitecodeid}")
+        btnposition = btn.getBoundingClientRect()
+
+
+        if $("#invitecode_panel").css("display") == "none"
+          $("#invitecode_panel").slideDown "fast",()->
+            btnposition = btn.getBoundingClientRect()
+            $("#flycode").css("display","block")
+            $("#flycode").css("top",btnposition.top)
+            $("#flycode").css("left",btnposition.left)
+
+            _flycodeAnimate element,target,invitecodeid
+
+        else
+          $("#flycode").css("display","block")
+          $("#flycode").css("top",btnposition.top)
+          $("#flycode").css("left",btnposition.left)
+
+          _flycodeAnimate element,target,invitecodeid
+
+      error: ->
+        $("#addemployee").html "<span class=\"fa fa-user-plus\"></span>&nbsp;&nbsp;邀请员工"
+        alert "获取邀请码失败,您的网络是否出现了问题?"
+
+
+
+
+
+
+  $("[data-toggle='tooltip']").tooltip()
