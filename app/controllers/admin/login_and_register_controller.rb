@@ -1,6 +1,6 @@
 class Admin::LoginAndRegisterController < Admin::AdminApplicationController
   layout 'admin-login'
-  before_filter :logging?, :except => %w(login register)
+  before_action :logging?, :except => %w(login register)
 
   def login
   end

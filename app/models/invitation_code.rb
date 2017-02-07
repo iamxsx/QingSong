@@ -1,7 +1,9 @@
 class InvitationCode < ApplicationRecord
-  before_save :generate_invitation_code
+  before_save :generate_random_code
 
-  def generate_invitation_code
-    self.code = SecureRandom.urlsafe_base64
+  def generate_random_code
+    self.code = (0...6).map {
+      ('A'..'Z').to_a[rand(26)]
+    }.join
   end
 end

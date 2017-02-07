@@ -6,9 +6,9 @@
 
 <%
 #登出的url
-@logout_url = "/xxx"
+@logout_url = "/logout"
 #登出方法
-@logout_method = "post"
+@logout_method = "get"
 #登出后请后端跳转到登录页!
 %>
 
@@ -17,8 +17,7 @@ $ ->
     $.ajax(
       url: "<%= @logout_url %>"
       type: "<%= @logout_method %>"
-      data:{
-        "do":"logout"
-      }
-      dataType: 'json'
+      success: (data, status) ->
+        if status == 'success'
+          window.location.href = '/'
     )
