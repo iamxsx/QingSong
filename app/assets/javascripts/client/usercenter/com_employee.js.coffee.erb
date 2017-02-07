@@ -1,2 +1,206 @@
 #= require client/usercenter/usercenter
+#= require parabola
+#= require tooltips
+#= require remodal
 #= require_self
+
+<%
+#####################################
+#####################################
+#####################################
+#####################################
+#####################################
+
+#关于邀请码
+
+#邀请码的url
+@get_invitecode_url = "/xxx"
+#请求的方法
+@get_invitecode_method = "get"
+
+# 前端发送的请求
+# {
+#   do: "dismiss" | "upgrade" | "downgrade"
+#        ↑️解约员工    ↑升级员工    ↑降级员工
+#   id: 员工在数据库中的id
+# }
+
+# 返回的json规定
+# {
+#   invitecodeid: 邀请码在数据库中的id,
+#   invitecode: 邀请码
+# }
+
+
+#####################################
+#####################################
+#####################################
+#####################################
+#####################################
+
+#关于处理员工
+
+#统一的url
+@manage_emp_url = "/xxx"
+#请求的方法
+@manage_emp_method = "get"
+
+# 前端发送的请求
+# {
+#   do: "getverifycode"
+# }
+
+# 返回的json规定
+# {
+#   status: 200  如果操作成功就返回200
+#   err: 操作失败原因
+# }
+%>
+
+
+$ ->
+
+  #员工id
+  _manage_id = '';
+  #对员工的操作
+  _manage_action = '';
+  #员工名称
+  _manage_name = '';
+
+
+  #飞行动画
+  _flycodeAnimate = (element,target,invitecodeid) ->
+    parabola = funParabola(element,target,
+        {
+          curvature:0.0005
+          speed:1200
+          complete: ->
+            #当动画执行完毕就执行这里
+            $("#addemployee").html "<span class=\"fa fa-user-plus\"></span>&nbsp;&nbsp;邀请员工"
+            $("#invitecode_#{invitecodeid}").css "visibility","visible"
+            $("#flycode").css "display","none"
+
+            return
+
+        }).mark()
+    parabola.init()
+
+
+
+  invitecodeid = 0
+  #邀请员工事件
+  $("#addemployee").click ->
+
+    if $("#addemployee").html() == "<span class=\"fa fa-user-plus\"></span>&nbsp;&nbsp;邀请员工"
+      $("#addemployee").html "<span class=\"fa fa-spinner fa-spin fa-fw\"></span>&nbsp;&nbsp;邀请员工"
+    else
+      return
+
+
+
+    invitecodeid = 0
+    invitecode = "FFFFFF"
+
+    #生成新的邀请码
+    $.ajax
+      url: "<%= @get_invitecode_url %>"
+      type: "<%= @get_invitecode_method %>"
+      data:
+        "do":"getverifycode"
+      dataType: 'json'
+      success: (data) ->
+        invitecodepack = JSON.parse data
+        invitecodeid = invitecodepack.invitecodeid
+        invitecode = invitecodepack.invitecode
+
+        $("#invitecodecontainer").append "<div class=\"invitecode\" id=\"invitecode_#{invitecodeid}\" style=\"visibility: hidden;\">
+                                        <div class=\"in_id\">#{invitecode}</div>
+                                      </div>"
+
+        #初始化 飞行动画 的各个元素的位置
+        btn = document.getElementById("addemployee")
+        element = document.getElementById("flycode")
+        target = document.getElementById("invitecode_#{invitecodeid}")
+        btnposition = btn.getBoundingClientRect()
+
+
+        if $("#invitecode_panel").css("display") == "none"
+          $("#invitecode_panel").slideDown "fast",()->
+            btnposition = btn.getBoundingClientRect()
+            $("#flycode").css("display","block")
+            $("#flycode").css("top",btnposition.top)
+            $("#flycode").css("left",btnposition.left)
+
+            _flycodeAnimate element,target,invitecodeid
+
+        else
+          $("#flycode").css("display","block")
+          $("#flycode").css("top",btnposition.top)
+          $("#flycode").css("left",btnposition.left)
+
+          _flycodeAnimate element,target,invitecodeid
+
+      error: ->
+        $("#addemployee").html "<span class=\"fa fa-user-plus\"></span>&nbsp;&nbsp;邀请员工"
+        alert "获取邀请码失败,您的网络是否出现了问题?"
+
+
+
+  $("[data-usefor='manage_emp']").click ->
+
+    _manage_id = $(this).attr('data-id')
+    _manage_action = $(this).attr('data-ope')
+    _manage_name = $(this).parent().prev().prev().prev().prev().prev().html()
+    if _manage_action == "dismiss"
+      $("#manage_md_title").html("解约 "+_manage_name+" ?" )
+      $("#manage_md_content").html("解约员工将不会删除员工本身的账号,只是解除了员工与公司之间的关系")
+      $("#manage_md_cancel").html("不要解约" )
+      $("#manage_md_confirm").html("解约" )
+    else if _manage_action == "upgrade"
+      $("#manage_md_title").html("将 "+_manage_name+" 升级为高级管理员 ?" )
+      $("#manage_md_content").html("升级为高级管理员之后将拥有与您一样的权限")
+      $("#manage_md_cancel").html("不要升级" )
+      $("#manage_md_confirm").html("升级" )
+    else if _manage_action == "downgrade"
+      $("#manage_md_title").html("将 "+_manage_name+" 降级为普通员工 ?" )
+      $("#manage_md_content").html("降级以后他将失去作为高级管理员的特殊权限")
+      $("#manage_md_cancel").html("不要降级" )
+      $("#manage_md_confirm").html("降级" )
+
+
+
+
+  $(document).on 'confirmation', "[data-remodal-id='manage_modal']", ->
+    $.ajax
+      url: "<%= @manage_emp_url %>"
+      type: "<%= @manage_emp_method %>"
+      data:
+        "do": _manage_action
+        "id": _manage_id
+      dataType: 'json'
+      error: ->
+        success_md = $('[data-remodal-id="success_modal"]').remodal()
+        $("#success_title").html("操作失败")
+        $("#success_content").html("似乎您的网络有问题哦?")
+        success_md.open()
+      success: (data) ->
+        response = JSON.parse(data)
+        success_md = $('[data-remodal-id="success_modal"]').remodal()
+        if data.status == 200
+          $("#success_title").html("操作成功")
+          if _manage_action == "dismiss"
+            $("[data-id='#{_manage_id}']").parent().parent().slideUp()
+            $("#success_content").html("成功解约 "+_manage_name )
+          else if _manage_action == "upgrade"
+            $("#success_content").html("已经将 "+_manage_name+" 升级为高级管理员" )
+          else if _manage_action == "downgrade"
+            $("#success_content").html("已经将 "+_manage_name+" 降级为普通员工" )
+        else
+          $("#success_title").html("操作失败")
+          $("#success_content").html(response.err)
+        success_md.open()
+
+
+
+
+  $("[data-toggle='tooltip']").tooltip()
