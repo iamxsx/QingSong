@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   root 'static_pages#index'
   get 'login' => 'sessions#login'
   post 'login' => 'sessions#create'
+  get 'logout' => 'sessions#destroy'
   get 'register-choose' => 'users#register_choose'
   get 'register-success' => 'users#register_success'
   get 'register-suspend' => 'users#register_suspend'

@@ -1,8 +1,16 @@
 class InvitationCodesController < ApplicationController
   before_action :set_invitation_code, only: [:show, :edit, :update, :destroy]
 
-  # 生成邀请码
+
   # 验证邀请码
+
+  # 生成邀请码
+  def generate_invitation_code
+    @invitation_code = InvitationCode.new(:company_id => current_user.company.id)
+    if @invitation_code.save
+      render json: {invitation_code: @invitation_code.code}
+    end
+  end
 
   # GET /invitation_codes
   # GET /invitation_codes.json
