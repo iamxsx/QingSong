@@ -58,48 +58,68 @@
         <td>2017-01-02</td>
         <td>高级管理员</td>
         <td class="manage_btn_column">
-          <div class="employee_manage_btn fa fa-user-times" data-toggle="tooltip" title="解约员工"></div>
-          <div class="employee_manage_btn fa fa-arrow-down" data-toggle="tooltip" title="降级为普通员工"></div>
+          <div class="employee_manage_btn fa fa-user-times" data-remodal-target="manage_modal" data-usefor="manage_emp" data-ope="dismiss" data-id="1" data-toggle="tooltip" title="解约员工"></div>
+          <div class="employee_manage_btn fa fa-arrow-down" data-remodal-target="manage_modal" data-usefor="manage_emp" data-ope="downgrade" data-id="1" data-toggle="tooltip" title="降级为普通员工"></div>
         </td>
       </tr>
       <tr>
-        <td>1</td>
+        <td>2</td>
         <td>张三</td>
         <td>123457987@xxx.com</td>
         <td>18813973778</td>
         <td>2017-01-02</td>
         <td>普通员工</td>
         <td class="manage_btn_column">
-          <div class="employee_manage_btn fa fa-user-times" data-toggle="tooltip"  title="解约员工"></div>
-          <div class="employee_manage_btn fa fa-arrow-up" data-toggle="tooltip"  title="升级为高级管理员"></div>
+          <div class="employee_manage_btn fa fa-user-times" data-remodal-target="manage_modal" data-usefor="manage_emp" data-ope="dismiss" data-id="2" data-toggle="tooltip"  title="解约员工"></div>
+          <div class="employee_manage_btn fa fa-arrow-up"   data-remodal-target="manage_modal" data-usefor="manage_emp" data-ope="upgrade" data-id="2" data-toggle="tooltip"  title="升级为高级管理员"></div>
         </td>
       </tr>
       <tr>
-        <td>1</td>
+        <td>3</td>
         <td>张三</td>
         <td>123457987@xxx.com</td>
         <td>18813973778</td>
         <td>2017-01-02</td>
         <td>高级管理员</td>
         <td class="manage_btn_column">
-          <div class="employee_manage_btn fa fa-user-times" data-toggle="tooltip" title="解约员工"></div>
-          <div class="employee_manage_btn fa fa-arrow-down" data-toggle="tooltip" title="降级为普通员工"></div>
+          <div class="employee_manage_btn fa fa-user-times" data-remodal-target="manage_modal" data-usefor="manage_emp" data-ope="dismiss" data-id="3" data-toggle="tooltip" title="解约员工"></div>
+          <div class="employee_manage_btn fa fa-arrow-down" data-remodal-target="manage_modal" data-usefor="manage_emp" data-ope="downgrade" data-id="3" data-toggle="tooltip" title="降级为普通员工"></div>
         </td>
       </tr>
       <tr>
-        <td>1</td>
+        <td>4</td>
         <td>张三</td>
         <td>123457987@xxx.com</td>
         <td>18813973778</td>
         <td>2017-01-02</td>
         <td>普通员工</td>
         <td class="manage_btn_column">
-          <div class="employee_manage_btn fa fa-user-times" data-toggle="tooltip"  title="解约员工"></div>
-          <div class="employee_manage_btn fa fa-arrow-up" data-toggle="tooltip"  title="升级为高级管理员"></div>
+          <div class="employee_manage_btn fa fa-user-times" data-remodal-target="manage_modal" data-usefor="manage_emp" data-ope="dismiss" data-id="4" data-toggle="tooltip"  title="解约员工"></div>
+          <div class="employee_manage_btn fa fa-arrow-up"   data-remodal-target="manage_modal" data-usefor="manage_emp" data-ope="upgrade" data-id="4" data-toggle="tooltip"  title="升级为高级管理员"></div>
         </td>
       </tr>
 
     </table>
 
   </div>
+</div>
+
+
+<div class="remodal" data-remodal-id="manage_modal">
+  <button data-remodal-action="close" class="remodal-close"></button>
+  <h1 id="manage_md_title">解约 xxx</h1>
+  <p id="manage_md_content">
+    解约员工将不会删除员工本身的账号,只是解除了员工与公司之间的关系
+  </p>
+  <br>
+  <button data-remodal-action="cancel" class="btn_red" id="manage_md_cancel">不要解约</button>
+  <button data-remodal-action="confirm" class="btn-green" id="manage_md_confirm">解约</button>
+</div>
+
+<div class="remodal" data-remodal-id="success_modal">
+  <h1 id="success_title">操作成功</h1>
+  <p id="success_content">
+  </p>
+  <br>
+  <button data-remodal-action="confirm" class="btn-green">好的</button>
 </div>
