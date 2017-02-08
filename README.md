@@ -1,5 +1,9 @@
 # 青松实训平台
 
+![rails version](https://img.shields.io/badge/rails-5.0.1-brightgreen.svg)
+![jquery version](https://img.shields.io/badge/jquery-1.12.4-blue.svg)
+![mysql2 version](https://img.shields.io/badge/mysql-0.3.18-orange.svg)
+
 小小的毕业设计 ^-^
 
 
