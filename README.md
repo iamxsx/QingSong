@@ -10,20 +10,14 @@
 
 url | name
 --- | ----
-
 `/` | 首页
-
 `/register-choose` | 注册选择页
-
 `/register-employee` | 注册员工
-
 `/register-company` | 注册高管
-
 `/login` | 登录
-
 `/admin/login` | 青松运营后台登录
-
 `/admin/register` | 青松运营后台注册
+`/users/user-center` | 用户后台管理中心
 
 
 #### 课程设计规范
