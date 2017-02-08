@@ -184,8 +184,20 @@ $ ->
             $("#success_content").html("成功解约 " + _manage_name)
           else if _manage_action == "upgrade"
             $("#success_content").html("已经将 " + _manage_name + " 升级为高级管理员")
+            $("[data-id='#{_manage_id}']").parent().prev().html("高级员工")
+            $("[data-id='#{_manage_id}'][data-ope='upgrade']").attr("class","employee_manage_btn fa fa-arrow-down")
+            $("[data-id='#{_manage_id}'][data-ope='upgrade']").attr("title","降级为普通员工")
+            $("[data-id='#{_manage_id}'][data-ope='upgrade']").tooltip('destroy')
+            $("[data-id='#{_manage_id}'][data-ope='upgrade']").tooltip()
+            $("[data-id='#{_manage_id}'][data-ope='upgrade']").attr("data-ope","downgrade")
           else if _manage_action == "downgrade"
             $("#success_content").html("已经将 " + _manage_name + " 降级为普通员工")
+            $("[data-id='#{_manage_id}'][data-ope='downgrade']").parent().prev().html("普通员工")
+            $("[data-id='#{_manage_id}'][data-ope='downgrade']").attr("class","employee_manage_btn fa fa-arrow-up")
+            $("[data-id='#{_manage_id}'][data-ope='downgrade']").attr("title","升级为高级员工")
+            $("[data-id='#{_manage_id}'][data-ope='downgrade']").tooltip('destroy')
+            $("[data-id='#{_manage_id}'][data-ope='downgrade']").tooltip()
+            $("[data-id='#{_manage_id}'][data-ope='downgrade']").attr("data-ope","upgrade")
         else
           $("#success_title").html("操作失败")
           $("#success_content").html(data.err)
