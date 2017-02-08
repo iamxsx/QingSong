@@ -8,7 +8,10 @@ class InvitationCodesController < ApplicationController
   def generate_invitation_code
     @invitation_code = InvitationCode.new(:company_id => current_user.company.id)
     if @invitation_code.save
-      render json: {invitation_code: @invitation_code.code}
+      render json: {
+          :invite_code => @invitation_code.code,
+          :invite_code_id => @invitation_code.id
+      }
     end
   end
 

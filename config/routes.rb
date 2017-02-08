@@ -38,7 +38,8 @@ Rails.application.routes.draw do
   get '/users/emp-profile' => 'users#emp_profile'
   get '/users/emp-course' => 'users#emp_course'
   get '/users/emp-exam' => 'users#emp_exam'
-
+  get 'get-invite-code' => 'invitation_codes#generate_invitation_code'
+  get '/users/manage-emp' => 'users#manage_emp'
 
   # 注意resources 后面是有个s的，没有加s生成的url不一样
   resources :scores

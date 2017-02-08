@@ -76,6 +76,18 @@ class UsersController < ApplicationController
   # 公司-员工管理页面
   def com_employee
     @page_tag = "com_employee"
+
+    user = current_user
+    company = user.company
+
+    # 员工部分
+    @employees_count = company.users.count
+    @com_count= company.users.where(role_id: 2).count
+    @employees = company.users
+
+    # 邀请码部分
+    @invite_codes = company.invitation_codes.where(used: false)
+
   end
 
   # 公司-课程管理页面
@@ -96,6 +108,27 @@ class UsersController < ApplicationController
   # 用户-我的考核页面
   def emp_exam
     @page_tag = "emp_exam"
+  end
+
+
+  def manage_emp
+    action_name = params[:do]
+    emp_id = params[:emp_id]
+
+    user = User.find(emp_id)
+
+    case action_name
+      when 'dismiss'
+        user.update_attribute(:company_id, nil)
+      when 'upgrade'
+        user.update_attribute(:role_id, 2)
+      when 'downgrade'
+        user.update_attribute(:role_id, 1)
+    end
+    render :json => {
+        :status => 'success',
+        :err => nil
+    }
   end
 
 
@@ -171,5 +204,6 @@ class UsersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :invite_code)
+    params.permit(:emp_id, :do)
   end
 end

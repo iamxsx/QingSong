@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170124050502) do
+ActiveRecord::Schema.define(version: 20170208041519) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
@@ -48,11 +48,11 @@ ActiveRecord::Schema.define(version: 20170124050502) do
 
   create_table "invitation_codes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "code"
-    t.boolean  "used",       default: false
+    t.boolean  "used",       default: false,              comment: "是否使用"
     t.datetime "invited_at"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.integer  "company_id"
+    t.integer  "company_id",                              comment: "邀请码所属公司"
     t.index ["company_id"], name: "index_invitation_codes_on_company_id", using: :btree
   end
 
@@ -93,6 +93,8 @@ ActiveRecord::Schema.define(version: 20170124050502) do
     t.datetime "activated_at"
     t.integer  "role_id"
     t.integer  "company_id"
+    t.string   "phone"
+    t.string   "last_login_time"
     t.index ["company_id"], name: "index_users_on_company_id", using: :btree
     t.index ["role_id"], name: "index_users_on_role_id", using: :btree
   end
