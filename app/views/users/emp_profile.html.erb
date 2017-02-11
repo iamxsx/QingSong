@@ -3,9 +3,42 @@ provide :title, '青松 - 个人资料'
 provide :page_tag, @page_tag
 provide :user_email, "1234567890@xxx.com"
 
-@last_login_time = "2017-01-02"
+#修改表单提交链接
+provide :profile_form_submit_to, "xxx"
+#修改表单提交方法
+provide :profile_submit_method, "post"
 %>
 
 <div class="page_warp">
-    <h1>个人资料</h1>
+  <div class="panel">
+    <div class="panelcontainer">
+      <h1 id="edit_basic_profile_title">基本资料</h1>
+      <div class="btn-ghost-green" id="edit_basic_profile"><span class="fa fa-pencil"></span>&nbsp;&nbsp;修改</div>
+      <div class="btn-green" id="edit_basic_profile_verify"><span class="fa fa-check"></span>&nbsp;&nbsp;确定修改</div>
+      <div class="btn-ghost-gray" id="edit_basic_profile_cancel"><span class="fa fa-times"></span>&nbsp;&nbsp;取消</div>
+      <%= form_for(yield(:profile_form_submit_to), :html => {id: "edit_basic_profile_form", class:"profileform"} ) do |f| %>
+          <div class="input_group">
+            <%= f.label(:emp_email,"登录邮箱")
+            %>
+            <%= f.email_field(:emp_email, placeholder: "用于登录的青松的邮箱", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <p class="input_inside_errorbox" id="err_emp_email"></p>
+          </div>
+          <div class="input_group">
+            <%= f.label(:emp_name,"姓名")
+            %>
+            <%= f.text_field(:emp_name, placeholder: "您的姓名", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <p class="input_inside_errorbox" id="err_emp_name"></p>
+          </div>
+          <div class="input_group">
+            <%= f.label(:emp_tel,"个人联系方式")
+            %>
+            <%= f.text_field(:emp_tel, placeholder: "您的个人联系方式", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <p class="input_inside_errorbox" id="err_emp_tel"></p>
+          </div>
+          <p class="input_errorbox" id="err_submit"></p>
+          <br>
+      <% end %>
+    </div>
+
+  </div>
 </div>
