@@ -3,9 +3,42 @@
   provide :page_tag, @page_tag
   provide :user_email, "1234567890@xxx.com"
 
-  @last_login_time = "2017-01-02"
+  #修改表单提交链接
+  provide :profile_form_submit_to, "xxx"
+  #修改表单提交方法
+  provide :profile_submit_method, "post"
 %>
 
 <div class="page_warp">
-  <h1>公司资料</h1>
+  <div class="panel">
+    <div class="panelcontainer">
+      <h1 id="edit_basic_profile_title">基本资料</h1>
+      <div class="btn-ghost-green" id="edit_basic_profile"><span class="fa fa-pencil"></span>&nbsp;&nbsp;修改</div>
+      <div class="btn-green" id="edit_basic_profile_verify"><span class="fa fa-check"></span>&nbsp;&nbsp;确定修改</div>
+      <div class="btn-ghost-gray" id="edit_basic_profile_cancel"><span class="fa fa-times"></span>&nbsp;&nbsp;取消</div>
+      <%= form_for(yield(:profile_form_submit_to), :html => {id: "edit_basic_profile_form", class:"profileform"} ) do |f| %>
+          <div class="input_group">
+            <%= f.label(:company_name,"公司全称")
+            %>
+            <%= f.text_field(:company_name, placeholder: "公司全称必须是注册公司时所使用的全称", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <p class="input_inside_errorbox" id="err_com_name"></p>
+          </div>
+          <div class="input_group">
+            <%= f.label(:company_address,"公司地址")
+            %>
+            <%= f.text_field(:company_address, placeholder: "请填入行政省/市区县及所在街道等具体位置信息", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <p class="input_inside_errorbox" id="err_com_address"></p>
+          </div>
+          <div class="input_group">
+            <%= f.label(:company_tel,"公司全称")
+            %>
+            <%= f.text_field(:company_tel, placeholder: "便于青松平台工作人员与您取得联系的联系方式", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <p class="input_inside_errorbox" id="err_com_tel"></p>
+          </div>
+          <p class="input_errorbox" id="err_submit"></p>
+          <br>
+      <% end %>
+    </div>
+
+  </div>
 </div>

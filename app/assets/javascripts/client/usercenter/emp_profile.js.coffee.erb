@@ -1,2 +1,152 @@
 #= require client/usercenter/usercenter
+#= require remodal
 #= require_self
+
+<%
+#表单元素前缀
+@edit_basic_profile_form_prefix = "xxx"
+
+#填写邀请码加入公司发送的url和方法
+@join_com_url = "/xxx"
+@join_com_method = "post"
+
+# 前端发送的请求
+# {
+#   do: "joincompany"
+#   invitecode: 邀请码
+# }
+
+# 返回的json规定
+# {
+#   status: 200  如果操作成功就返回200
+#   err: 操作失败原因内容,将直接显示在网页上
+# }
+%>
+
+
+$ ->
+
+  originvalue = new Array()
+
+
+  #编辑按钮
+  $("#edit_basic_profile").click ->
+
+    $("#edit_basic_profile_verify").fadeIn(300)
+    $("#edit_basic_profile_cancel").fadeIn(300)
+    $("#edit_basic_profile").fadeOut(300)
+    $("#edit_basic_profile_title").html("正在修改基本资料")
+
+    $("#edit_basic_profile_form").find("input").each ()->
+      $(this).removeAttr("readonly")
+      $(this).addClass("active")
+      originvalue.push($(this).val())
+
+    $("#edit_basic_profile_form").find("p.input_inside_errorbox").each ()->
+      $(this).html("")
+
+    $("#edit_basic_profile_form").find("p.input_errorbox").each ()->
+      $(this).html("")
+
+
+
+  #退出编辑按钮
+  $("#edit_basic_profile_cancel").click ->
+
+    $("#edit_basic_profile_verify").fadeOut(300)
+    $("#edit_basic_profile_cancel").fadeOut(300)
+    $("#edit_basic_profile").fadeIn(300)
+    $("#edit_basic_profile_title").html("基本资料")
+
+    $("#edit_basic_profile_form").find("input").each ()->
+      $(this).attr("readonly")
+      $(this).removeClass("active")
+      $(this).val(originvalue.shift())
+
+
+
+    $("#edit_basic_profile_form").find("p.input_inside_errorbox").each ()->
+      $(this).html("")
+
+    $("#edit_basic_profile_form").find("p.input_errorbox").each ()->
+      $(this).html("")
+
+
+  #表单校验
+  $("#edit_basic_profile_form").validate
+    errorElement: "span"
+    rules:
+      '<%= @edit_basic_profile_form_prefix %>[emp_email]':
+        required:true
+        email: true
+      '<%= @edit_basic_profile_form_prefix %>[emp_name]':
+        required: true
+        minlength: 6
+      '<%= @edit_basic_profile_form_prefix %>[emp_tel]':
+        required: true
+        number: true
+        rangelength: [6,13]
+    messages:
+      '<%= @edit_basic_profile_form_prefix %>[emp_email]':
+        required:"请输入邮箱"
+        email: "邮箱格式有误"
+      '<%= @edit_basic_profile_form_prefix %>[emp_name]':
+        required: "请输入姓名"
+        minlength: "姓名位数要大于6位"
+      '<%= @edit_basic_profile_form_prefix %>[emp_tel]':
+        required: "联系方式不能为空"
+        number: "联系方式只能有数字"
+        rangelength: "无效的联系方式"
+    errorPlacement: (error,element) ->
+      element.next().html(error)
+
+
+  $("#edit_basic_profile_verify").click ->
+
+    ischanged = false
+
+    #检查基本信息有没有改变
+    $("#edit_basic_profile_form").find("input").each ()->
+      if $(this).val() != originvalue.shift()
+        ischanged = true
+
+    #提交表单
+    if ischanged
+      $("#edit_basic_profile_form").submit()
+    else
+      $("#edit_basic_profile_verify").fadeOut(300)
+      $("#edit_basic_profile_cancel").fadeOut(300)
+      $("#edit_basic_profile").fadeIn(300)
+      $("#edit_basic_profile_title").html("基本资料")
+
+      $("#edit_basic_profile_form").find("input").each ()->
+        $(this).attr("readonly")
+        $(this).removeClass("active")
+
+
+
+      $("#edit_basic_profile_form").find("p.input_inside_errorbox").each ()->
+        $(this).html("")
+
+      $("#edit_basic_profile_form").find("p.input_errorbox").each ()->
+        $(this).html("")
+
+
+  $("#invitecode_md_join").click ->
+    if $("#invitecode").val() == ""
+      $("#invitecode_error").html("邀请码不能为空")
+      return
+
+    $.ajax
+      url: "<%= @join_com_url %>"
+      type: "<%= @join_com_method %>"
+      data:
+        "do": "joincompany"
+        "invitecode": $("#invitecode").val()
+      error: ->
+        $("#invitecode_error").html("似乎您的网络有问题哦?")
+      success: (data) ->
+        if data.status == 200
+          location.reload()
+        else
+          $("#invitecode_error").html(data.err)
