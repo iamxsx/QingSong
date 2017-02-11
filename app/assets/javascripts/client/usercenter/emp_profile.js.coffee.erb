@@ -1,9 +1,26 @@
 #= require client/usercenter/usercenter
+#= require remodal
 #= require_self
 
 <%
 #表单元素前缀
 @edit_basic_profile_form_prefix = "xxx"
+
+#填写邀请码加入公司发送的url和方法
+@join_com_url = "/xxx"
+@join_com_method = "post"
+
+# 前端发送的请求
+# {
+#   do: "joincompany"
+#   invitecode: 邀请码
+# }
+
+# 返回的json规定
+# {
+#   status: 200  如果操作成功就返回200
+#   err: 操作失败原因内容,将直接显示在网页上
+# }
 %>
 
 
@@ -113,3 +130,23 @@ $ ->
 
       $("#edit_basic_profile_form").find("p.input_errorbox").each ()->
         $(this).html("")
+
+
+  $("#invitecode_md_join").click ->
+    if $("#invitecode").val() == ""
+      $("#invitecode_error").html("邀请码不能为空")
+      return
+
+    $.ajax
+      url: "<%= @join_com_url %>"
+      type: "<%= @join_com_method %>"
+      data:
+        "do": "joincompany"
+        "invitecode": $("#invitecode").val()
+      error: ->
+        $("#invitecode_error").html("似乎您的网络有问题哦?")
+      success: (data) ->
+        if data.status == 200
+          location.reload()
+        else
+          $("#invitecode_error").html(data.err)

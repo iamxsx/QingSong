@@ -42,3 +42,33 @@ provide :profile_submit_method, "post"
 
   </div>
 </div>
+
+
+<div class="page_warp">
+  <div class="panel">
+    <div class="panelcontainer">
+      <h1 id="edit_basic_profile_title">所属公司资料</h1>
+      <!--如果没有加入任何公司才显示-->
+        <div class="btn-ghost-green" id="join_com" data-remodal-target="invitecode_modal"><span class="fa fa-sign-in"></span>&nbsp;&nbsp;加入公司</div>
+      <!--啦啦啦-->
+      <p class="info_line"><span class="info_title">所属公司</span><span class="info_content">等待少星后台填充</span></p>
+      <p class="info_line"><span class="info_title">公司联系方式</span><span class="info_content">等待少星后台填充</span></p>
+      <!--如果没有加入任何公司才显示-->
+        <p class="none_com"><span class="fa fa-exclamation-circle"></span>&nbsp;&nbsp;您还未加入任何公司</p>
+      <!--啦啦啦-->
+    </div>
+  </div>
+</div>
+
+
+<div class="remodal" data-remodal-id="invitecode_modal">
+  <button data-remodal-action="close" class="remodal-close"></button>
+  <h1 id="invitecode_md_title">加入公司</h1>
+  <p id="invitecode_md_content">
+    请输入您从公司管理员获得的邀请码
+  </p>
+  <input id="invitecode" placeholder="邀请码">
+  <p id="invitecode_error"></p>
+  <br>
+  <button class="btn-green" id="invitecode_md_join">确定</button>
+</div>
