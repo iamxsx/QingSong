@@ -1,7 +1,7 @@
 @ff : "HanHei SC","PingHei","PingFang SC","STHeitiSC-Light","Helvetica Neue","Helvetica","微软雅黑","黑体","Arial",sans-serif;
 
 @normaltext_color: #4A4A4A;
-@darkbluetext_color: #34495e;
+@darkbluetext_color: #34495E;
 @darkgreentext_color: #53898e;
 @errortext_color: #e14a4a;
 
@@ -281,7 +281,7 @@ nav{
   border: 1px solid @color_btn_green;
   background-color:transparent;
   border-radius: 3px;
-  padding:8px 12px;
+  padding:7px 12px;
 
   cursor: pointer;
 
@@ -303,4 +303,123 @@ nav{
     color:#fff;
     border-color: transparent;
   }
+}
+.btn-ghost-gray{
+  display: inline-block;
+  transition: background-color 280ms cubic-bezier(.4,0,.2,1)
+  ,color 280ms cubic-bezier(.4,0,.2,1)
+  ,border-color 280ms cubic-bezier(.4,0,.2,1);
+  color:#aaa;
+  border: 1px solid #aaa;
+  background-color:transparent;
+  border-radius: 3px;
+  padding:7px 12px;
+
+  cursor: pointer;
+
+  //不许选中文字
+  -moz-user-select:none;
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  -khtml-user-select:none;
+  user-select:none;
+
+  &:hover,&:focus{
+    background-color: darken(#aaa,20%);
+    color:#fff;
+    border-color: transparent;
+  }
+
+  &:active{
+    background-color: darken(#aaa,40%);
+    color:#fff;
+    border-color: transparent;
+  }
+}
+
+
+//panel中的表单通用样式
+.profileform{
+  display: block;
+  width: 800px;
+  overflow: hidden;
+
+  .input_group{
+    display: block;
+    position: relative;
+    margin-bottom: 20px;
+
+    label{
+      text-align: right;
+      display: inline-block;
+      padding: 10px 0;
+      margin-right: 20px;
+      width: 80px;
+      color: lighten(@darkbluetext_color,20%);
+      font-size: 16px;
+    }
+
+    input{
+      width: 600px;
+      padding: 11px;
+      color: #555;
+      font-size: 16px;
+      border: 1px solid transparent;
+      background-color: transparent;
+
+      outline: 0;
+      outline-style: none;
+      box-shadow: 0;
+
+      transition: background-color 280ms cubic-bezier(.4,0,.2,1)
+      ,color 280ms cubic-bezier(.4,0,.2,1)
+      ,border-color 280ms cubic-bezier(.4,0,.2,1);
+    }
+
+
+    input.active{
+      width: 600px;
+      padding: 11px;
+      color: #555;
+      font-size: 16px;
+      border: 1px solid #9e9e9e;
+      border-radius: 3px;
+      background-color: #fafafa;
+
+      outline: 0;
+      outline-style: none;
+      box-shadow: 0;
+
+      transition: background-color 280ms cubic-bezier(.4,0,.2,1)
+      ,color 280ms cubic-bezier(.4,0,.2,1)
+      ,border-color 280ms cubic-bezier(.4,0,.2,1);
+      
+      &:focus{
+        padding:10px;
+        border-color: @color_btn_green;
+        background-color: #fff;
+        border-width: 2px;
+      }
+    }
+
+    .input_inside_errorbox {
+      position: absolute;
+      text-align: right;
+      right: 90px; //相对于input_group
+      top: 13px;
+      font-size: 14px;
+      min-height: 16px;
+      color: @errortext_color;
+      margin: 0;
+    }
+  }
+
+  .input_errorbox{
+    font-size:14px;
+    min-height: 16px;
+    color: @errortext_color;
+    margin-top: 10px;
+    margin-left:15px;
+  }
+
 }

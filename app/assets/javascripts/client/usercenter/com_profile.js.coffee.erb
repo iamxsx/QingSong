@@ -1,2 +1,116 @@
 #= require client/usercenter/usercenter
+#= require jquery-ui/widgets/tooltip
 #= require_self
+
+<%
+#表单元素前缀
+@edit_basic_profile_form_prefix = "xxx"
+%>
+
+
+$ ->
+
+  originvalue = new Array()
+
+
+  #编辑按钮
+  $("#edit_basic_profile").click ->
+
+    $("#edit_basic_profile_verify").fadeIn(300)
+    $("#edit_basic_profile_cancel").fadeIn(300)
+    $("#edit_basic_profile").fadeOut(300)
+    $("#edit_basic_profile_title").html("正在修改基本资料")
+
+    $("#edit_basic_profile_form").find("input").each ()->
+      $(this).removeAttr("readonly")
+      $(this).addClass("active")
+      originvalue.push($(this).val())
+
+    $("#edit_basic_profile_form").find("p.input_inside_errorbox").each ()->
+      $(this).html("")
+
+    $("#edit_basic_profile_form").find("p.input_errorbox").each ()->
+      $(this).html("")
+
+
+
+  #退出编辑按钮
+  $("#edit_basic_profile_cancel").click ->
+
+    $("#edit_basic_profile_verify").fadeOut(300)
+    $("#edit_basic_profile_cancel").fadeOut(300)
+    $("#edit_basic_profile").fadeIn(300)
+    $("#edit_basic_profile_title").html("基本资料")
+
+    $("#edit_basic_profile_form").find("input").each ()->
+      $(this).attr("readonly")
+      $(this).removeClass("active")
+      $(this).val(originvalue.shift())
+
+
+
+    $("#edit_basic_profile_form").find("p.input_inside_errorbox").each ()->
+      $(this).html("")
+
+    $("#edit_basic_profile_form").find("p.input_errorbox").each ()->
+      $(this).html("")
+
+
+  #表单校验
+  $("#edit_basic_profile_form").validate
+    errorElement: "span"
+    rules:
+      '<%= @edit_basic_profile_form_prefix %>[company_name]':
+        required:true
+        minlength: 4
+      '<%= @edit_basic_profile_form_prefix %>[company_address]':
+        required: true
+        minlength: 4
+      '<%= @edit_basic_profile_form_prefix %>[company_tel]':
+        required: true
+        number: true
+        rangelength: [6,13]
+    messages:
+      '<%= @edit_basic_profile_form_prefix %>[company_name]':
+        required:"公司全称不能为空"
+        minlength: "公司全称不足四个字请按 省份+城市+公司全称 命名"
+      '<%= @edit_basic_profile_form_prefix %>[company_address]':
+        required: "公司地址不能为空"
+        minlength: "无效的地址"
+      '<%= @edit_basic_profile_form_prefix %>[company_tel]':
+        required: "联系方式不能为空"
+        number: "联系方式只能有数字"
+        rangelength: "无效的联系方式"
+    errorPlacement: (error,element) ->
+      element.next().html(error)
+
+
+  $("#edit_basic_profile_verify").click ->
+
+    ischanged = false
+
+    #检查基本信息有没有改变
+    $("#edit_basic_profile_form").find("input").each ()->
+      if $(this).val() != originvalue.shift()
+        ischanged = true
+
+    #提交表单
+    if ischanged
+      $("#edit_basic_profile_form").submit()
+    else
+      $("#edit_basic_profile_verify").fadeOut(300)
+      $("#edit_basic_profile_cancel").fadeOut(300)
+      $("#edit_basic_profile").fadeIn(300)
+      $("#edit_basic_profile_title").html("基本资料")
+
+      $("#edit_basic_profile_form").find("input").each ()->
+        $(this).attr("readonly")
+        $(this).removeClass("active")
+
+
+
+      $("#edit_basic_profile_form").find("p.input_inside_errorbox").each ()->
+        $(this).html("")
+
+      $("#edit_basic_profile_form").find("p.input_errorbox").each ()->
+        $(this).html("")
