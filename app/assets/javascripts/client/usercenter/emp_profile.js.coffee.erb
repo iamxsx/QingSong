@@ -4,10 +4,10 @@
 
 <%
 #表单元素前缀
-@edit_basic_profile_form_prefix = "xxx"
+@edit_basic_profile_form_prefix = "user"
 
 #填写邀请码加入公司发送的url和方法
-@join_com_url = "/xxx"
+@join_com_url = "/verify-invite-code"
 @join_com_method = "post"
 
 # 前端发送的请求
@@ -25,13 +25,11 @@
 
 
 $ ->
-
   originvalue = new Array()
 
 
   #编辑按钮
   $("#edit_basic_profile").click ->
-
     $("#edit_basic_profile_verify").fadeIn(300)
     $("#edit_basic_profile_cancel").fadeIn(300)
     $("#edit_basic_profile").fadeOut(300)
@@ -49,10 +47,8 @@ $ ->
       $(this).html("")
 
 
-
   #退出编辑按钮
   $("#edit_basic_profile_cancel").click ->
-
     $("#edit_basic_profile_verify").fadeOut(300)
     $("#edit_basic_profile_cancel").fadeOut(300)
     $("#edit_basic_profile").fadeIn(300)
@@ -62,7 +58,6 @@ $ ->
       $(this).attr("readonly")
       $(this).removeClass("active")
       $(this).val(originvalue.shift())
-
 
 
     $("#edit_basic_profile_form").find("p.input_inside_errorbox").each ()->
@@ -76,33 +71,32 @@ $ ->
   $("#edit_basic_profile_form").validate
     errorElement: "span"
     rules:
-      '<%= @edit_basic_profile_form_prefix %>[emp_email]':
-        required:true
+      '<%= @edit_basic_profile_form_prefix %>[email]':
+        required: true
         email: true
-      '<%= @edit_basic_profile_form_prefix %>[emp_name]':
+      '<%= @edit_basic_profile_form_prefix %>[username]':
         required: true
         minlength: 6
-      '<%= @edit_basic_profile_form_prefix %>[emp_tel]':
+      '<%= @edit_basic_profile_form_prefix %>[phone]':
         required: true
         number: true
-        rangelength: [6,13]
+        rangelength: [6, 13]
     messages:
-      '<%= @edit_basic_profile_form_prefix %>[emp_email]':
-        required:"请输入邮箱"
+      '<%= @edit_basic_profile_form_prefix %>[email]':
+        required: "请输入邮箱"
         email: "邮箱格式有误"
-      '<%= @edit_basic_profile_form_prefix %>[emp_name]':
+      '<%= @edit_basic_profile_form_prefix %>[username]':
         required: "请输入姓名"
         minlength: "姓名位数要大于6位"
-      '<%= @edit_basic_profile_form_prefix %>[emp_tel]':
+      '<%= @edit_basic_profile_form_prefix %>[phone]':
         required: "联系方式不能为空"
         number: "联系方式只能有数字"
         rangelength: "无效的联系方式"
-    errorPlacement: (error,element) ->
+    errorPlacement: (error, element) ->
       element.next().html(error)
 
 
   $("#edit_basic_profile_verify").click ->
-
     ischanged = false
 
     #检查基本信息有没有改变
@@ -124,7 +118,6 @@ $ ->
         $(this).removeClass("active")
 
 
-
       $("#edit_basic_profile_form").find("p.input_inside_errorbox").each ()->
         $(this).html("")
 
@@ -137,6 +130,10 @@ $ ->
       $("#invitecode_error").html("邀请码不能为空")
       return
 
+    $.ajaxSetup
+      headers:
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+
     $.ajax
       url: "<%= @join_com_url %>"
       type: "<%= @join_com_method %>"
@@ -146,7 +143,7 @@ $ ->
       error: ->
         $("#invitecode_error").html("似乎您的网络有问题哦?")
       success: (data) ->
-        if data.status == 200
+        if data.status == '200'
           location.reload()
         else
           $("#invitecode_error").html(data.err)

@@ -1,10 +1,15 @@
 <%
   provide :title, '青松 - 公司资料'
   provide :page_tag, @page_tag
-  provide :user_email, "1234567890@xxx.com"
 
-  #修改表单提交链接
-  provide :profile_form_submit_to, "xxx"
+  @current_user = current_user
+  @current_company = @current_user.company
+  provide :user_email, @current_user.email
+
+  @current_company_name = @current_company.company_name
+  @current_company_address = @current_company.company_address
+  @current_company_tel = @current_company.company_tel
+
   #修改表单提交方法
   provide :profile_submit_method, "post"
 %>
@@ -16,27 +21,27 @@
       <div class="btn-ghost-green" id="edit_basic_profile"><span class="fa fa-pencil"></span>&nbsp;&nbsp;修改</div>
       <div class="btn-green" id="edit_basic_profile_verify"><span class="fa fa-check"></span>&nbsp;&nbsp;确定修改</div>
       <div class="btn-ghost-gray" id="edit_basic_profile_cancel"><span class="fa fa-times"></span>&nbsp;&nbsp;取消</div>
-      <%= form_for(yield(:profile_form_submit_to), :html => {id: "edit_basic_profile_form", class:"profileform"} ) do |f| %>
+      <%= form_for(@current_company, :url => '/companies/update-attr', :html => {id: "edit_basic_profile_form", class: "profileform"}) do |f| %>
           <div class="input_group">
-            <%= f.label(:company_name,"公司全称")
-            %>
-            <%= f.text_field(:company_name, placeholder: "公司全称必须是注册公司时所使用的全称", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <%= f.label(:company_name, "公司全称") %>
+            <%= f.text_field(:company_name, placeholder: "公司全称必须是注册公司时所使用的全称", readonly: "readonly", value: @current_company_name) %>
             <p class="input_inside_errorbox" id="err_com_name"></p>
           </div>
           <div class="input_group">
-            <%= f.label(:company_address,"公司地址")
+            <%= f.label(:company_address, "公司地址")
             %>
-            <%= f.text_field(:company_address, placeholder: "请填入行政省/市区县及所在街道等具体位置信息", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <%= f.text_field(:company_address, placeholder: "请填入行政省/市区县及所在街道等具体位置信息", readonly: "readonly", value: @current_company_address) %>
             <p class="input_inside_errorbox" id="err_com_address"></p>
           </div>
           <div class="input_group">
-            <%= f.label(:company_tel,"公司全称")
+            <%= f.label(:company_tel, "公司联系方式")
             %>
-            <%= f.text_field(:company_tel, placeholder: "便于青松平台工作人员与您取得联系的联系方式", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <%= f.text_field(:company_tel, placeholder: "便于青松平台工作人员与您取得联系的联系方式", readonly: "readonly", value: @current_company_tel) %>
             <p class="input_inside_errorbox" id="err_com_tel"></p>
           </div>
           <p class="input_errorbox" id="err_submit"></p>
           <br>
+
       <% end %>
     </div>
 

@@ -8,6 +8,8 @@ usertype = "com"
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--为了　ajax post 能正常使用-->
+  <%= csrf_meta_tag %>
   <title><%= yield(:title) %></title>
   <% case yield(:page_tag) %>
   <% when "user_center" %>

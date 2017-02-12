@@ -1,6 +1,6 @@
 class InvitationCode < ApplicationRecord
 
-  before_save :generate_random_code
+  before_create :generate_random_code
 
   belongs_to :company
 

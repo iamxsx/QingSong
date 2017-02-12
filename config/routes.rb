@@ -38,17 +38,20 @@ Rails.application.routes.draw do
   get '/users/emp-profile' => 'users#emp_profile'
   get '/users/emp-course' => 'users#emp_course'
   get '/users/emp-exam' => 'users#emp_exam'
-  get 'get-invite-code' => 'invitation_codes#generate_invitation_code'
+  get '/get-invite-code' => 'invitation_codes#generate_invitation_code'
   get '/users/manage-emp' => 'users#manage_emp'
+  patch '/companies/update-attr' => 'companies#update_attr'
+  post '/verify-invite-code' => 'invitation_codes#verify_invitation_code'
+  patch '/users/update-attr' => 'users#update_attr'
 
   # 注意resources 后面是有个s的，没有加s生成的url不一样
   resources :scores
   resources :roles
   resources :lessons
-  resources :users
+  # resources :users
   resources :account_activations, only: [:edit]
   resources :invitation_codes
-  resources :companies
+  # resources :companies
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

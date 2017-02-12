@@ -1,12 +1,16 @@
 <%
-provide :title, '青松 - 个人资料'
-provide :page_tag, @page_tag
-provide :user_email, "1234567890@xxx.com"
+  provide :title, '青松 - 个人资料'
+  provide :page_tag, @page_tag
+  provide :user_email, current_user.email
 
-#修改表单提交链接
-provide :profile_form_submit_to, "xxx"
-#修改表单提交方法
-provide :profile_submit_method, "post"
+  @current_user = current_user
+  @company = @current_user.company
+
+  @email = @current_user.email
+  @username = @current_user.username
+  @phone = @current_user.phone
+
+
 %>
 
 <div class="page_warp">
@@ -16,23 +20,23 @@ provide :profile_submit_method, "post"
       <div class="btn-ghost-green" id="edit_basic_profile"><span class="fa fa-pencil"></span>&nbsp;&nbsp;修改</div>
       <div class="btn-green" id="edit_basic_profile_verify"><span class="fa fa-check"></span>&nbsp;&nbsp;确定修改</div>
       <div class="btn-ghost-gray" id="edit_basic_profile_cancel"><span class="fa fa-times"></span>&nbsp;&nbsp;取消</div>
-      <%= form_for(yield(:profile_form_submit_to), :html => {id: "edit_basic_profile_form", class:"profileform"} ) do |f| %>
+      <%= form_for(@current_user, :url => '/users/update-attr', :html => {id: "edit_basic_profile_form", class: "profileform"}) do |f| %>
           <div class="input_group">
-            <%= f.label(:emp_email,"登录邮箱")
+            <%= f.label(:email, "登录邮箱")
             %>
-            <%= f.email_field(:emp_email, placeholder: "用于登录的青松的邮箱", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <%= f.email_field(:email, placeholder: "用于登录的青松的邮箱", readonly: "readonly", value: @email) %>
             <p class="input_inside_errorbox" id="err_emp_email"></p>
           </div>
           <div class="input_group">
-            <%= f.label(:emp_name,"姓名")
+            <%= f.label(:username, "姓名")
             %>
-            <%= f.text_field(:emp_name, placeholder: "您的姓名", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <%= f.text_field(:username, placeholder: "您的姓名", readonly: "readonly", value: @username) %>
             <p class="input_inside_errorbox" id="err_emp_name"></p>
           </div>
           <div class="input_group">
-            <%= f.label(:emp_tel,"个人联系方式")
+            <%= f.label(:phone, "个人联系方式")
             %>
-            <%= f.text_field(:emp_tel, placeholder: "您的个人联系方式", readonly: "readonly" ,value:"等待少星后台填充") %>
+            <%= f.text_field(:phone, placeholder: "您的个人联系方式", readonly: "readonly", value: @phone) %>
             <p class="input_inside_errorbox" id="err_emp_tel"></p>
           </div>
           <p class="input_errorbox" id="err_submit"></p>
@@ -48,14 +52,25 @@ provide :profile_submit_method, "post"
   <div class="panel">
     <div class="panelcontainer">
       <h1 id="edit_basic_profile_title">所属公司资料</h1>
-      <!--如果没有加入任何公司才显示-->
-        <div class="btn-ghost-green" id="join_com" data-remodal-target="invitecode_modal"><span class="fa fa-sign-in"></span>&nbsp;&nbsp;加入公司</div>
-      <!--啦啦啦-->
-      <p class="info_line"><span class="info_title">所属公司</span><span class="info_content">等待少星后台填充</span></p>
-      <p class="info_line"><span class="info_title">公司联系方式</span><span class="info_content">等待少星后台填充</span></p>
-      <!--如果没有加入任何公司才显示-->
-        <p class="none_com"><span class="fa fa-exclamation-circle"></span>&nbsp;&nbsp;您还未加入任何公司</p>
-      <!--啦啦啦-->
+      <% if !@company %>
+          <!--如果没有加入任何公司才显示-->
+          <div class="btn-ghost-green" id="join_com" data-remodal-target="invitecode_modal">
+            <span class="fa fa-sign-in"></span>&nbsp;&nbsp;加入公司
+          </div>
+      <% end %>
+      <% if @company %>
+          <!--啦啦啦-->
+          <p class="info_line">
+            <span class="info_title">所属公司</span><span class="info_content"><%= @company.company_name %></span>
+          </p>
+          <p class="info_line">
+            <span class="info_title">公司联系方式</span><span class="info_content"><%= @company.company_tel %></span>
+          </p>
+      <% else %>
+          <!--如果没有加入任何公司才显示-->
+          <p class="none_com"><span class="fa fa-exclamation-circle"></span>&nbsp;&nbsp;您还未加入任何公司</p>
+          <!--啦啦啦-->
+      <% end %>
     </div>
   </div>
 </div>

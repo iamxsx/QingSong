@@ -1,8 +1,20 @@
 class InvitationCodesController < ApplicationController
   before_action :set_invitation_code, only: [:show, :edit, :update, :destroy]
 
-
   # 验证邀请码
+  def verify_invitation_code
+    invite_code = params[:invitecode]
+    if (invite_code && (code = InvitationCode.find_by_code(invite_code)) && !code.used?)
+      code.update_attribute(:used, true)
+      code.update_attribute(:invited_at, Time.zone.now)
+      user = current_user
+      user.update_attribute(:role_id, 1)
+      user.update_attribute(:company_id, code.company_id)
+      render :json => {status: '200'}
+    else
+      render :json => {err: '邀请码错误哦'}
+    end
+  end
 
   # 生成邀请码
   def generate_invitation_code
@@ -90,5 +102,6 @@ class InvitationCodesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def invitation_code_params
     params.require(:invitation_code).permit(:company_id)
+    params.permit(:invitecode)
   end
 end

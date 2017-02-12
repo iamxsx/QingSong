@@ -40,6 +40,14 @@ class CompaniesController < ApplicationController
     render 'users/register_company'
   end
 
+
+  def update_attr
+    company = current_user.company
+    if company.update(company_params)
+      redirect_to '/users/com-profile'
+    end
+  end
+
   # GET /companies
   # GET /companies.json
   def index
@@ -111,7 +119,7 @@ class CompaniesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def company_params
-    params.require(:company).permit(:company_name, :company_desc, :company_logo)
-    params.permit(:company_name, :company_address, :company_tel, :email, :verifycode, :username, :password, :password_confirmation)
+    params.require(:company).permit(:company_name, :company_desc, :company_logo, :company_address, :company_tel)
+    # params.permit(:company_name, :company_address, :company_tel, :email, :verifycode, :username, :password, :password_confirmation)
   end
 end

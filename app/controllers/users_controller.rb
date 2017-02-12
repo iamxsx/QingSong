@@ -131,6 +131,14 @@ class UsersController < ApplicationController
     }
   end
 
+  def update_attr
+    user = current_user
+    user.update_attribute(:username, params[:user][:username])
+    user.update_attribute(:email, params[:user][:email])
+    user.update_attribute(:phone, params[:user][:phone])
+    redirect_to '/users/emp-profile'
+  end
+
 
   # GET /users
   # GET /users.json
@@ -176,10 +184,10 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to emp_profile, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
-        format.html { render :edit }
+        format.html { render emp_profile }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -203,7 +211,7 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:username, :email, :password, :password_confirmation, :invite_code)
-    params.permit(:emp_id, :do)
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :invite_code, :phone)
+    # params.permit(:emp_id, :do)
   end
 end
