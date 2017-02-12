@@ -48,6 +48,8 @@ gem 'autoprefixer-rails'
 
 gem 'carrierwave'
 
+gem 'thin'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
