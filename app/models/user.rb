@@ -50,4 +50,10 @@ class User < ApplicationRecord
     BCrypt::Password.new(digest).is_password?(token)
   end
 
+  def User.generate_verify_code
+    (0...4).map {
+      ('A'..'Z').to_a[rand(26)]
+    }.join
+  end
+
 end

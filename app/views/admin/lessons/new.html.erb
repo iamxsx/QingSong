@@ -23,20 +23,8 @@
               <%= f.file_field :lesson_cover, accept: 'image/jpeg,image/gif,image/png' %>
             </div>
             <div class="field">
-              <%= f.label :lesson_html_url,'课程 html 文件' %>
-              <%= f.file_field :lesson_html_url, accept: 'text/html' %>
-            </div>
-            <div class="field">
-              <%= f.label :lesson_css_url,'课程 css 文件' %>
-              <%= f.file_field :lesson_css_url, accept: 'text/stylesheet' %>
-            </div>
-            <div class="field">
-              <%= f.label :lesson_js_url,'课程 js 文件' %>
-              <%= f.file_field :lesson_js_url, accept: 'text/javascript' %>
-            </div>
-            <div class="field">
-              <%= f.label :lesson_json_url,'课程 json 文件' %>
-              <%= f.file_field :lesson_json_url, accept: 'application/json' %>
+              <%= f.label :lesson_file_url,'课程压缩文件' %>
+              <%= f.file_field :lesson_file_url, accept: 'application/zip' %>
             </div>
             <button class="fluid ui blue submit button">确认发布</button>
           </div>

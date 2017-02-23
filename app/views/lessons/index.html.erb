@@ -8,10 +8,7 @@
       <th>Lesson name</th>
       <th>Lesson desc</th>
       <th>Lesson cover</th>
-      <th>Lesson json url</th>
-      <th>Lesson html url</th>
-      <th>Lesson js url</th>
-      <th>Lesson css url</th>
+      <th>Lesson file url</th>
       <th>Company</th>
       <th colspan="3"></th>
     </tr>
@@ -23,10 +20,7 @@
         <td><%= lesson.lesson_name %></td>
         <td><%= lesson.lesson_desc %></td>
         <td><%= image_tag(lesson.lesson_cover,width: 40) %></td>
-        <td><%= link_to '点击下载',"#{lesson.lesson_json_url}" %></td>
-        <td><%= link_to '点击下载',"#{lesson.lesson_js_url}" %></td>
-        <td><%= link_to '点击下载',"#{lesson.lesson_css_url}" %></td>
-        <td><%= link_to '点击下载',"#{lesson.lesson_json_url}" %></td>
+        <td><%= link_to '点击下载',"#{lesson.lesson_file_url}" %></td>
         <td><%= lesson.company.company_name %></td>
         <td><%= link_to 'Show', lesson %></td>
         <td><%= link_to 'Edit', edit_lesson_path(lesson) %></td>

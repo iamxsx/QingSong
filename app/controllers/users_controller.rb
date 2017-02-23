@@ -3,9 +3,10 @@ class UsersController < ApplicationController
 
   before_action :is_login?, only: [:user_center, :com_profile, :com_course, :com_employee, :emp_profile, :emp_course, :emp_exam]
 
-  layout 'client/indexpages/register-layout', only: [:register_choose, :register_company, :register_employee, :register_success, :register_suspend]
+  layout 'client/indexpages/register-layout', only: [:forget_password, :register_choose, :register_company, :register_employee, :register_success, :register_suspend]
 
   layout 'client/usercenter/usercenter', only: [:user_center, :com_course, :com_employee, :com_profile, :emp_course, :emp_exam, :emp_profile]
+
 
   # GET /register_choose
   def register_choose
@@ -55,6 +56,40 @@ class UsersController < ApplicationController
     end
   end
 
+
+  # 忘记密码页面
+  def forget_password
+  end
+
+  # 生成邮箱验证码
+  def generate_email_verify_code
+    email = params[:email]
+    verify_code = User.generate_verify_code
+    UserMailer.reset_password(email, verify_code).deliver_now
+    session[:reset_password_verify_code] = verify_code
+    render :json => {status: '200'}
+  end
+
+  def reset_password
+    email, verify_code, password, password_confirmation = params[:email], params[:verifycode], params[:password], params[:password_confirmation]
+    puts session[:reset_password_verify_code] == verify_code
+    if session[:reset_password_verify_code] == verify_code
+      user = User.find_by_email(email)
+      if user.update({
+                         :password => password,
+                         :password_confirmation => password_confirmation
+                     })
+        redirect_to '/login'
+      else
+        flash.now[:reset_password_error] = '修改密码失败'
+        render :forget_password
+      end
+    else
+      flash.now[:reset_password_error] = '验证码错误'
+      render :forget_password
+    end
+
+  end
 
   ####################################################
   ####################################################
@@ -214,4 +249,5 @@ class UsersController < ApplicationController
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :invite_code, :phone)
     # params.permit(:emp_id, :do)
   end
+
 end

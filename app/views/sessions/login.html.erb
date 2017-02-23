@@ -39,7 +39,7 @@
             </div>
             <%= f.submit("登录", class: "btn-green choosebtn") %>
             <p class="input_errorbox center" id="err_submit" data-usefor="errbox">
-              <p class="login_hasaccount_p">没有账号?<%= link_to '前往注册',register_choose_url %></p>
+            <p class="login_hasaccount_p">没有账号?<%= link_to '前往注册', register_choose_url %> <%= link_to '忘记密码', forget_password_url %></p>
             <%= flash.now[:login_error] %>
             </p>
 

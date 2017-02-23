@@ -5,8 +5,15 @@ class UserMailer < ApplicationMailer
   #
   #   en.user_mailer.account_activation.subject
   #
-  def account_activation(email,token)
+  def account_activation(email, token)
     @token = token
     mail to: email
   end
+
+  # 发送重置密码的验证码邮件
+  def reset_password(email, verify_code)
+    @verify_code = verify_code
+    mail to: email
+  end
+
 end

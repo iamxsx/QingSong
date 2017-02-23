@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     get 'sessions/create'
     get 'login' => 'login_and_register#login' #登录页
     post 'login' => 'sessions#create' #登录操作
-    get 'logout' => 'sessions#destroy'  #注销
+    get 'logout' => 'sessions#destroy' #注销
     get 'register' => 'login_and_register#register' #注册页
     post 'register' => 'admin_users#create'
     resources :users
@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   get 'register-company' => 'users#register_company'
   post 'register-company' => 'companies#create_company'
   get '/company/send-verify-code' => 'companies#send_verify_code'
+  get 'forget-password' => 'users#forget_password'
+  get 'send-email-verify-code' => 'users#generate_email_verify_code'
+  post 'reset-password' => 'users#reset_password'
 
   #后台页面
   get '/users/user-center' => 'users#user_center'

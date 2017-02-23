@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208041519) do
+ActiveRecord::Schema.define(version: 20170217112730) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
@@ -60,13 +60,11 @@ ActiveRecord::Schema.define(version: 20170208041519) do
     t.string   "lesson_name"
     t.string   "lesson_desc"
     t.string   "lesson_cover"
-    t.string   "lesson_json_url"
-    t.string   "lesson_html_url"
-    t.string   "lesson_js_url"
-    t.string   "lesson_css_url"
     t.integer  "company_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.string   "lesson_file_url"
+    t.string   "lesson_file_name"
     t.index ["company_id"], name: "index_lessons_on_company_id", using: :btree
   end
 

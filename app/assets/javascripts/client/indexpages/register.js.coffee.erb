@@ -16,10 +16,14 @@
 #发送验证码ajax的方法
 @company_regform_verifycode_method = "get";
 
+# 生成邮箱验证码的url
+@reset_password_verify_code_url = '/send-email-verify-code'
+# 生成邮箱验证码的方法
+@reset_password_verify_code_method = 'get'
+
 %>
 
 $ ->
-
   $("input").focus ->
     $(this).parent().addClass("active")
 
@@ -29,7 +33,7 @@ $ ->
   $("#normaluser_regform").validate(
     rules:
       '<%= @normaluser_regform_prefix %>[email]':
-        required:true
+        required: true
         email: true
       '<%= @normaluser_regform_prefix %>[username]':
         required: true
@@ -44,7 +48,7 @@ $ ->
         required: true
     messages:
       '<%= @normaluser_regform_prefix %>[email]':
-        required:"请输入邮箱"
+        required: "请输入邮箱"
         email: "邮箱格式有误"
       '<%= @normaluser_regform_prefix %>[username]':
         required: "请输入姓名"
@@ -57,16 +61,15 @@ $ ->
         equalTo: "两次密码输入不一致,请仔细检查"
       '<%= @normaluser_regform_prefix %>[invite_code]':
         required: "邀请码不能为空"
-    errorPlacement: (error,element) ->
+    errorPlacement: (error, element) ->
       element.parent().next().html(error)
-
   )
 
 
   companyvalidator = $("#company_regform").validate(
     rules:
       'email':
-        required:true
+        required: true
         email: true
       'username':
         required: true
@@ -80,7 +83,7 @@ $ ->
         required: true
         equalTo: "#password"
       'company_name':
-        required:true
+        required: true
         minlength: 4
       'company_address':
         required: true
@@ -88,10 +91,10 @@ $ ->
       'company_tel':
         required: true
         number: true
-        rangelength: [6,13]
+        rangelength: [6, 13]
     messages:
       'email':
-        required:"请输入邮箱"
+        required: "请输入邮箱"
         email: "邮箱格式有误"
       'verifycode':
         required: "验证码不能为空"
@@ -105,7 +108,7 @@ $ ->
         required: "密码不能为空"
         equalTo: "两次密码输入不一致,请仔细检查"
       'company_name':
-        required:"公司全称不能为空"
+        required: "公司全称不能为空"
         minlength: "公司全称不足四个字请按 省份+城市+公司全称 命名"
       'company_address':
         required: "公司地址不能为空"
@@ -114,9 +117,8 @@ $ ->
         required: "联系方式不能为空"
         number: "联系方式只能有数字"
         rangelength: "无效的联系方式"
-    errorPlacement: (error,element) ->
+    errorPlacement: (error, element) ->
       element.parent().next().html(error)
-
   )
 
   $("#icon_inputcontainer").tooltip(
@@ -128,14 +130,12 @@ $ ->
 
   #发送验证码
   $("#sendverifycode").click ->
-
     email = $("input[name=email]").val().trim();
     if email == ""
       $("#err_verifycode").html("邮箱不能为空")
-    else if !companyvalidator.element( "input[name=email]" )
+    else if !companyvalidator.element("input[name=email]")
       $("#err_verifycode").html("邮箱格式有误")
     else
-
       if $("#sendverifycode").hasClass("disabled")
         return
 
@@ -145,19 +145,19 @@ $ ->
       checktimer = setInterval(()->
         if counter > 0
           counter--
-          $("#sendverifycode").html("已发送("+counter+"s)")
+          $("#sendverifycode").html("已发送(" + counter + "s)")
         else
           $("#sendverifycode").removeClass("disabled")
           $("#sendverifycode").html("发送验证码")
           clearInterval(this)
-      ,1000)
+      , 1000)
 
       $.ajax(
         url: "<%= @company_regform_verifycode_url %>"
         type: "<%= @company_regform_verifycode_method %>"
-        data:{
-          "email":email,
-          "do":"sendverifycode"
+        data: {
+          "email": email,
+          "do": "sendverifycode"
         }
         dataType: 'json'
         error: ->
@@ -167,22 +167,90 @@ $ ->
           $("#sendverifycode").html("发送验证码")
       )
 
+  reset_password_validator = $('#reset_password_form').validate(
+    rules:
+      'email':
+        required: true
+        email: true
+      'password':
+        required: true
+        minlength: 6
+      'password_confirmation':
+        required: true
+        equalTo: "#password"
+      'verifycode':
+        require: true
+    messages:
+      'email':
+        required: "请输入邮箱"
+        email: "邮箱格式有误"
+      'password':
+        required: "密码不能为空"
+        minlength: "密码位数要大于6位"
+      'password_confirmation':
+        required: "密码不能为空"
+        equalTo: "两次密码输入不一致,请仔细检查"
+      'verifycode':
+        required: "验证码不能为空"
+    errorPlacement: (error, element) ->
+      element.parent().next().html(error)
+  )
+
+  # 忘记密码发送邮箱验证码
+  $('#send_email_verify_code').click ->
+    email = $('input[name=email]').val().trim()
+    if email == ""
+      $("#err_verifycode").html("邮箱不能为空")
+    else if !reset_password_validator.element("input[name=email]")
+      $("#err_verifycode").html("邮箱格式有误")
+    else
+      if $("#send_email_verify_code").hasClass("disabled")
+        return
+
+      $("#send_email_verify_code").addClass("disabled")
+      $("#send_email_verify_code").html("已发送(60s)")
+
+      counter = 60
+      checktimer = setInterval(()->
+        if counter > 0
+          counter--
+          $("#send_email_verify_code").html("已发送(" + counter + "s)")
+        else
+          $("#send_email_verify_code").removeClass("disabled")
+          $("#send_email_verify_code").html("发送验证码")
+          clearInterval(this)
+      , 1000)
+
+      $.ajax(
+        url: "<%= @reset_password_verify_code_url %>"
+        type: "<%= @reset_password_verify_code_method %>"
+        data: {
+          "email": email,
+          "do": "sendverifycode"
+        }
+        dataType: 'json'
+        error: ->
+          $("#err_verifycode").html("发送验证码的时候出现了一点小问题~请重试")
+          clearInterval(checktimer)
+          $("#send_email_verify_code").removeClass("disabled")
+          $("#send_email_verify_code").html("发送验证码")
+      )
+
 
   #登录表单验证
   $("#login_form").validate(
     rules:
       '<%= @login_form_prefix %>[email]':
-        required:true
+        required: true
         email: true
       '<%= @login_form_prefix %>[password]':
         required: true
     messages:
       '<%= @login_form_prefix %>[email]':
-        required:"请输入邮箱"
+        required: "请输入邮箱"
         email: "邮箱格式有误"
       '<%= @login_form_prefix %>[password]':
         required: "密码不能为空"
-    errorPlacement: (error,element) ->
+    errorPlacement: (error, element) ->
       element.parent().next().html(error)
-
   )
