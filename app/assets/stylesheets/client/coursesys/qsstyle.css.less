@@ -1,0 +1,422 @@
+/*
+ * = require animate
+ */
+
+
+@color_darkblue: #23313F;
+@color_textblue: #34495E;
+@color_textgreen: #61D09C;
+
+html,body{
+  margin: 0;
+  background-color: @color_darkblue;
+  position: relative;
+}
+
+select option{
+  z-index: 9960;
+}
+
+.qsc_title{
+  display: block;
+  text-align: center;
+  margin-top: 32px;
+
+
+  img{
+    vertical-align: sub;
+    display: inline-block;
+    width: 90px;
+  }
+
+  div{
+    vertical-align: text-bottom;
+    margin-top: -4px;
+    display: inline-block;
+    font-size: 28px;
+    color: #fff;
+  }
+}
+
+.qsc_titlehint{
+  text-align: center;
+  margin-top: 6px;
+  color: @color_textblue;
+  font-size: 16px;
+}
+
+.qsc_warp{
+  display: block;
+
+  -moz-box-sizing: border-box; /*Firefox3.5+*/
+  -webkit-box-sizing: border-box; /*Safari3.2+*/
+  -o-box-sizing: border-box; /*Opera9.6*/
+  -ms-box-sizing: border-box; /*IE8*/
+  box-sizing: border-box; /*W3C标准(IE9+，Safari5.1+,Chrome10.0+,Opera10.6+都符合box-sizing的w3c标准语法)*/
+
+  width: 100%;
+  padding:0 15px;
+  text-align: center;
+}
+.qsc_browser{
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  width:100%;
+  margin-top: 57px;
+
+  transition: box-shadow 280ms cubic-bezier(.4,0,.2,1)
+  ,-moz-box-shadow 280ms cubic-bezier(.4,0,.2,1)
+  ,-webkit-box-shadow 280ms cubic-bezier(.4,0,.2,1);
+
+  -moz-box-shadow:0px 20px 40px #0B151F;          /*firefox*/
+  -webkit-box-shadow:0px 20px 40px #0B151F;      /*webkit*/
+  box-shadow:0px 20px 40px #0B151F;                    /*opera或ie9*/
+
+  &:hover,&:focus{
+    -moz-box-shadow:0px 30px 80px #111B25;          /*firefox*/
+    -webkit-box-shadow:0px 30px 80px #111B25;      /*webkit*/
+    box-shadow:0px 30px 80px #111B25;                    /*opera或ie9*/
+  }
+
+  .qsc_browser_toolbar{
+    display: block;
+    height: 70px;
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid transparent;
+  }
+
+  .qsc_browser_border{
+    display: block;
+    position: relative;
+    width: 100%;
+    min-height: 768px;
+    border: 1px solid #cecece;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    background-color: #fff;
+
+    #qsc_course_container{
+      position: relative;
+      display: inline-block;
+    }
+
+    .qsc_mask{
+      transition: background-color 180ms cubic-bezier(.4,0,.2,1);
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #000;
+      opacity: 0.3;
+      z-index: 9950;
+
+      outline: 0;
+      outline-style: none;
+      box-shadow: 0;
+    }
+    .qsc_mask_real{
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: transparent;
+      z-index: 9900;
+
+      outline: 0;
+      outline-style: none;
+      box-shadow: 0;
+    }
+
+    .qsc_correct_icon{
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 0;
+      left: 0;
+      z-index: 9960;
+      display: none;
+    }
+
+  }
+
+  .qsc_browser_fakebtn{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 60px;
+  }
+
+  .qsc_browser_title{
+    position: absolute;
+    width: 100%;
+    top: 5px;
+    color: #6d6d6d;
+    font-size: 14px;
+  }
+}
+
+.qsc_temp_coursename{
+  margin: 10px 0;
+  margin-top: 30px;
+  color: @color_textblue;
+}
+
+.qsc_temp_coursedescription{
+  padding: 0 40px;
+  font-size: 15px;
+  margin-top: 20px;
+  color: #555;
+}
+
+.qsc_temp_startbtn{
+  display: inline-block;
+  transition: background-color 280ms cubic-bezier(.4,0,.2,1);
+  padding: 8px 40px;
+  margin: 20px 0;
+  margin-bottom: 30px;
+  background-color: @color_textgreen;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+
+  //不许选中文字
+  -moz-user-select:none;
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  -khtml-user-select:none;
+  user-select:none;
+
+  &:hover,&:focus{
+    background-color: darken(@color_textgreen,20%);
+  }
+
+  &:active{
+    background-color: darken(@color_textgreen,40%);
+  }
+}
+
+.qsc_temp_tips{
+  margin-top: 30px;
+  background-color: #ececec;
+
+  -moz-box-sizing: border-box; /*Firefox3.5+*/
+  -webkit-box-sizing: border-box; /*Safari3.2+*/
+  -o-box-sizing: border-box; /*Opera9.6*/
+  -ms-box-sizing: border-box; /*IE8*/
+  box-sizing: border-box; /*W3C标准(IE9+，Safari5.1+,Chrome10.0+,Opera10.6+都符合box-sizing的w3c标准语法)*/
+
+  display: inline-block;
+  width: 80%;
+  padding: 10px;
+  border-radius: 5px;
+
+  font-size: 14px;
+  color: #888;
+}
+
+.qsc_course_toolbar{
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  position: fixed;
+  overflow: hidden;
+
+  bottom: 60px;
+  display: block;
+  width: 80%;
+  height: 200px;
+  z-index: 9999;
+
+  &:hover,&:focus{
+
+    .qsc_t_background{
+      opacity: 0.8;
+    }
+  }
+  .qsc_t_background{
+    transition: opacity 0.3s ease-in-out;
+    background-color: #000;
+    opacity: 0.7;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .qsc_t_content{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+
+    .qsc_t_step{
+      display: block;
+      margin-left: 40px;
+      margin-top: 40px;
+
+      .qsc_t_stepicon{
+        display: inline-block;
+        background-color: @color_textgreen;
+        color: #fff;
+        width: 28px;
+        height: 28px;
+        border-radius: 28px;
+        line-height: 28px;
+        text-align: center;
+        font-size: 18px;
+      }
+
+      .qsc_t_stepcontent{
+        display: inline-block;
+        color: @color_textgreen;
+        font-size: 28px;
+        font-weight:normal;
+        vertical-align: sub;
+        margin-left: 24px;
+      }
+    }
+
+    .qsc_t_action{
+      display: inline-block;
+      color: #fff;
+      font-size: 20px;
+      font-weight:lighter;
+      vertical-align: bottom;
+      margin-left: 95px;
+      margin-top: 21px;
+    }
+    .qsc_t_description{
+      display: inline-block;
+      color: #bbb;
+      font-size: 14px;
+      font-weight:normal;
+      vertical-align: bottom;
+      margin-left: 95px;
+      margin-top: 28px;
+    }
+
+    .qsc_t_indicator_container{
+      position: absolute;
+      bottom: 8px;
+      width: 100%;
+      text-align: center;
+
+    }
+
+    .qsc_t_indicator.done{
+      background-color: @color_textgreen;
+    }
+
+    .qsc_t_indicator{
+      transition: background-color 280ms cubic-bezier(.4,0,.2,1);
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 7px;
+      background-color: #888;
+      margin-right: 10px;
+
+      &:last-child{
+        margin-right: 0;
+      }
+    }
+
+  }
+
+  .qsc_toolbar_assistbtn{
+    display: inline-block;
+    font-size: 0;
+    padding: 0 0;
+    margin-left: 20px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+    opacity: 0;
+    transition: background-color 280ms cubic-bezier(.4,0,.2,1)
+    , color 280ms cubic-bezier(.4,0,.2,1);
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: bolder;
+
+    //不许选中文字
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
+
+
+    &:focus,&:hover{
+      background-color: #fff;
+      color: #555;
+    }
+    &:active{
+      background-color: #ccc;
+      color: #555;
+    }
+  }
+
+  .qsc_tf_title{
+    color: #fff;
+    margin: 15px 0;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: normal;
+  }
+  .qsc_tf_hint{
+    color:#b8b8b8;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .qsc_tf_btngroup{
+    text-align: center;
+  }
+  .qsc_tf_btn{
+    display: inline-block;
+    transition: background-color 280ms cubic-bezier(.4,0,.2,1);
+    padding: 15px 20px;
+    margin: 15px 0;
+    margin-right: 40px;
+    background-color: darken(@color_textgreen,20%);
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+
+    //不许选中文字
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
+
+    &:hover,&:focus{
+      background-color: darken(@color_textgreen,30%);
+    }
+
+    &:active{
+      background-color: darken(@color_textgreen,40%);
+    }
+
+    &:last-child{
+      margin-right: 0;
+    }
+  }
+
+
+
+}
+
+#qsc_course_toolbar_finish{
+  display: none;
+}
+
+.qsc_course_toolbar_placerholder{
+  display: block;
+  height: 320px;
+}
