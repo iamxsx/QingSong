@@ -1,64 +1,117 @@
 <%
   # 读取json文件内容,
   @course_json = @course_json_content
+
+  #静态资源地址
   @load_course_url = '/sys/load-course'
+
+  #课程名称
   @course_sys_name = @course_sys_name
+
+  #公司id
   @company_id = @company_id
 
-%>
-<script>
-    var course_json = <%= raw @course_json %>;
-</script>
+  #课程中文名
+  @couse_sys_name_cn = "某某系统";
 
-<%
+
   @index_file = read_course_config(@course_sys_name, @company_id)['indexfile']
 %>
 
-<div id="container"></div>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= csrf_meta_tag %>
+  <title><%= yield(:title) %></title>
+  <title><%= @couse_sys_name_cn %>&nbsp;|&nbsp;青松课程设计</title>
+  <%= javascript_include_tag 'client/coursesys/qsdecoder' %>
+  <%= stylesheet_link_tag 'client/coursesys/qsstyle' %>
+  <script>
+      var Qsc;
+      $(function(){
+          var qsd = new qsdecoder();
+          var coursejson = <%= raw @course_json %>;
 
-<script>
-    var qsd = new qsdecoder();
-    qsd.init({
-        index_file: <%= @index_file %>, //课程系统的首页文件名
-        course_sys_name: <%= @course_sys_name %>, //课程系统的名字
-        company_id: <%= @company_id %>, //课程系统的公司id或者是用来确认公司的东西
-        debug: true, //你不用管
-        course_json: <%= raw @course_json %>, //某一节课的json文件内容
-        course_sort: <%= @course_sort %>, //某一节课的排序,用来显示现在是 第几节课
-        type: <%= @type %> //本页面是课程页面还是考核页面
-    });
+          qsd.init({
+              indexfile:"<%= @index_file %>",
+              qscname:"<%= @course_sys_name %>",
+              qsccompanyflag:"<%= @company_id %>",
+              debug: true,
+              coursejson: coursejson,
+              coursesort: "<%= @course_sort %>",
+              type: "<%= @type %>"
+          });
 
-    //这是qsdecoder.js 中的一个小部分,需要设置一些根据后端的变量的地方
-    var _backend = {
-        //课程系统文件夹路径
-        courseSys: "CourseSys",
-        //路由处理脚本路径
-        router: "api/router.php"
-    };
-
-    //前端发送页面的请求如下
-    var send_request = function(filename,type,callback){
-        $.ajax({
-            url: '<%= @load_course_url %>', //将由前端人员设置,你需要提供url给我
-            data: {
-                type: '<%= @type %>', //type的值可能是 part 或者是 page
-                filename: 'page2.html', //文件名,可能带有一点点相对路径
-                company_id: <%= @company_id %>, //公司的标志(在url参数中已经取得)
-                course_sys_name: '<%= @course_sys_name %>' //课程系统名称(在url参数中已经取得)
-            },
-            dataType: "html", //返回html
-            success: function(data){
-//                callback(data);
-                console.log(typeof (data));
-                $('#container').html(data)
-            },
-            error: function(){
-            }
-        });
-    }
-
-    send_request()
+          Qsc = qsd.api;
+      });
 
 
-</script>
+  </script>
 
+</head>
+<body>
+  <div class="qsc_title">
+    <%= image_tag("indexpages/logo.png") %>
+    <div>&nbsp;|&nbsp;<%= @couse_sys_name_cn %></div>
+  </div>
+  <div class="qsc_titlehint">您正在使用青松课程系统进行课程学习</div>
+  <div class="qsc_warp">
+
+    <!--青松内置浏览器-->
+    <div class="qsc_browser">
+      <div class="qsc_browser_toolbar">
+        <%= image_tag("indexpages/windowsbtn.png",:class => "qsc_browser_fakebtn") %>
+        <div class="qsc_browser_title"></div>
+      </div>
+      <div class="qsc_browser_border">
+        <div class="qsc_browser_innerlayer">
+          <div class="qsc_mask_real" id="qsc_mask_realtop" tabindex="1"></div>
+          <div class="qsc_mask_real" id="qsc_mask_realbottom" tabindex="1"></div>
+          <div class="qsc_mask_real" id="qsc_mask_realleft" tabindex="1"></div>
+          <div class="qsc_mask_real" id="qsc_mask_realright" tabindex="1"></div>
+          <div class="qsc_mask" id="qsc_mask_top" data-masktype="partmask" tabindex="1"></div>
+          <div class="qsc_mask" id="qsc_mask_bottom" data-masktype="partmask" tabindex="1"></div>
+          <div class="qsc_mask" id="qsc_mask_left" data-masktype="partmask" tabindex="1"></div>
+          <div class="qsc_mask" id="qsc_mask_right" data-masktype="partmask" tabindex="1"></div>
+          <div class="qsc_mask" id="qsc_mask_full" tabindex="1"></div>
+          <%= image_tag("indexpages/correct.png",:class => "qsc_correct_icon") %>
+          <div id="qsc_course_container"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="qsc_course_toolbar_placerholder"></div>
+  <div class="qsc_course_toolbar" id="qsc_course_toolbar">
+    <div class="qsc_t_background"></div>
+    <div class="qsc_t_content">
+      <div class="qsc_t_step">
+        <div class="qsc_t_stepicon" id="qsc_stepnum"></div>
+        <div class="qsc_t_stepcontent" id="qsc_step"></div>
+      </div>
+      <div class="qsc_t_action" id="qsc_action"></div><br>
+      <div class="qsc_t_description" id="qsc_action_desc"></div>
+      <div class="qsc_t_indicator_container">
+        <div class="qsc_t_indicator done"></div>
+        <div class="qsc_t_indicator"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="qsc_course_toolbar" id="qsc_course_toolbar_finish">
+    <div class="qsc_t_background"></div>
+    <div class="qsc_t_content">
+      <h1 class="qsc_tf_title">-&nbsp;&nbsp;本节课的内容已经完成&nbsp;&nbsp;-</h1>
+      <p class="qsc_tf_hint">接下来您可以选择:</p>
+      <div class="qsc_tf_btngroup">
+        <a class="qsc_tf_btn">再学一次这节课</a>
+        <a class="qsc_tf_btn">进行这节课的考核</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
