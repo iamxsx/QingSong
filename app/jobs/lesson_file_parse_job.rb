@@ -1,4 +1,5 @@
 require 'zip'
+require 'json'
 
 class LessonFileParseJob < ApplicationJob
   queue_as :lesson_parse_queue
@@ -18,7 +19,16 @@ class LessonFileParseJob < ApplicationJob
     # 设定输出文件的路径
     @out_path = output_path
 
-    parse_zip_file path
+    course_infos = parse_zip_file path
+    course_infos.each do |course_info|
+      course = Course.new(
+          course_name: course_info['course_name'],
+          sort: course_info['sort'],
+          filename: course_info['course_filename'],
+          lesson_id: @lesson_id
+      )
+      course.save!
+    end
   end
 
   def output_path
@@ -27,10 +37,13 @@ class LessonFileParseJob < ApplicationJob
 
   # 解压缩文件
   def parse_zip_file(path)
+    course_info = ''
     Zip::File.open(path) do |zip_file|
       zip_file.each do |entry|
         if entry.name.split('.')[-1] == 'css'
           rewrite_css_file entry
+        elsif entry.name.split('/')[-1] == 'LIST.json'
+          course_info = get_course_info(entry)
         else
           entry.extract("#{@out_path}/#{entry.name}")
         end
@@ -38,6 +51,12 @@ class LessonFileParseJob < ApplicationJob
     end
     # delete the zip
     File.delete(path)
+    return course_info
+  end
+
+  def get_course_info(entry)
+    content = entry.get_input_stream.read
+    JSON.parse content
   end
 
   # 将css中的字符串进行替换

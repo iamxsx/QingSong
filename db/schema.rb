@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170217112730) do
+ActiveRecord::Schema.define(version: 20170304171922) do
 
   create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "namespace"
@@ -44,6 +44,16 @@ ActiveRecord::Schema.define(version: 20170217112730) do
     t.datetime "activated_at"
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
+  end
+
+  create_table "courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "course_name"
+    t.integer  "sort"
+    t.string   "filename"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "lesson_id"
+    t.index ["lesson_id"], name: "index_courses_on_lesson_id", using: :btree
   end
 
   create_table "invitation_codes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -97,6 +107,7 @@ ActiveRecord::Schema.define(version: 20170217112730) do
     t.index ["role_id"], name: "index_users_on_role_id", using: :btree
   end
 
+  add_foreign_key "courses", "lessons"
   add_foreign_key "invitation_codes", "companies"
   add_foreign_key "lessons", "companies"
   add_foreign_key "users", "companies"

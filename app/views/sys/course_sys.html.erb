@@ -1,0 +1,64 @@
+<%
+  # 读取json文件内容,
+  @course_json = @course_json_content
+  @load_course_url = '/sys/load-course'
+  @course_sys_name = @course_sys_name
+  @company_id = @company_id
+
+%>
+<script>
+    var course_json = <%= raw @course_json %>;
+</script>
+
+<%
+  @index_file = read_course_config(@course_sys_name, @company_id)['indexfile']
+%>
+
+<div id="container"></div>
+
+<script>
+    var qsd = new qsdecoder();
+    qsd.init({
+        index_file: <%= @index_file %>, //课程系统的首页文件名
+        course_sys_name: <%= @course_sys_name %>, //课程系统的名字
+        company_id: <%= @company_id %>, //课程系统的公司id或者是用来确认公司的东西
+        debug: true, //你不用管
+        course_json: <%= raw @course_json %>, //某一节课的json文件内容
+        course_sort: <%= @course_sort %>, //某一节课的排序,用来显示现在是 第几节课
+        type: <%= @type %> //本页面是课程页面还是考核页面
+    });
+
+    //这是qsdecoder.js 中的一个小部分,需要设置一些根据后端的变量的地方
+    var _backend = {
+        //课程系统文件夹路径
+        courseSys: "CourseSys",
+        //路由处理脚本路径
+        router: "api/router.php"
+    };
+
+    //前端发送页面的请求如下
+    var send_request = function(filename,type,callback){
+        $.ajax({
+            url: '<%= @load_course_url %>', //将由前端人员设置,你需要提供url给我
+            data: {
+                type: '<%= @type %>', //type的值可能是 part 或者是 page
+                filename: 'page2.html', //文件名,可能带有一点点相对路径
+                company_id: <%= @company_id %>, //公司的标志(在url参数中已经取得)
+                course_sys_name: '<%= @course_sys_name %>' //课程系统名称(在url参数中已经取得)
+            },
+            dataType: "html", //返回html
+            success: function(data){
+//                callback(data);
+                console.log(typeof (data));
+                $('#container').html(data)
+            },
+            error: function(){
+            }
+        });
+    }
+
+    send_request()
+
+
+</script>
+

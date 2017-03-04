@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  course_name: MyString
+  sort: 1
+  filename: MyString
+
+two:
+  course_name: MyString
+  sort: 1
+  filename: MyString

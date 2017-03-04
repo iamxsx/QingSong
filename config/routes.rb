@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-
   # 后台管理系统的控制器
   namespace :admin do
     root 'static_pages#index'
@@ -15,7 +14,6 @@ Rails.application.routes.draw do
     resources :companies
     resources :admin_users
   end
-
 
   root 'static_pages#index'
   get 'login' => 'sessions#login'
@@ -47,6 +45,11 @@ Rails.application.routes.draw do
   post '/verify-invite-code' => 'invitation_codes#verify_invitation_code'
   patch '/users/update-attr' => 'users#update_attr'
 
+  # sys
+  get '/course-sys/:company_id/:sys_name/:json_filename/:course_sort/:type' => 'sys#course_sys'
+
+  get '/sys/load-course' => 'sys#load_course'
+
   # 注意resources 后面是有个s的，没有加s生成的url不一样
   resources :scores
   resources :roles
@@ -56,5 +59,4 @@ Rails.application.routes.draw do
   resources :invitation_codes
   # resources :companies
 
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
