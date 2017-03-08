@@ -13,6 +13,8 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/public/course_sys/*
+/public/uploads/*
 
 # Ignore Byebug command history file.
 .byebug_history
