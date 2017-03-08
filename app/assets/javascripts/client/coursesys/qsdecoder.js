@@ -46,13 +46,13 @@ function qsdecoder(){
     //系统自用变量! 与后端衔接的设置都在这里(写死)
     var _backend = {
         //课程系统文件夹路径
-        courseSys: "course-sys",
+        courseSys: "http://localhost:3000/course-sys",
 
         //路由处理脚本路径
         router: "/sys/load-course",
 
         //用来适配产品环境的 preview 和 ultimate 两个版本的路径设置
-        publishfolder: ""
+        publishfolder: "/preview"
     };
 
     var qsd = {
@@ -1317,8 +1317,8 @@ function qsdecoder(){
                 data: {
                     type: type,
                     filename: filename,
-                    companyname: qsd.qsccompanyflag,
-                    coursename: qsd.qscname
+                    company_id: qsd.qsccompanyflag,
+                    course_sys_name: qsd.qscname
                 },
                 dataType: "html",
                 success: function(page){
