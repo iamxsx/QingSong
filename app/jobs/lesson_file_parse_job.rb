@@ -24,7 +24,7 @@ class LessonFileParseJob < ApplicationJob
       course = Course.new(
           course_name: course_info['course_name'],
           sort: course_info['sort'],
-          filename: course_info['course_filename'],
+          filename: course_info['filename'],
           lesson_id: @lesson_id
       )
       course.save!
@@ -42,7 +42,7 @@ class LessonFileParseJob < ApplicationJob
       zip_file.each do |entry|
         if entry.name.split('.')[-1] == 'css'
           rewrite_css_file entry
-        elsif entry.name.split('/')[-1] == 'LIST.json'
+        elsif entry.name.split('/')[-1] == 'LIST.JSON'
           course_info = get_course_info(entry)
         else
           entry.extract("#{@out_path}/#{entry.name}")
@@ -63,7 +63,7 @@ class LessonFileParseJob < ApplicationJob
   def rewrite_css_file(entry)
     content = replace_css_urls entry
     f = File.new("#{@out_path}/#{entry.name}", 'w+')
-    f.write content
+    f.write content.force_encoding('UTF-8')
     f.close
   end
 
@@ -73,7 +73,8 @@ class LessonFileParseJob < ApplicationJob
     content = entry.get_input_stream.read
     pattern = /url\s*\(\s*((?!\s*http:\/\/)(?!\s*https:\/\/)(?!\s*\/\/).*\.[a-zA-Z0-9]{2,6})\s*"*\)/
     content.gsub!(pattern) do |match|
-      "url('/course_sys/#{entry.name}/assets/css/#{match[4..-2]}')"
+      # "url('/course_sys/#{entry.name}/assets/css/#{match[4..-2]}')"
+      "url('/course_sys/#{@company_id}/preview/#{@lesson_file_name}/assets/img/#{match[4..-2]}')"
     end
   end
 

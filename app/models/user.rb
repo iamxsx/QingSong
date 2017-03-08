@@ -4,6 +4,9 @@ class User < ApplicationRecord
   belongs_to :role
   belongs_to :company
 
+  has_many :lessons, through: :user_lessons
+
+
   # 在保存前将邮箱改为小写
   before_save { self.email = self.email.downcase }
   # 创建前先生成激活摘要

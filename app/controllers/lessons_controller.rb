@@ -2,6 +2,15 @@ class LessonsController < ApplicationController
   before_action :set_lesson, only: [:show, :edit, :update, :destroy]
   layout 'lesson'
 
+  # assign the course to the user
+  def assign_course_to_user
+    user_id = params[:user_id]
+    lesson_id = params[:lesson_id]
+    user = User.find user_id
+    lesson = Lesson.find lesson_id
+    user.lessons.add
+  end
+
   # GET /lessons
   # GET /lessons.json
   def index

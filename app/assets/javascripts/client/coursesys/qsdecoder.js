@@ -1,6 +1,6 @@
 /*
  * = require tween
- * = require resize
+ * = require resize.mind
  * = require_self
 
 
