@@ -1,0 +1,584 @@
+.module_warp{
+    overflow: hidden;
+    position: relative;
+    font-family: "微软雅黑";
+    height: 100%;
+}
+
+.module_toolbar{
+    display: block;
+    width: 100%;
+    height: 36px;
+    background-image: url('/course_sys/2/preview/JinSanQi/assets/img/ main/toolbarbg_bg[1].gif ');
+}
+
+.module_toolbar_btn{
+    padding: 4px;
+    float: left;
+    height: 27px;
+    background-color: #fdfdfd;
+    border: 1px solid #d7dee4;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    box-sizing: border-box;
+    margin-top: 4px;
+    margin-left: 10px;
+}
+
+.module_toolbar_btn.disabled{
+    color: #bbb;
+}
+
+
+.module_toolbar_btn:hover{
+    color:#fff;
+    
+    
+    background: -moz-linear-gradient(90deg, #03aff1, #19dffa); 
+    background: -webkit-gradient(linear,50% 100%,50% 0%,from(#03aff1),to(#19dffa)); 
+    background: -webkit-linear-gradient(90deg, #03aff1, #19dffa); 
+    background: -o-linear-gradient(90deg, #03aff1, #19dffa);
+}
+.module_toolbar_btn.disabled:hover{
+    color: #bbb;
+    background: #fdfdfd;
+}
+
+.module_toolbar_btn div{
+    display: inline-block;
+    margin: 0 10px;
+}
+.module_toolbar_btn img{
+    display: inline-block;
+    margin-left: 7px;
+    vertical-align: sub;
+}
+
+.module_main{
+    display: block;
+    width: 100%;
+    min-height: 200px;
+    border: 1px solid #49a2e8;
+}
+.module_tab_panel_tabs{
+    display: block;
+    height: 35px;
+    width: 100%;
+    background-color: #49a2e8;
+}
+.module_tab_panel_tab{
+    display: block;
+    position: relative;
+    float: left;
+    width: 200px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 13px;
+    text-align: center;
+    background-color: #49a2e8;
+    color: #fff;
+    box-sizing: border-box;
+    border: 1px solid #6cb4ec;
+    border-bottom: 0;
+    border-top: 0;
+    cursor: default;
+    
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
+
+    
+}
+
+.module_tab_panel_tab div{
+    display: inline-block;
+    width: 140px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.module_tab_panel_tab.active{
+    border-color: #fff;
+    background-color: #fff;
+    color: #49a2e8;
+}
+
+.module_tab_panel_tab.active:after{
+    content: url('/course_sys/2/preview/JinSanQi/assets/img/main/dot[1].jpg');
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: -15px;
+}
+
+.module_tab_panel_contents{
+    display: block;
+    min-height: 10px;
+    width: 100%;
+}
+.module_tab_panel_content{
+    display: block;
+    min-height: 10px;
+    width: 100%;
+}
+
+.module_form_basictitle,.module_gridview_title{
+    display: block;
+    width: 100%;
+    font-size: 13px;
+    font-weight: bolder;
+    color:#000;
+    padding-left: 12px;
+    
+    height: 29px;
+    line-height: 29px;
+    
+    background: -moz-linear-gradient(90deg, #d1e8fd, #e7f3ff); 
+    background: -webkit-gradient(linear,50% 100%,50% 0%,from(#d1e8fd),to(#e7f3ff)); 
+    background: -webkit-linear-gradient(90deg, #d1e8fd, #e7f3ff); 
+    background: -o-linear-gradient(90deg, #d1e8fd, #e7f3ff);
+}
+
+.module_form_table{
+    width: 100%;
+    font-size: 12px;
+    color:#000;
+    border: 1px solid #a6cac6;
+    border-collapse: collapse;
+    background-color: #eef5fb;
+}
+
+.module_form_table input[type="text"]{
+    width: calc(100% - 8px);
+    
+    outline: 0;
+    outline-style: none;
+    box-shadow: 0;
+    
+    border:1px solid #dce9f1;
+}
+
+.module_form_table input[type="text"]:disabled,
+.module_form_table textarea:disabled{
+    background-color: #f1f1f1;
+    cursor: not-allowed;
+    color: #000;
+}
+
+.module_form_table textarea{
+    width: calc(100% - 8px);
+    resize: none;
+    
+    outline: 0;
+    outline-style: none;
+    box-shadow: 0;
+    
+    border:1px solid #dce9f1;
+}
+.must:before{
+    content: "*";
+    color: #f00;
+    margin-right: 5px;
+}
+.module_form_table select{
+    width: 100%;
+}
+
+.module_form_table select:disabled{
+    background-color: #f1f1f1;
+    cursor: not-allowed;
+    color: #a0a0a0;
+}
+
+.module_form_table .left{
+    text-align: left;
+}
+.module_form_table .right{
+    text-align: right;
+}
+
+.module_form_table .inputgroup{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2px;
+    overflow: hidden;
+}
+
+.module_form_table .inputgroup input{
+    float: left;
+}
+.module_form_table .inputgroup div{
+    display: block;
+}
+
+.module_gridview{
+    width: 100%;
+    min-height: 40px;
+    border: 1px solid #49a2e8;
+}
+
+.module_gridview_content{
+    width: 100%;
+    min-height: 250px;
+    overflow: scroll;
+}
+
+.module_gridview .module_gridview_statusbar{
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    font-size: 12px;
+    
+    background: -moz-linear-gradient(90deg, #f4f9ff, #e3effb); 
+    background: -webkit-gradient(linear,50% 100%,50% 0%,from(#f4f9ff),to(#e3effb)); 
+    background: -webkit-linear-gradient(90deg, #f4f9ff, #e3effb); 
+    background: -o-linear-gradient(90deg, #f4f9ff, #e3effb);
+}
+
+.module_gridview .module_gridview_statusbar .module_gridview_status{
+    position: absolute;
+    left: 8px;
+    top: 0;
+    color: #888;
+}
+
+.module_gridview .module_gridview_statusbar .module_gridview_status_btngroup{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.module_gridview_status_normalbtn{
+    font-size: 12px;
+    display: inline-block;
+    color: #000;
+    margin-left: 10px;
+    cursor: pointer;
+    
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
+}
+
+.module_gridview_content table{
+    border: 1px solid #b0ceec;
+    border-left: 0;
+    border-right: 0;
+    border-collapse: collapse;
+    min-width: 100%;
+}
+.module_gridview_content table tr:first-child{
+    height: 35px;
+    
+    color: #285974;
+    font-size: 12px;
+    font-weight: bolder;
+    text-align: center;
+    border: 1px solid #b0ceec;
+    background: -moz-linear-gradient(90deg, #f0f5f8, #fdfffe); 
+    background: -webkit-gradient(linear,50% 100%,50% 0%,from(#f0f5f8),to(#fdfffe)); 
+    background: -webkit-linear-gradient(90deg, #f0f5f8, #fdfffe); 
+    background: -o-linear-gradient(90deg, #f0f5f8, #fdfffe);
+    
+}
+.module_gridview_content table tr{
+    height: 29px;
+    
+    color: #000;
+    font-size: 12px;
+    text-align: left;
+    
+    border: 1px solid #dce8df;
+}
+.module_gridview_content table tr:hover,
+.module_gridview_content table tr:focus{
+    height: 29px;
+    
+    color: #000;
+    font-size: 12px;
+    text-align: left;
+    
+    background-color: #fff3c6;
+    border: 1px solid #dce8df;
+}
+
+.module_gridview_content table tr:first-child:hover,
+.module_gridview_content table tr:first-child:focus{
+    height: 35px;
+    
+    color: #285974;
+    font-size: 12px;
+    font-weight: bolder;
+    text-align: center;
+    border: 1px solid #b0ceec;
+    background: -moz-linear-gradient(90deg, #f0f5f8, #fdfffe); 
+    background: -webkit-gradient(linear,50% 100%,50% 0%,from(#f0f5f8),to(#fdfffe)); 
+    background: -webkit-linear-gradient(90deg, #f0f5f8, #fdfffe); 
+    background: -o-linear-gradient(90deg, #f0f5f8, #fdfffe);
+}
+.module_gridview_content tr input.trans{
+    display: block;
+    width: calc(100% - 8px);
+    border: 0;
+    
+    background-color: transparent;
+    cursor:default;
+    outline: 0;
+    outline-style: none;
+    box-shadow: 0;
+}
+
+.module_gridview_content tr input.trans.active{
+    background-color: #fff;
+    cursor: text;
+}
+
+
+.listview_popup{
+    position: absolute;
+    width: 285px;
+    height: 215px;
+    cursor: default;
+    z-index: 9960;
+    
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
+    
+    border: 1px solid #98c0f4;
+    background-color: #fff;
+    
+    overflow: scroll;
+    outline: 0;
+    outline-style: none;
+    box-shadow: 0;
+}
+
+.listview_popup div{
+    font-size: 12px;
+    color: #000;
+    display: block;
+    border: 1px solid transparent;
+}
+.listview_popup div:hover{
+    border: 1px solid #336699;
+    background-color: #c3daf9;
+}
+
+.timepicker_popup{
+    position: absolute;
+    width: 208px;
+    min-height: 150px;
+    cursor: default;
+    z-index: 9960;
+    
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
+    
+    border: 1px solid #98c0f4;
+    background-color: #fff;
+    
+    outline: 0;
+    outline-style: none;
+    box-shadow: 0;
+}
+
+.timepicker_popup .timepicker_content{
+    width: 100%;
+    height: 100%;
+}
+.timepicker_popup .timepicker_content .timepicker_title{
+    width: 100%;
+    height: 28px;
+    display: block;
+    position: relative;
+    background-image: url('/course_sys/2/preview/JinSanQi/assets/img/main/date_bg[1].png')
+}
+
+.timepicker_popup .timepicker_content .timepicker_title .timepicker_leftbtn{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    z-index: 2;
+}
+
+.timepicker_popup .timepicker_content .timepicker_title .timepicker_rightbtn{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    z-index: 2;
+}
+
+.timepicker_popup .timepicker_content .timepicker_title .timepicker_titlecontent{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    line-height: 28px;
+    color: #000;
+    text-align: center;
+    z-index: 1;
+}
+
+.timepicker_btngroup{
+    width: 100%;
+    display: block;
+    box-sizing: content-box;
+    padding: 8px;
+    padding-top: 0px;
+    overflow: hidden;
+}
+
+.timepicker_monthbtn{
+    display: block;
+    float: left;
+    width: 40px;
+    height: 40px;
+    font-size: 12px;
+    line-height: 40px;
+    margin-right: 8px;
+    margin-top: 8px;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+.timepicker_daybtn{
+    display: block;
+    float: left;
+    width: 18px;
+    height: 18px;
+    font-size: 12px;
+    line-height: 18px;
+    margin-right: 8px;
+    margin-top: 8px;
+    text-align: center;
+    border: 1px solid transparent;
+}
+
+.timepicker_monthbtn:hover,
+.timepicker_daybtn:hover{
+    
+    border: 1px solid #84acdd;
+    border-radius: 2px;
+    
+    background: -moz-linear-gradient(90deg, #d0e5ff, #f2f8ff); 
+    background: -webkit-gradient(linear,50% 100%,50% 0%,from(#d0e5ff),to(#f2f8ff)); 
+    background: -webkit-linear-gradient(90deg, #d0e5ff, #f2f8ff); 
+    background: -o-linear-gradient(90deg, #d0e5ff, #f2f8ff);
+    
+}
+
+.modal{
+    display: none;
+    position: absolute;
+    top: 0;
+    width: 0;
+    z-index: 6;
+    width: 100%;
+    height: 100%;
+}
+
+.modal .modal_mask{
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 0;
+    z-index: 6;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    opacity: 0.2;
+}
+.modal .modal_windows{
+    display: block;
+    position: absolute;
+    height: 170px;
+    width: 370px;
+    box-sizing: border-box;
+    border: 1px solid #449de4;
+    top: calc((100% - 170px)/2);
+    left: calc((100% - 370px)/2);
+    z-index: 8;
+}
+.modal .modal_title{
+    display: block;
+    width: 100%;
+    height: 35px;
+    line-height: 35px;
+    font-size: 14px;
+    color:#fff;
+    background-color: #449de4;
+}
+
+.modal_title img{
+    margin:0 5px;
+    vertical-align: middle;
+}
+.modal_title div{
+    display: inline-block;
+}
+
+.modal .modal_content{
+    display: block;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 133px;
+    background-color: #fff;
+}
+
+.modal .modal_info{
+    display: block;
+    width: 100%;
+    margin: 30px 0;
+    text-align: center;
+}
+.modal .modal_btngroup{
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background-color: #edf1f6;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.modal .modal_btn{
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    width: 100px;
+    color: #fff;
+    font-weight: normal;
+    border-radius: 5px;
+    cursor: pointer;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
+    background: -moz-linear-gradient(90deg, #419ae0, #4ea7ed); 
+    background: -webkit-gradient(linear,50% 100%,50% 0%,from(#419ae0),to(#4ea7ed)); 
+    background: -webkit-linear-gradient(90deg, #419ae0, #4ea7ed); 
+    background: -o-linear-gradient(90deg, #419ae0, #4ea7ed);
+}
