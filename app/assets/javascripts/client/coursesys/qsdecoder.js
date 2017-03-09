@@ -51,7 +51,13 @@ function qsdecoder(){
         //路由处理脚本路径
         router: "/sys/load-course",
 
-        //用来适配产品环境的 preview 和 ultimate 两个版本的路径设置
+        //请求保存页面的路径
+        saveapi: "/sys/save-page",
+
+        //保存完之后跳转的链接
+        saveRedirect: "http://localhost:3000/users/emp-course",
+
+        //用来适配产品环境的 '/preview' 和 '/ultimate' 两个版本的路径设置
         publishfolder: "/preview"
     };
 
