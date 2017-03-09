@@ -1,0 +1,55 @@
+<div id="warp">
+    <link href="login.css" rel="stylesheet">
+    <img src="login/logo.png" class="logo">
+    <br>
+    <div class="login_block">
+        <div class="login_block_bg"></div>
+        <div class="innerblock">
+            <div class="loginchooseline" data-blinkid="loginchooseline">
+                <div class="loginchoosebtn active" data-qscid="userlogin">用户登录</div>
+                <div class="loginchoosebtn">证书登录</div>
+            </div>
+            <div>
+                <div class="input_group" data-blinkid="account">
+                    <label>用户名：</label>
+                    <div class="input_beautify">
+                        <input data-qscid="account">
+                        <img src="login/icon1[1].gif">
+                    </div>
+                </div>
+                <div class="input_group" data-blinkid="pwd">
+                    <label>密 码：</label>
+                    <div class="input_beautify">
+                        <input type="password"  data-qscid="pwd">
+                        <img src="login/icon2[1].gif">
+                    </div>
+                </div>
+                <div class="input_group" data-blinkid="loginbtn">
+                    <label></label>
+                    <div class="input_beautify">
+                        <div class="loginbtn" data-qscid="loginbtn">登录</div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
+    <div class="extraline">
+        <div class="extra">
+            <img src="login/icon112[1].gif">
+            <span>客户端插件下载</span>
+        </div>
+        <div class="extra">
+            <img src="login/icon112[1].gif">
+            <span>IE配置检查</span>
+        </div>
+    </div>
+    
+    <script>
+    Qsc.bind($(".loginbtn"),"click",function(){
+        Qsc.goToUrl("main.html");
+    });
+    </script>
+    
+</div>
