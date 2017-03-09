@@ -50,6 +50,10 @@ Rails.application.routes.draw do
 
   get '/sys/load-course' => 'sys#load_course'
 
+  # /public/course-sys/2/preview/JinSanQi/assets/img/login/logo.png
+  get '/course-sys/*file_url.*type' => 'sys#load_file'
+
+
   # 注意resources 后面是有个s的，没有加s生成的url不一样
   resources :scores
   resources :roles

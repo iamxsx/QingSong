@@ -23,6 +23,14 @@ class SysController < ApplicationController
     render html: html_content.html_safe
   end
 
+  # public/course-sys/2/preview/JinSanQi/assets/img/login/logo.png
+  def load_file
+    file_url = params[:file_url]
+    type = params[:type]
+    filename = file_url.split('/')[-1]
+    send_file("public/course_sys/#{file_url}.#{type}", filename: "#{filename}")
+  end
+
 
 
 end
