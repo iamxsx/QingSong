@@ -460,7 +460,7 @@ function qsdecoder(){
 
                     //通过点击toolbar的按钮来通过本步骤
                     case "get":
-                        $("#qsc_action").append("<div class='qsc_toolbar_assistbtn' id='qsc_t_assistbtn'>"+qsd.course.getNowActionGetBtnText()+"</div>");
+                        $("#qsc_action_react").append("<div class='qsc_toolbar_assistbtn' id='qsc_t_assistbtn'>"+qsd.course.getNowActionGetBtnText()+"</div>");
                         var originShape = { opacity: "0" , fontsize: "0" , paddingud: "0" , paddinglr:"0"};
                         var targetShape = {opacity : "1" , fontsize: "16" , paddingud: "8" , paddinglr: "16"};
                         var ShowAssistBtnTween = new TWEEN.Tween(originShape).to(targetShape, 400).onUpdate(function(){
@@ -680,7 +680,7 @@ function qsdecoder(){
 
                 //设置action文字
                 setActionText: function(text){
-                    $("#qsc_action").html(text);
+                    $("#qsc_action_content").html(text);
                 },
 
                 //设置action描述
