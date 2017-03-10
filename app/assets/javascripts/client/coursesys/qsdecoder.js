@@ -54,6 +54,9 @@ function qsdecoder(){
         //请求保存页面的路径
         saveapi: "/sys/save-page",
 
+        //请求加载之前保存页面的路径
+        loadapi: "api/load-page",
+
         //保存完之后跳转的链接
         saveRedirect: "http://localhost:3000/users/emp-course",
 
