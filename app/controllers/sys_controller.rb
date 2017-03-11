@@ -1,5 +1,6 @@
 class SysController < ApplicationController
 
+  layout false
   def course_sys
     @course_sys_name = params[:sys_name]
     @company_id = params[:company_id]

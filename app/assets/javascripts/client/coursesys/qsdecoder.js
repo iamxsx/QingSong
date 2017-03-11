@@ -1,4 +1,5 @@
 /*
+ * = require jquery
  * = require tween
  * = require resize.min
  * = require_self
