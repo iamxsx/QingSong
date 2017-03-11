@@ -51,7 +51,16 @@ function qsdecoder(){
         //路由处理脚本路径
         router: "/sys/load-course",
 
-        //用来适配产品环境的 preview 和 ultimate 两个版本的路径设置
+        //请求保存页面的路径
+        saveapi: "/sys/save-page",
+
+        //请求加载之前保存页面的路径
+        loadapi: "api/load-page",
+
+        //保存完之后跳转的链接
+        saveRedirect: "http://localhost:3000/users/emp-course",
+
+        //用来适配产品环境的 '/preview' 和 '/ultimate' 两个版本的路径设置
         publishfolder: "/preview"
     };
 
@@ -431,6 +440,9 @@ function qsdecoder(){
             //监听教程事件以判断通过与否
             listenEvent: function(){
                 var event = qsd.course.getNowActionEvent();
+
+                //用来标记当前事件是不是已经完成了,避免不必要的冲突
+                var operatedDone = false;
                 switch(event){
 
                     //根据value(值)来确认通过本步骤
@@ -439,6 +451,11 @@ function qsdecoder(){
                         $(selector).focus();
                         var valuechecker = setInterval(function(){
                             if($(selector).val()==qsd.course.getNowActionExpectedValue()){
+
+                                //锁定操作
+                                $("#qsc_mask_top").focus();
+                                qsd.course.mask.showFullRealMask();
+
                                 clearInterval(valuechecker);
                                 qsd.course.toolbar.finishActionAnimate(function(){
                                     if(qsd.course.getNowPreventDefault()){
@@ -452,7 +469,7 @@ function qsdecoder(){
 
                     //通过点击toolbar的按钮来通过本步骤
                     case "get":
-                        $("#qsc_action").append("<div class='qsc_toolbar_assistbtn' id='qsc_t_assistbtn'>"+qsd.course.getNowActionGetBtnText()+"</div>");
+                        $("#qsc_action_react").append("<div class='qsc_toolbar_assistbtn' id='qsc_t_assistbtn'>"+qsd.course.getNowActionGetBtnText()+"</div>");
                         var originShape = { opacity: "0" , fontsize: "0" , paddingud: "0" , paddinglr:"0"};
                         var targetShape = {opacity : "1" , fontsize: "16" , paddingud: "8" , paddinglr: "16"};
                         var ShowAssistBtnTween = new TWEEN.Tween(originShape).to(targetShape, 400).onUpdate(function(){
@@ -479,6 +496,10 @@ function qsdecoder(){
                     case "click":
                         var selector = "[data-qscid='"+qsd.course.getNowctionQscId()+"']";
                         $(selector).click(function(){
+                            //锁定操作
+                            $("#qsc_mask_top").focus();
+                            qsd.course.mask.showFullRealMask();
+
                             qsd.course.toolbar.finishActionAnimate(function(){
                                 if(qsd.course.getNowPreventDefault()){
                                     qsd.course.cancelPreventDefault();
@@ -494,6 +515,11 @@ function qsdecoder(){
                         $(selector).focus();
                         $(selector).keydown(function(e){
                             if(e.which == qsd.course.getNowActionExpectedValue()){
+
+                                //锁定操作
+                                $("#qsc_mask_top").focus();
+                                qsd.course.mask.showFullRealMask();
+
                                 qsd.course.toolbar.finishActionAnimate(function(){
                                     if(qsd.course.getNowPreventDefault()){
                                         qsd.course.cancelPreventDefault();
@@ -542,7 +568,7 @@ function qsdecoder(){
 
                 //同步到界面上
                 $("#qsc_mask_top").focus();
-
+                this.mask.setRealHoleToFull();
 
 
                 this.toolbar.setStepNum(this._steppointer+1);
@@ -663,7 +689,7 @@ function qsdecoder(){
 
                 //设置action文字
                 setActionText: function(text){
-                    $("#qsc_action").html(text);
+                    $("#qsc_action_content").html(text);
                 },
 
                 //设置action描述
@@ -753,7 +779,6 @@ function qsdecoder(){
                         $("#qsc_step").one(animationEnd,function(){
                             $("#qsc_step").removeClass("animated fadeInLeft");
                             $("#qsc_step").unbind(animationEnd);
-
                         });
                     });
 
@@ -934,6 +959,19 @@ function qsdecoder(){
                     $("#qsc_mask_full").css("visibility","hidden");
                 },
 
+                //显示全屏遮罩
+                showFullRealMask: function(){
+                    $("#qsc_mask_realfull").css("visibility","visible");
+                    $("#qsc_mask_realfull").css("width",this.maskFullWidth);
+                    $("#qsc_mask_realfull").css("height",this.maskFullHeight);
+                    $("#qsc_mask_realfull").focus();
+                },
+
+                //隐藏全屏遮罩
+                hideFullRealMask: function(){
+                    $("#qsc_mask_realfull").css("visibility","hidden");
+                },
+
                 //遮罩的宽高度
                 maskFullWidth: "100%",
                 maskFullHeight: "100%",
@@ -1068,7 +1106,10 @@ function qsdecoder(){
                         $("#qsc_mask_bottom").css("opacity",originColor.opacity);
                         $("#qsc_mask_left").css("opacity",originColor.opacity);
                         $("#qsc_mask_right").css("opacity",originColor.opacity);
-                    }).easing(TWEEN.Easing.Linear.None).delay(2500).onComplete(function(){});
+                    }).easing(TWEEN.Easing.Linear.None).delay(2500).onComplete(function(){
+                        qsd.course.mask.hideFullRealMask();
+                        qsd.course.mask.setRealHole();
+                    });
 
                     //滑动动画
                     this.showMask();
@@ -1147,9 +1188,17 @@ function qsdecoder(){
                         $("#qsc_mask_right").css("opacity",originColor1.opacity);
                     }).easing(TWEEN.Easing.Linear.None).chain(ScrollTween,OpacityDispearTween).start().onComplete(function(){});
 
-                    this.setRealHole();
+//                    this.setRealHole();
                     this.hideFullMask();
 
+                },
+
+                //设置真实遮罩为全屏遮罩
+                setRealHoleToFull: function(){
+                    $("#qsc_mask_realtop").css("height",browser.browserInnerLayerHeight+"px");
+                    $("#qsc_mask_realtop").css("width",browser.browserInnerLayerWidth+"px");
+                    $("#qsc_mask_realtop").css("top","0px");
+                    $("#qsc_mask_realtop").css("left","0px");
                 },
 
                 //设置真实遮罩,将作用于data-qscid身上,此外的元素无法被点到
@@ -1163,10 +1212,7 @@ function qsdecoder(){
 
                     //如果为event为get的话,设置全屏不能按
                     if(qsd.course.getNowActionEvent() == "get" ){
-                        $("#qsc_mask_realtop").css("height",browser.browserInnerLayerHeight+"px");
-                        $("#qsc_mask_realtop").css("width",browser.browserInnerLayerWidth+"px");
-                        $("#qsc_mask_realtop").css("top","0px");
-                        $("#qsc_mask_realtop").css("left","0px");
+                        this.showFullRealMask();
                         return;
                     }
 
