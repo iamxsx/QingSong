@@ -28,7 +28,12 @@ class SysController < ApplicationController
     file_url = params[:file_url]
     type = params[:type]
     filename = file_url.split('/')[-1]
-    send_file("public/course_sys/#{file_url}.#{type}", filename: "#{filename}")
+    if type == 'css'
+      file_type = 'text/css'
+      send_file "public/course_sys/#{file_url}.#{type}", filename: "#{filename}", type: "#{file_type}"
+    else
+      send_file "public/course_sys/#{file_url}.#{type}", filename: "#{filename}"
+    end
   end
 
 
