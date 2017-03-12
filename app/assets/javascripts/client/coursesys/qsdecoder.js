@@ -47,7 +47,7 @@ function qsdecoder(){
     //系统自用变量! 与后端衔接的设置都在这里(写死)
     var _backend = {
         //课程系统文件夹路径
-        courseSys: "http://localhost:3000/course-sys",
+        courseSys: "http://localhost:3000/public/course-sys",
 
         //路由处理脚本路径
         router: "/sys/load-course",

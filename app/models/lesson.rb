@@ -2,6 +2,8 @@ class Lesson < ApplicationRecord
 
   belongs_to :company
   has_many :courses
+
+  has_many :user_lessons
   has_many :users, through: :user_lessons
 
   mount_uploader :lesson_cover, FileUploader

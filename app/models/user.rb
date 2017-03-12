@@ -4,8 +4,10 @@ class User < ApplicationRecord
   belongs_to :role
   belongs_to :company
 
+  has_many :user_lessons
   has_many :lessons, through: :user_lessons
 
+  has_many :user_courses
 
   # 在保存前将邮箱改为小写
   before_save { self.email = self.email.downcase }

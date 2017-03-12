@@ -5,7 +5,6 @@ class SysController < ApplicationController
     @course_sys_name = params[:sys_name]
     @company_id = params[:company_id]
     @json_filename = params[:json_filename]
-
     @course_sort = params[:course_sort]
     @type = params[:type]
     @course_id = params[:course_id]

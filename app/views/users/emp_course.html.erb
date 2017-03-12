@@ -1,22 +1,20 @@
 <%
-provide :title, '青松 - 我的课程'
-provide :page_tag, @page_tag
-provide :user_email, "1234567890@xxx.com"
+  provide :title, '青松 - 我的课程'
+  provide :page_tag, @page_tag
+  provide :user_email, "1234567890@xxx.com"
 
-@last_login_time = "2017-01-02"
+  @last_login_time = "2017-01-02"
 
   # 全部总共有多少课程(所有被分配到的课程的总和)
-  @totalcoursecount = 3
 
   # 已经完成的课程数量
-  @coursefinishedcount = 0
 %>
 
 <div class="page_warp">
   <div class="panel">
     <div class="panelcontainer">
       <h1>概况</h1>
-      <p>您的学习列表中共有 <%= @totalcoursecount %> 个课程, 您已经完成了其中的 <%= @coursefinishedcount %> 个课程.</p>
+      <p>您的学习列表中共有 <%= @total_courses_count %> 个课程, 您已经完成了其中的 <%= @course_finished_count %> 个课程.</p>
 
       <!--开发未完成-->
       <div id="lasttime_learnprogress" style="display: none">
@@ -40,36 +38,47 @@ provide :user_email, "1234567890@xxx.com"
       <h1>学习列表</h1>
     </div>
 
-    <!--课程系统-->
-    <div class="coursesys_container">
-      <div class="cc_main">
-        <%= image_tag("dev/cover.png") %>
-        <div class="cc_titleinfo">
-          <h1>金税三期税务管理系统</h1>
-          <p>这是税务局专门用于处理各种税务申报认定审核的系统</p>
-                                                  <!--     ↓ data-for 要和下面的 data-panel 一样  (每个课程面板这里要不一样) //删掉此评论 -->
-          <div class="btn-ghost-green expandbtn" data-for="some"><span class="fa fa-chevron-circle-down"></span>&nbsp;&nbsp;展开</div>
-        </div>
-      </div>
-      <div class="cc_listcontainer" data-panel="some" style="">
-        <div class="cc_hr"></div>
-        <div class="cc_circle"></div>
-        <div class="cc_itemline">
-          <div class="cc_done">已完成</div>
-          <div class="cc_index">1</div>
-          <a class="cc_link">如何登录本系统</a>
-        </div>
-        <div class="cc_itemline">
-          <div class="cc_index">10</div>
-          <a class="cc_link">如何登录本系统</a>
-        </div>
-        <div class="cc_itemline">
-          <div class="cc_index">100</div>
-          <a class="cc_link">如何登录本系统</a>
-        </div>
-      </div>
+    <% @lessons.each do |lesson| %>
+        <!--课程系统-->
+        <div class="coursesys_container">
+          <div class="cc_main">
+            <%= image_tag("dev/cover.png") %>
+            <div class="cc_titleinfo">
+              <h1><%= lesson.lesson_name %></h1>
+              <p><%= lesson.lesson_desc %></p>
+              <!--     ↓ data-for 要和下面的 data-panel 一样  (每个课程面板这里要不一样) //删掉此评论 -->
+              <div class="btn-ghost-green expandbtn" data-for="lesson-<%= lesson.id %>">
+                <span class="fa fa-chevron-circle-down"></span>&nbsp;&nbsp;展开
+              </div>
+            </div>
+          </div>
+          <div class="cc_listcontainer" data-panel="lesson-<%= lesson.id %>" style="">
+            <div class="cc_hr"></div>
+            <div class="cc_circle"></div>
+            <% lesson.courses.each do |course| %>
+                <!--
+                  judge whether current user is assigned this course
+                -->
+                <% user_course = course.user_courses.where({:user_id => @current_user_id}).first %>
+                <% if user_course %>
+                    <div class="cc_itemline">
+                      <% if user_course.is_finished %>
+                          <div class="cc_done">已完成</div>
+                      <% else %>
+                          <div class="cc_done">完成 <%= user_course.progress %>%</div>
+                      <% end %>
+                      <div class="cc_index"><%= course.sort %></div>
+                      <a target="_blank" class="cc_link" href="/course-sys/<%= lesson.lesson_file_name %>/<%= course.filename[0...-5] %>/course/<%= lesson.company_id %>/<%= course.id %>/<%= course.sort %>">
+                        <%= course.course_name %>
+                      </a>
+                    </div>
 
-    </div>
+                <% end %>
+            <% end %>
+          </div>
+        </div>
+
+    <% end %>
 
   </div>
 

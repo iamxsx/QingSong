@@ -7,7 +7,6 @@ class UsersController < ApplicationController
 
   layout 'client/usercenter/usercenter', only: [:user_center, :com_course, :com_employee, :com_profile, :emp_course, :emp_exam, :emp_profile]
 
-
   # GET /register_choose
   def register_choose
   end
@@ -138,6 +137,21 @@ class UsersController < ApplicationController
   # 用户-我的课程页面
   def emp_course
     @page_tag = "emp_course"
+
+    user = current_user
+
+    @lessons = user.lessons
+
+    courses = user.user_courses
+    @total_courses_count = courses.size
+    @course_finished_count = courses.where({'is_finished': true}).size
+    @current_user_id = user.id
+
+
+
+    # how to seperate the courses which assign to the user in lesson.courses
+    # user_id + lesson_id => course
+
   end
 
   # 用户-我的考核页面

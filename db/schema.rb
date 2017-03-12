@@ -10,21 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170305165152) do
-
-  create_table "active_admin_comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "namespace"
-    t.text     "body",          limit: 65535
-    t.string   "resource_id",                 null: false
-    t.string   "resource_type",               null: false
-    t.string   "author_type"
-    t.integer  "author_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
-  end
+ActiveRecord::Schema.define(version: 20170312144836) do
 
   create_table "admin_admin_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email"
@@ -84,10 +70,21 @@ ActiveRecord::Schema.define(version: 20170305165152) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "scores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "user_courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "user_id"
+    t.integer  "course_id"
+    t.integer  "lesson_id"
+    t.text     "html_file",   limit: 65535
+    t.integer  "step"
+    t.integer  "action"
+    t.integer  "progress"
+    t.boolean  "is_finished"
     t.integer  "score"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["course_id"], name: "index_user_courses_on_course_id", using: :btree
+    t.index ["lesson_id"], name: "index_user_courses_on_lesson_id", using: :btree
+    t.index ["user_id"], name: "index_user_courses_on_user_id", using: :btree
   end
 
   create_table "user_lessons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

@@ -74,7 +74,7 @@ class LessonFileParseJob < ApplicationJob
     pattern = /url\s*\(\s*((?!\s*http:\/\/)(?!\s*https:\/\/)(?!\s*\/\/).*\.[a-zA-Z0-9]{2,6})\s*"*\)/
     content.gsub!(pattern) do |match|
       # "url('/course_sys/#{entry.name}/assets/css/#{match[4..-2]}')"
-      "url('/course_sys/#{@company_id}/preview/#{@lesson_file_name}/assets/img/#{match[4..-2].gsub(' ', '')}')"
+      "url('/public/course-sys/#{@company_id}/preview/#{@lesson_file_name}/assets/img/#{match[4..-2].gsub(' ', '')}')"
     end
   end
 
