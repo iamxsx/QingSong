@@ -24,7 +24,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= csrf_meta_tag %>
-  <title><%= yield(:title) %></title>
   <title><%= @couse_sys_name_cn %>&nbsp;|&nbsp;青松课程设计</title>
   <%= javascript_include_tag 'client/coursesys/qsdecoder' %>
   <%= stylesheet_link_tag 'client/coursesys/qsstyle' %>
@@ -38,7 +37,7 @@
               indexfile:"<%= @index_file %>",
               qscname:"<%= @course_sys_name %>",
               qsccompanyflag:"<%= @company_id %>",
-              debug: true,
+              debug: false,
               coursejson: coursejson,
               coursesort: "<%= @course_sort %>",
               type: "<%= @type %>"
