@@ -46,7 +46,7 @@ Rails.application.routes.draw do
   patch '/users/update-attr' => 'users#update_attr'
 
   # sys
-  get '/course-sys/:company_id/:sys_name/:json_filename/:course_sort/:type' => 'sys#course_sys'
+  get '/course-sys/:sys_name/:json_filename/:type/:company_id/:course_id/:course_sort' => 'sys#course_sys'
 
   get '/sys/load-course' => 'sys#load_course'
 
