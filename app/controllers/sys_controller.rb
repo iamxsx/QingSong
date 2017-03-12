@@ -7,6 +7,7 @@ class SysController < ApplicationController
 
     @course_sort = params[:course_sort]
     @type = params[:type]
+    @course_id = params[:course_id]
 
     @lesson_sys = Lesson.find_by_lesson_name @course_sys_name
     @course_json_content = get_file_content @company_id, @course_sys_name, @json_filename
