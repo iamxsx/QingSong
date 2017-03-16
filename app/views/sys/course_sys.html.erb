@@ -8,6 +8,18 @@
   #课程名称
   @course_sys_name = @course_sys_name
 
+  #课程文件id <- 新增 (去掉新增两个字)
+  @course_file_id= 0
+
+  #是否加载上次进度 <- 新增 (去掉新增两个字)
+  @load_progress = false;
+
+  #这节课的课程url地址 <- 新增 (去掉新增两个字)
+  @url_course = "";
+
+  #这节课的考核url地址 <- 新增 (去掉新增两个字)
+  @url_exam = "";
+
   #公司id
   @company_id = @company_id
 
@@ -40,7 +52,9 @@
               debug: false,
               coursejson: coursejson,
               coursesort: "<%= @course_sort %>",
-              type: "<%= @type %>"
+              coursefileid: <%= @course_file_id %>,
+              type: "<%= @type %>",
+              load: <%= @load_progress %>
           });
 
           Qsc = qsd.api;
@@ -84,7 +98,18 @@
     </div>
 
   </div>
-  <div class="qsc_course_toolbar_placerholder"></div>
+  <div class="qsc_course_toolbar_placerholder" id="qsc_toolbar_placeholder"></div>
+  <div class="qsc_course_toolbar_placerholder" id="qsc_exam_keypoint">
+    <div class="qsc_e_keypoint_warp">
+      <h1>考核要点</h1>
+      <ul id="qsc_e_keypoints">
+      </ul>
+    </div>
+    <div class="qsc_e_handin_warp">
+      <div id="qsc_e_handin_btn"><span class="fa fa-check-square-o"></span>&nbsp;&nbsp;提交答卷</div>
+      <p>当您认为你已经完成了所有步骤的时候,点击上面的按钮提交并结算考核成绩</p>
+    </div>
+  </div>
 
   <div class="qsc_course_toolbar" id="qsc_course_toolbar">
     <div class="qsc_t_background"></div>
@@ -112,10 +137,35 @@
       <h1 class="qsc_tf_title">-&nbsp;&nbsp;本节课的内容已经完成&nbsp;&nbsp;-</h1>
       <p class="qsc_tf_hint">接下来您可以选择:</p>
       <div class="qsc_tf_btngroup">
-        <a class="qsc_tf_btn">再学一次这节课</a>
-        <a class="qsc_tf_btn">进行这节课的考核</a>
+        <%= link_to("再学一次这节课",@url_course,:class=>'qsc_tf_btn') %>
+        <%= link_to("进行这节课的考核",@url_exam,:class=>'qsc_tf_btn') %>
       </div>
     </div>
   </div>
+
+  <div class="qsc_exam_toolbar" id="qsc_exam_toolbar">
+    <div class="qsc_e_background"></div>
+    <div class="qsc_e_content">
+      <div class="qsc_e_time">
+        <p>您已用时</p>
+        <h1 id="qsc_e_timer">00:00:00</h1>
+      </div>
+    </div>
+  </div>
+
+  <div id="qsc_exam_mask">
+    <div id="qsc_exam_mask_bg"></div>
+    <div id="qsc_exam_mask_content">
+      <p>-&nbsp;您的得分&nbsp;-</p>
+      <h1 id="qsc_exam_score"></h1>
+      <div id="qsc_exam_errinfo_warp">
+        <p>您有以下的不足:</p>
+        <ul id="qsc_exam_errinfo">
+        </ul>
+      </div>
+      <%= link_to("再考一次",@url_exam,:class=>'qsc_exam_again_btn') %>
+    </div>
+  </div>
+
 </body>
 </html>

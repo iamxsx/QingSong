@@ -61,6 +61,9 @@ function qsdecoder(){
         //保存完之后跳转的链接
         saveRedirect: "http://localhost:3000/users/emp-course",
 
+        //考试完成发送分数到这个链接
+        examscoreapi: "api/send-score",
+
         //用来适配产品环境的 '/preview' 和 '/ultimate' 两个版本的路径设置
         publishfolder: "/preview"
     };
@@ -82,11 +85,25 @@ function qsdecoder(){
         //课程文件
         coursejson: {},
 
+        //后端中将用这个id来唯一确定某一节课
+        coursefileid: 0,
+
         //课程编号/排序/第几节课
         coursesort: 1,
 
         //本页面的类型: course | exam   教程 还是 考核
         type: "",
+
+        //是否加载上一次的进度,由后端从数据库中读取获得
+        load: false,
+
+        //上一次保存的内容
+        loaddata: {
+            html: "",
+            progress: 0,
+            step: 0,
+            action: 0
+        },
 
         //初始化
         init: function(config){
@@ -100,6 +117,9 @@ function qsdecoder(){
             this.qsccompanyflag = this._default["qsccompanyflag"];
             this.coursejson = this._default["coursejson"];
             this.coursesort = this._default["coursesort"];
+            this.coursefileid = this._default["coursefileid"];
+            this.type = this._default["type"];
+            this.load = this._default["load"];
             this.browser.bindScrollPerfect();
             this.course.init();
 
@@ -107,7 +127,19 @@ function qsdecoder(){
                 $("#qsc_course_toolbar").css("display","none");
                 this.goToUrl(this._default["indexfile"]);
             }else{
-                this.gotoPreparePage();
+                if(!this.load){
+                    this.gotoPreparePage();
+                }else{
+                    //加载上一次保存的进度
+                    this.browser.loadRequest(this.coursefileid,function(data){
+                        qsd.loaddata.html = data.html;
+                        qsd.loaddata.progress = data.progress;
+                        qsd.loaddata.step = data.step;
+                        qsd.loaddata.action = data.action;
+                        qsd.gotoPreparePage();
+                    });
+                }
+
             }
 
         },
@@ -120,11 +152,33 @@ function qsdecoder(){
             debug: false,
             coursejson: {},
             coursesort: 1,
-            type: "course",
+            coursefileid: 0,
+            type: "exam",
+            load: false
         },
 
         //加载准备页面
         gotoPreparePage: function(){
+
+            var preparePageInfo = {
+                coursetitle :  "第 "+qsd.coursesort+" 节&nbsp;&nbsp;"+qsd.course.getCourseName(),
+                coursedescription: qsd.course.getCourseDescription(),
+                tips: "我们将模拟您的工作系统并显示在这个窗口中,请根据提示完成操作",
+                getandgobtntext: "知道了,开始课程"
+            };
+
+            if(this.load && this.type == "course"){
+                preparePageInfo.tips = "您上次已经学习了"+qsd.loaddata.progress+"%,我们将从上一次的记录继续学习";
+                preparePageInfo.getandgobtntext = "继续学习";
+            }
+
+            if(this.type == "exam"){
+                preparePageInfo.coursetitle = "考核 "+qsd.coursesort+ "&nbsp;-&nbsp;"+qsd.course.getCourseName();
+                preparePageInfo.coursedescription = qsd.course.getExamDescription();
+                preparePageInfo.tips = "考核的要点将会出现在页面下方,请在完成操作后交卷";
+                preparePageInfo.getandgobtntext = "开始考核";
+            }
+
             $(".qsc_browser").css("width","200px");
             $(".qsc_browser").css("margin-top","100px");
             $(".qsc_browser_toolbar").css("height","50px");
@@ -141,16 +195,16 @@ function qsdecoder(){
 
                 $(".qsc_browser_border").animate({"min-height":"310px"},150);
                 $(".qsc_browser").animate({"width":"600px","margin-top":"57px"},200,function(){
-                    $("#"+qsd.qscontainer).html("<h1 class='animated zoomIn qsc_temp_coursename'> 第 "+qsd.coursesort+" 节&nbsp;&nbsp;"+qsd.course.getCourseName()+"</h1>"+
-                        "<p class='animated zoomIn qsc_temp_coursedescription'>"+qsd.course.getCourseDescription()+"</p>" +
-                        "<div class='animated fadeIn qsc_temp_tips'>我们将模拟您的工作系统并显示在这个窗口中,请根据提示完成操作</div>" +
-                        "<div class='animated fadeIn qsc_temp_startbtn' id='qsc_getandgo'>知道了,开始课程</div>"
+                    $("#"+qsd.qscontainer).html("<h1 class='animated zoomIn qsc_temp_coursename'>  "+preparePageInfo.coursetitle+"</h1>"+
+                        "<p class='animated zoomIn qsc_temp_coursedescription'>"+preparePageInfo.coursedescription+"</p>" +
+                        "<div class='animated fadeIn qsc_temp_tips'>"+preparePageInfo.tips+"</div>" +
+                        "<div class='animated fadeIn qsc_temp_startbtn' id='qsc_getandgo'>"+preparePageInfo.getandgobtntext+"</div>"
                     );
 
                     //正式加载页面,动效
                     $("#qsc_getandgo").click(function(){
                         $("#"+qsd.qscontainer).html("");
-                        $(".qsc_browser_title").html(" 第 "+qsd.coursesort+" 节&nbsp;&nbsp;"+qsd.course.getCourseName());
+                        $(".qsc_browser_title").html(preparePageInfo.coursetitle);
 
                         var origin = { width : $(".qsc_browser").width()/$(window).width()*100 };
                         var target = { width : 100  };
@@ -159,34 +213,80 @@ function qsdecoder(){
                         }).easing(TWEEN.Easing.Exponential.InOut);
                         fullWidthTween.start();
 
-                        qsd.course.mask.showFullMask();
+                        if(qsd.type == "course"){
+                            qsd.course.mask.showFullMask();
+                        }
+
                         $(".qsc_browser_toolbar").animate({"height":"70px"},460);
                         $(".qsc_browser_border").animate({"min-height":"768px"},700,function(){
                             $(".qsc_browser_border").css("overflow-x","scroll");
 
                             if(qsd.debug){
+                                //调试模式下仅仅开启默认的页面
                                 qsd.goToUrl(qsd._default["indexfile"]);
                             }else{
-                                if(qsd.coursejson['page'] == undefined){
+
+                                if(qsd.load){
+                                    //加载上一次的页面
+                                    $("#"+qsd.qscontainer).html(qsd.loaddata.html);
+                                    qsd.loadAllPageValue();
+                                    qsd.bindDataHref();
+                                    qsd.browser.bindScrollPerfect();
+                                    qsd.browser.getPerfectScrollPosition();
+
+                                }else if(qsd.coursejson['page'] == undefined){
                                     qsd.goToUrl(qsd._default["indexfile"]);
                                 }else{
                                     qsd.goToUrl(qsd.coursejson['page']);
                                 }
                             }
 
+                            if(qsd.type == "course"){
+                                $("#qsc_course_toolbar").css("display","block");
+                                $("#qsc_course_toolbar").css("width","0%");
+                                qsd.course.toolbar.hideAll();
+                                //加载toolbar动效
+                                var origin = { width : 0 };
+                                var target = { width : 80  };
+                                var ToolbarShowTween = new TWEEN.Tween(origin).to(target, 500).onUpdate(function(){
+                                    $("#qsc_course_toolbar").css("width",origin.width+"%");
+                                }).easing(TWEEN.Easing.Quintic.InOut).delay(800).start()
+                                    .onComplete(function(){
 
-                            $("#qsc_course_toolbar").css("display","block");
-                            $("#qsc_course_toolbar").css("width","0%");
-                            qsd.course.toolbar.hideAll();
-                            //加载toolbar动效
-                            var origin = { width : 0 };
-                            var target = { width : 80  };
-                            var ToolbarShowTween = new TWEEN.Tween(origin).to(target, 500).onUpdate(function(){
-                                $("#qsc_course_toolbar").css("width",origin.width+"%");
-                            }).easing(TWEEN.Easing.Quintic.InOut).delay(800).start()
-                                .onComplete(function(){
-                                    qsd.course.goNextAction();
-                                });
+                                        if(qsd.load){
+                                            qsd.course._actionpointer = qsd.loaddata.action;
+                                            qsd.course._steppointer = qsd.loaddata.step;
+                                        }
+
+                                        qsd.course.goNextAction();
+                                    });
+                            }else if(qsd.type=="exam"){
+                                $("#qsc_toolbar_placeholder").css("display","none");
+                                $("#qsc_exam_keypoint").css("display","block");
+
+                                //加载考核要点
+                                var exampoint = qsd.course.getExamPoints();
+                                for(var i in exampoint){
+                                    $("#qsc_e_keypoints").append("<li>"+exampoint[i]+"</li>");
+                                }
+
+                                $("body").animate({scrollTop:$("#qsc_e_keypoints").offset().top+"px"},2000);
+
+                                //加载toolbar动效
+                                $("#qsc_exam_toolbar").css("display","block");
+                                $("#qsc_exam_toolbar").css("width","0");
+                                var origin = { width : 0 };
+                                var target = { width : 200  };
+                                var ToolbarShowTween = new TWEEN.Tween(origin).to(target, 500).onUpdate(function(){
+                                    $("#qsc_exam_toolbar").css("width",origin.width+"px");
+                                }).easing(TWEEN.Easing.Quintic.InOut).delay(1000).start()
+                                    .onComplete(function(){
+                                        qsd.exam.init();
+                                    });
+
+                            }
+
+
 
 
                         });
@@ -269,6 +369,33 @@ function qsdecoder(){
             $("#"+this.qscontainer).find("[data-href]").not("link").not("script").on("click",function(){
                 qsd.goToUrl($(this).attr("data-href"));
             });
+
+            //考核模式下还要绑定考核元素事件
+            if(qsd.type == "exam" && qsd.exam._elementNeedToBindStack.length > 0){
+                qsd.exam.bindEvent();
+            }
+        },
+
+        //当按下保存的时候,所有页面中的input值将被安插到html代码中进行保存.
+        saveAllPageValue: function(){
+            $.each($("input"),function(i,o){
+                $(this).attr("data-qsc-save-value",$(this).val());
+            });
+            $.each($("textarea"),function(i,o){
+                $(this).attr("data-qsc-save-value",$(this).val());
+            });
+            $.each($("option"),function(i,o){
+                $(this).attr("data-qsc-save-value",$(this).val());
+            });
+        },
+
+        //当加载进度时,将所有被保存的input的值重新加载回页面中
+        loadAllPageValue: function(){
+            $.each($("[data-qsc-save-value]"),function(i,o){
+                var value = $(this).attr("data-qsc-save-value");
+                $(this).val(value);
+                $(this).removeAttr("data-qsc-save-value");
+            });
         },
 
         //绑定的事件将记录在这里
@@ -294,6 +421,7 @@ function qsdecoder(){
             this.eventSet.push(temp);
 
             element.on(event,fn);
+            qsd.exam.bindEvent();
 
         },
 
@@ -339,14 +467,21 @@ function qsdecoder(){
             //step总数
             _steplength: 0,
 
+            //所有步骤总数
+            _allactionlength: 0,
+
+            //当前已经走过的步骤总数
+            _actionprogress: 0,
+
             //初始化部分信息
             init: function(){
                 this._steplength = qsd.coursejson["steps"].length;
-                this.toolbar.clearIndicators();
+                this.toolbar.init();
                 this.mask.init();
 
                 for(var i=0;i<this._steplength;i++){
                     this.toolbar.addIndicator(i);
+                    this._allactionlength += qsd.coursejson["steps"][i]["actions"].length;
                 }
 
                 $(".qsc_correct_icon").css("display","none");
@@ -360,6 +495,16 @@ function qsdecoder(){
             //获取课程描述
             getCourseDescription: function(){
                 return qsd.coursejson["coursedescription"];
+            },
+
+            //获取考核描述
+            getExamDescription: function(){
+                return qsd.coursejson["examdescription"];
+            },
+
+            //获取考核要点
+            getExamPoints: function(){
+                return qsd.coursejson["exampoints"];
             },
 
             //获取step文字,num计数从0开始
@@ -537,12 +682,27 @@ function qsdecoder(){
 
             //进行下一步的教程
             goNextAction: function(){
+
+                if(qsd.load){
+                    if(this._actionpointer - 1 < 0){
+                        if(this._steppointer - 1 < 0){
+                            this._steppointer = -1;
+                        }else{
+                            this._steppointer -= 1;
+                            this._actionpointer = qsd.coursejson["steps"][this._steppointer]["actions"].length - 1;
+                        }
+                    }else{
+                        this._actionpointer -= 1;
+                    }
+                }
+
                 var actionType = "action";
                 if(this._steppointer == -1){
                     this._steppointer++;
                     actionType = "first";
                 }
                 this._actionpointer++;
+                this._actionprogress++;
 
                 //自动加载下一个step
                 if(this._actionpointer>=qsd.coursejson["steps"][this._steppointer]["actions"].length){
@@ -550,6 +710,13 @@ function qsdecoder(){
                     this._steppointer++;
                     if(this._steppointer>=this._steplength){
                         //找不到下一步骤了
+
+                        //发送进度已完成的请求
+                        qsd.browser.saveRequest("",qsd.coursefileid,
+                            0,
+                            0, //这里两个零是无关紧要的,设置成什么都可以
+                            100);
+
                         this.toolbar.showFinishToolBar();
                         this.mask.showFullMask();
                         return;
@@ -557,6 +724,10 @@ function qsdecoder(){
                     this._actionpointer = 0;
                 }
 
+                if(qsd.load){
+                    actionType = "first";
+                    qsd.load = false;
+                }
                 //阻止默认事件
                 if(this.getNowPreventDefault()){
                     this.preventDefault();
@@ -571,8 +742,7 @@ function qsdecoder(){
                 $("#qsc_mask_top").focus();
                 this.mask.setRealHoleToFull();
 
-
-                this.toolbar.setStepNum(this._steppointer+1);
+                this.toolbar.setStepNum(parseInt(this._steppointer)+1);
                 var isActionDescChanged = false;
                 if($("#qsc_action_desc").html()==this.getNowActionDesc()){
                     isActionDescChanged = true;
@@ -583,7 +753,6 @@ function qsdecoder(){
                     this.toolbar.setStepText(this.getNowStep());
                     this.toolbar.showAnimate(this.listenEvent);
                     this.scrollPageToElement(function(){
-                        console.log("asd");
                         qsd.course.mask.scrollToElement(qsd.coursejson["steps"][qsd.course._steppointer]["actions"][qsd.course._actionpointer]["blinkid"]);
                     });
 
@@ -612,6 +781,12 @@ function qsdecoder(){
                 var selector = "[data-qscid='"+this.getNowctionQscId()+"']";
                 var tempele = $(selector);
                 var tempele2 = $(selector);
+
+                if(tempele.length == 0){
+                    console.error("could not found [data-qscid='"+this.getNowctionQscId()+"']");
+                    return;
+                }
+
                 while(tempele[0] != $("body")[0]){
                     if(tempele.parent().css("overflow") == "scroll"
                         || tempele.parent().css("overflow-x") == "scroll"
@@ -678,6 +853,13 @@ function qsdecoder(){
             //关于工具栏的所有界面设置
             toolbar: {
 
+
+                //初始化操作
+                init: function(){
+                    this.clearIndicators();
+                    this.bindSaveAndQuit();
+                },
+
                 //设置step文字
                 setStepText: function(text){
                     $("#qsc_step").html(text);
@@ -705,6 +887,21 @@ function qsdecoder(){
                 //添加指示点,利用id进行定位
                 clearIndicators: function(){
                     $(".qsc_t_indicator_container").html("");
+                },
+
+                //绑定退出按钮
+                bindSaveAndQuit: function(){
+                    $("#qsc_saveandquit").click(function(){
+                        if($("#qsc_saveandquit").html() == "<span class=\"fa fa-sign-out\"></span>&nbsp;&nbsp;保存学习进度并退出"){
+                            $("#qsc_saveandquit").html("<span class=\"fa fa-sign-out\"></span>&nbsp;&nbsp;正在保存...");
+                            //发送保存请求
+                            qsd.saveAllPageValue();
+                            qsd.browser.saveRequest($("#"+qsd.qscontainer).html(),qsd.coursefileid,
+                                qsd.course._steppointer,
+                                qsd.course._actionpointer,
+                                Math.round(qsd.course._actionprogress/qsd.course._allactionlength*10000)/100 );
+                        }
+                    });
                 },
 
                 //隐藏所有元素
@@ -755,7 +952,6 @@ function qsdecoder(){
                     $("#qsc_action").one(animationEnd,function(){
                         $("#qsc_action").removeClass("animated fadeOutUp");
                         $("#qsc_action").unbind(animationEnd);
-
                         qsd.course.toolbar.setActionText(qsd.course.getNowAction());
                         $("#qsc_action").addClass("animated fadeInUp");
                         $("#qsc_action").one(animationEnd,function(){
@@ -788,7 +984,6 @@ function qsdecoder(){
                         $("#qsc_action").one(animationEnd,function(){
                             $("#qsc_action").removeClass("animated fadeOut");
                             $("#qsc_action").unbind(animationEnd);
-
                             qsd.course.toolbar.setActionText(qsd.course.getNowAction());
                             $("#qsc_action").addClass("animated fadeIn");
                             $("#qsc_action").one(animationEnd,function(){
@@ -1330,7 +1525,283 @@ function qsdecoder(){
 
 
 
+        },
+
+        //关于考核的事件绑定在这里
+        exam: {
+
+            //用来记录计时器
+            _examtimer: null,
+
+            //记录时间
+            _hour: 0,
+            _min: 0,
+            _sec: 0,
+
+            //课程允许最长考核时间
+            examtime : 0,
+
+            //用来记录考试情况
+            resultstack: {},
+
+            //记录需要被绑定事件的考核元素id,event和expectedvalue
+            _elementNeedToBindStack: [],
+
+            //初始化相关设置
+            init: function(){
+                qsd.exam.startTiming();
+                qsd.exam.initResultStack();
+
+                //提交考卷
+                $("#qsc_e_handin_btn").click(function(){
+                    qsd.exam.handInPaper();
+                });
+
+                qsd.exam.examtime =qsd.coursejson["examtime"];
+            },
+
+            //开始计时器
+            startTiming: function(){
+                this._examtimer = setInterval(function(){
+                    qsd.exam._sec++;
+                    if(qsd.exam._sec>=60){
+                        qsd.exam._min++;
+                        qsd.exam._sec = 0;
+                        if(qsd.exam._min>=60){
+                            qsd.exam._hour++;
+                            qsd.exam._min = 0;
+                        }
+                    }
+                    qsd.exam._setTimerText();
+                },1000);
+            },
+
+            //开始计时器
+            stopTiming: function(){
+                clearInterval(this._examtimer);
+            },
+
+            //设置时间显示到界面上
+            _setTimerText: function(){
+                var hour = this._hour>=10? this._hour : "0"+this._hour;
+                var min = this._min>=10? this._min : "0"+this._min;
+                var sec = this._sec>=10? this._sec : "0"+this._sec;
+                $("#qsc_e_timer").html(hour+":"+min+":"+sec);
+            },
+
+            //初始化考试情况
+            initResultStack: function(){
+                for(var i in qsd.coursejson["steps"]){
+                    for(var k in qsd.coursejson["steps"][i]["actions"]){
+                        var action = qsd.coursejson["steps"][i]["actions"][k];
+                        if(action["check"] != undefined){
+                            if(action["check"]){
+                                qsd.exam.resultstack[action["qscid"]] = false;
+                                var temp = {};
+                                temp.qscid = action["qscid"];
+                                temp.event = action["event"];
+                                temp.errortext = action["errortext"];
+                                temp.value = action["expectedvalue"] == undefined ? "" : action["expectedvalue"];
+                                temp.or = action["or"] == undefined ? "none" : "parent";
+                                qsd.exam._elementNeedToBindStack.push(temp);
+                            }
+                        }
+                        if(action["or"] != undefined){
+                            for(var j in action["or"]){
+                                qsd.exam.resultstack[action["or"][j]["qscid"]] = false;
+                                var temp = {};
+                                temp.qscid = action["or"][j]["qscid"];
+                                temp.event = action["or"][j]["event"];
+                                temp.value = action["or"][j]["expectedvalue"] == undefined ? "" : action["or"][j]["expectedvalue"];
+                                temp.or = "child";
+                                qsd.exam._elementNeedToBindStack.push(temp);
+                            }
+                        }
+                    }
+                }
+                qsd.exam.bindEvent();
+            },
+
+            //绑定事件,用来判断考试情况
+            bindEvent: function(){
+                if(qsd.exam._elementNeedToBindStack.length <= 0){
+                    return;
+                }
+                for(var i in qsd.exam._elementNeedToBindStack){
+                    (function(i){
+                        var temp = qsd.exam._elementNeedToBindStack[i];
+                        var ele = $("[data-qscid='"+temp.qscid+"']");
+                        if(ele.length > 0){
+
+                            if(ele.attr("data-exam-bind") == "true"){
+                                return;
+                            }else{
+                                //设置一个已经绑定了事件的标记
+                                ele.attr("data-exam-bind","true");
+                                //绑定事件
+                                switch(temp.event){
+                                    case "checkvalue":
+                                        var checktimer = setInterval(function(){
+                                            if(ele.val() == temp.value){
+                                                qsd.exam.resultstack[temp.qscid] = true;
+                                                clearInterval(checktimer);
+                                            }else{
+                                                qsd.exam.resultstack[temp.qscid] = false;
+                                            }
+                                        },500);
+                                        break;
+                                    case "click":
+                                        ele.bind("click",function(){
+                                            qsd.exam.resultstack[temp.qscid] = true;
+                                        });
+                                        break;
+                                    case "keydown":
+                                        ele.bind("keydown",function(e){
+                                            if(e.which == temp.value){
+                                                qsd.exam.resultstack[temp.qscid] = true;
+                                            }
+                                        });
+                                        break;
+                                }
+                            }
+
+                        }
+                    })(i);
+
+
+                }
+            },
+
+            //计算考试分数
+            calScore: function(){
+                //操作分,60分上限
+                var opeScore = 60;
+
+                //时间分,40分上限
+                var timeScore = 40;
+
+                //计算并去除or操作
+                for(var i=0; i<qsd.exam._elementNeedToBindStack.length;i++){
+                    var temp = qsd.exam._elementNeedToBindStack[i];
+                    var ele = $("[data-qscid='"+temp.qscid+"']");
+                    if(temp.or == "parent"){
+                        var res = qsd.exam.resultstack[temp.qscid];
+                        var k = 1;
+                        while(qsd.exam._elementNeedToBindStack[i+k].or == "child"){
+                            res = qsd.exam.resultstack[qsd.exam._elementNeedToBindStack[i+k].qscid] || res;
+                            delete qsd.exam.resultstack[qsd.exam._elementNeedToBindStack[i+k].qscid];
+                            k++;
+                        }
+                        qsd.exam.resultstack[temp.qscid] = res;
+                        i = i+k;
+                    }
+
+                }
+
+                var count = 0;
+                for(var i in qsd.exam.resultstack){
+                    count++;
+                }
+                var pointScore = opeScore / count;
+                for(var i in qsd.exam.resultstack){
+                    if(!qsd.exam.resultstack[i]){
+                        opeScore -= pointScore;
+                    }
+                }
+                opeScore = opeScore < 0 ? 0 : opeScore;
+
+                //计算时间分
+                var secScore = 0;
+                if(qsd.exam.examtime <= 20){
+                    secScore = timeScore / qsd.exam.examtime;
+                }else{
+                    secScore = timeScore / timeScore;
+                }
+
+                //超出时间
+                var overflowtime = (this._hour * 60 * 60 + this._min *60 + this._sec) - qsd.exam.examtime;
+                if(overflowtime > 0){
+                    timeScore -= overflowtime * secScore;
+                }
+                timeScore = timeScore < 0 ? 0 : timeScore;
+
+                return Math.round((timeScore+opeScore)*10)/10;
+            },
+
+
+            //结算分数
+            handInPaper: function(){
+
+
+
+                clearInterval(qsd.exam._examtimer);
+                var score = qsd.exam.calScore();
+
+                $("#qsc_e_handin_btn").html("<span class=\"fa fa-spinner fa-spin\"></span>&nbsp;&nbsp;正在提交");
+                qsd.browser.sendExamScore(score,qsd.coursefileid,function(){
+                    $(".qsc_e_handin_warp").css("display","none");
+
+
+                    //设置分数到界面上
+                    $("#qsc_exam_score").html(score+"分");
+                    //输出错误提示
+                    for(var i in qsd.exam.resultstack){
+                        if(!qsd.exam.resultstack[i]){
+                            for(var k in qsd.exam._elementNeedToBindStack){
+                                if(qsd.exam._elementNeedToBindStack[k]["qscid"] == i){
+                                    $("#qsc_exam_errinfo").append("<li>"+qsd.exam._elementNeedToBindStack[k]["errortext"]+"</li>");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    //若超过时间,显示时间超过
+                    if((this._hour * 60 * 60 + this._min *60 + this._sec) - qsd.exam.examtime > 0){
+                        $("#qsc_exam_errinfo").append("您用时超过规定的时间");
+                    }
+
+                    //动效处理
+                    $("#qsc_exam_mask").css("display","block");
+                    $("#qsc_exam_mask").css("opacity","0");
+                    $("#qsc_exam_mask").animate({"opacity":"1"});
+
+                    var origin = { opacity : 0,top: 700 };
+                    var target = { opacity : 1,top: 200 };
+                    var showScoreContainerTween = new TWEEN.Tween(origin).to(target, 680).onUpdate(function(){
+                        $("#qsc_exam_mask_content").css("opacity",origin.opacity);
+                        $("#qsc_exam_mask_content").css("top",origin.top+"px");
+                    }).easing(TWEEN.Easing.Exponential.InOut).onComplete(function(){
+                        $("#qsc_exam_score").css("visibility","visible");
+
+                        var originShape = { opacity: "0" , fontsize: "0"};
+                        var targetShape = { opacity : "1" , fontsize: "50" };
+                        var ShowScoreTween = new TWEEN.Tween(originShape).to(targetShape, 400).onUpdate(function(){
+                            $("#qsc_exam_score").css("opacity",originShape.opacity);
+                            $("#qsc_exam_score").css("font-size",originShape.fontsize+"px");
+                        }).easing(TWEEN.Easing.Back.Out).start();
+
+                        //显示错误面板
+                        setTimeout(function(){
+                            if($("#qsc_exam_errinfo").find("li").length > 0){
+                                $("#qsc_exam_errinfo_warp").slideDown("fast");
+                            }
+                        },800);
+                    });
+
+                    showScoreContainerTween.start();
+
+                });
+
+
+
+            }
+
+
+
+
+
         }
+
 
 
     };
@@ -1373,6 +1844,67 @@ function qsdecoder(){
                 },
                 error: function(){
 
+                }
+            });
+        },
+
+        //发送保存当前页面的请求 / 教程学习完毕也会发送一个progress为100的请求
+        saveRequest: function(html,coursefileid,steppointer,actionpointer,progress){
+            $.ajax({
+                url: _backend.saveapi,
+                type: "post",
+                data: {
+                    html: html,
+                    course_file_id: coursefileid,
+                    step: steppointer,
+                    action: actionpointer,
+                    progress: progress
+                },
+                success: function(){
+                    if(progress != 100){
+                        alert("保存成功,点击确定跳转到我的课程");
+                        window.location.href= _backend.saveRedirect;
+                    }
+                },
+                error: function(){
+                    alert("保存失败,请重新尝试");
+                    $("#qsc_saveandquit").html("<span class=\"fa fa-sign-out\"></span>&nbsp;&nbsp;保存学习进度并退出");
+                }
+            });
+        },
+
+        //发送保存当前页面的请求
+        sendExamScore: function(score,coursefileid,cb){
+            $.ajax({
+                url: _backend.examscoreapi,
+                type: "post",
+                data: {
+                    score: score,
+                    course_file_id: coursefileid
+                },
+                success: function(){
+                    cb();
+                },
+                error: function(){
+                    alert("提交失败,请重新尝试");
+                    $("#qsc_e_handin_btn").html("<span class=\"fa fa-check-square-o\"></span>&nbsp;&nbsp;提交答卷");
+                }
+            });
+        },
+
+        //发送加载上一次保存页面的请求
+        loadRequest: function(coursefileid,cb){
+            $.ajax({
+                url: _backend.loadapi,
+                type: "post",
+                data: {
+                    course_file_id: coursefileid
+                },
+                dataType: "json",
+                success: function(data){
+                    cb(data);
+                },
+                error: function(){
                 }
             });
         },
@@ -1436,6 +1968,13 @@ function qsdecoder(){
     //对外公开的api
     var api = {
 
+        //课程系统页面所有 **立即执行的dom操作** 代码必须封装在这里面,系统将在其他组件加载完毕后调用他
+        readyDom: function(fn){
+            if(!qsd.load){
+                fn();
+            }
+        },
+
         //获取分页面
         getPart: function(filename,jqSelectorStr){
             qsd.getPart(filename,jqSelectorStr);
@@ -1470,3 +2009,4 @@ function qsdecoder(){
     return qsd;
 
 };
+
