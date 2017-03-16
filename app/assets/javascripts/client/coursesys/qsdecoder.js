@@ -1877,7 +1877,7 @@ function qsdecoder(){
         sendExamScore: function(score,coursefileid,cb){
             $.ajax({
                 url: _backend.examscoreapi,
-                type: "post",
+                type: "get",
                 data: {
                     score: score,
                     course_file_id: coursefileid
