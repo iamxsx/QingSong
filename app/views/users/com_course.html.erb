@@ -45,13 +45,13 @@
   </div>
   <div class="add_csmd_filewarp">
     <div id="uploadcover"><span class="fa fa-upload"></span>&nbsp;&nbsp;上传系统封面图</div>
-    <%= f.file_field(:course_sys_cover,class: "add_csmd_cover")%>
+    <%= f.file_field(:course_sys_cover,class: "add_csmd_cover",accept: "image/jpg,image/gif,image/png,image/bmp")%>
   </div>
   <% end %>
 
 
   <br>
   <p id="add_csmd_errinfo"></p>
-  <button data-remodal-action="cancel" class="btn_red" id="add_couse_sys_cancel">取消</button>
-  <button data-remodal-action="confirm" class="btn-green" id="add_couse_sys_confirm">提交表格</button>
+  <button data-remodal-action="cancel" class="btn_red" id="add_course_sys_cancel">取消</button>
+  <button class="btn-green" id="add_course_sys_confirm">提交表格</button>
 </div>

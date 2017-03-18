@@ -1,3 +1,37 @@
 #= require client/usercenter/usercenter
+#= require jquery.validate
 #= require remodal
 #= require_self
+
+<%
+#新增课程系统表单前缀
+@add_course_form_prefix = "xxx";
+%>
+
+$ ->
+
+  $("#add_course_sys_form").validate(
+    rules:
+      '<%= @add_course_form_prefix %>[course_sys_name_cn]':
+        required: true
+      '<%= @add_course_form_prefix %>[course_sys_desc]':
+        required: true
+        maxlength: 40
+      '<%= @add_course_form_prefix %>[course_sys_cover]':
+        required: true
+    messages:
+      '<%= @add_course_form_prefix %>[course_sys_name_cn]':
+        required: "请输入您的课程系统名称"
+      '<%= @add_course_form_prefix %>[course_sys_desc]':
+        required: "请输入课程系统描述"
+        maxlength: "课程系统描述不能多于40个字"
+      '<%= @add_course_form_prefix %>[course_sys_cover]':
+        required: "请上传一张封面图"
+    errorPlacement: (error, element) ->
+      $("#add_csmd_errinfo").html(error)
+  )
+
+  $("#add_course_sys_confirm").click ->
+    console.log(JSON.stringify($("#<%= @add_course_form_prefix%>_course_sys_cover").val()))
+    $("#add_course_sys_form").submit()
+
