@@ -5,3 +5,238 @@
  * = require client/usercenter/common
  * = require_self
  */
+
+@ff : "HanHei SC","PingHei","PingFang SC","STHeitiSC-Light","Helvetica Neue","Helvetica","微软雅黑","黑体","Arial",sans-serif;
+
+@normaltext_color: #4A4A4A;
+@darkbluetext_color: #34495e;
+@darkgreentext_color: #53898e;
+@errortext_color: #e14a4a;
+
+@color_btn_green: #61d09c;
+
+.page_warp{
+  text-align: left;
+  padding-right: 70px;
+  padding-left: 40px;
+  padding-top:20px;
+}
+
+#lasttime_learnprogress{
+  display: inline-block;
+  position: relative;
+  width: 700px;
+  height: 96px;
+  background-color: #F6F6F6;
+  margin-bottom: 22px;
+
+  img{
+    display: block;
+    position: absolute;
+    height:64px;
+    width: 64px;
+    left: 16px;
+    top: 16px;
+  }
+
+  div.last_info_container{
+    position: absolute;
+    left: 88px;
+    top:16px;
+    display: block;
+    height: 100%;
+    width: 450px;
+    overflow: hidden;
+
+    p{
+      margin:0;
+
+      &:first-child{
+        color: #a0a0a0;
+        font-size: 14px;
+      }
+
+      &:last-child{
+        color: #555;
+        font-size: 14px;
+      }
+    }
+
+    h1{
+      margin:4px 0;
+      color: @darkbluetext_color;
+      font-size: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  #continuetolearn{
+    position: absolute;
+    right: 16px;
+    top: 34px;
+  }
+
+}
+
+
+.coursesys_container{
+  display: block;
+  width:100%;
+  background-color: #fcfcfc;
+  margin-bottom: 22px;
+
+  .cc_main{
+    display: block;
+    width:100%;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
+
+    img{
+      display: block;
+      float: left;
+      margin-top: 25px;
+      margin-left: 25px;
+      width: 104px;
+      height: 104px;
+    }
+
+    div.cc_titleinfo{
+      display: block;
+      margin-left: 154px;
+      margin-top: 25px;
+
+      h1{
+        color: @darkbluetext_color;
+        letter-spacing: 0.07em;
+        font-size: 24px;
+        margin-bottom: 18px;
+      }
+
+      p{
+        font-size: 14px;
+        letter-spacing: 0.05em;
+        color: #888;
+      }
+
+      .expandbtn{
+        padding: 7px 12px;
+        font-size: 13px;
+      }
+
+    }
+
+
+  }
+
+  .cc_listcontainer{
+    display: none;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+
+    .cc_hr{
+      display: block;
+      margin-left: 25px;
+      margin-right: 25px;
+      height:1px;
+      width: calc (100% - 50px);
+      background-color: #f3f3f3;
+      margin-bottom: 15px;
+    }
+
+    .cc_circle{
+      transition: opacity 280ms cubic-bezier(.4,0,.2,1),
+      top 280ms cubic-bezier(.4,0,.2,1);
+      display: block;
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 30px;
+      background-color: @color_btn_green;
+      top:30px;
+      left: 155px;
+      z-index: 1;
+      opacity: 0;
+    }
+
+    .cc_itemline{
+      display: block;
+      position: relative;
+      width: 100%;
+      height:60px;
+      overflow: hidden;
+
+      &:last-child{
+        margin-bottom: 15px;
+      }
+
+      .cc_done{
+        display: inline-block;
+        position: absolute;
+        top: 20px;
+        left: 82px;
+        background-color: #47D374;
+        color: #fff;
+        padding: 4px;
+        font-size: 12px;
+        z-index: 5;
+      }
+
+      .cc_index{
+        transition: color 280ms cubic-bezier(.4,0,.2,1);
+        display: inline-block;
+        position: absolute;
+        top: 21px;
+        left: 150px;
+        color: #555;
+        width: 40px;
+        text-align: center;
+        font-size: 16px;
+        z-index: 5;
+      }
+
+      .cc_link{
+        transition: color 280ms cubic-bezier(.4,0,.2,1);
+        display: inline-block;
+        position: absolute;
+        top: 21px;
+        left: 210px;
+        color: #555;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 5;
+
+        max-width: 700px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &:hover{
+        .cc_link{
+          color: @color_btn_green;
+
+          &:after{
+            margin-left: 15px;
+            font-size: 12px;
+            content: '前往学习 \f0a9';
+            vertical-align: middle;
+            color: @darkbluetext_color;
+            text-decoration: none;
+            font-family: FontAwesome;
+          }
+        }
+
+        .cc_index{
+          color: #fff;
+        }
+      }
+
+    }
+
+  }
+
+}

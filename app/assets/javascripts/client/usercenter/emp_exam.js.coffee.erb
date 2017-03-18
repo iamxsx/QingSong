@@ -1,2 +1,21 @@
 #= require client/usercenter/usercenter
 #= require_self
+
+$ ->
+  $(".expandbtn").click ->
+    panelname = $(this).attr "data-for"
+    btnele = $(this)
+    $("[data-panel='#{panelname}']").slideToggle(()->
+      if $("[data-panel='#{panelname}']").css("display") == "none"
+        btnele.html "<span class=\"fa fa-chevron-circle-down\"></span>&nbsp;&nbsp;展开"
+      else
+        btnele.html "<span class=\"fa fa-chevron-circle-up\"></span>&nbsp;&nbsp;收起"
+    )
+
+
+  $(".cc_itemline").mouseover ->
+    $(this).parent().find(".cc_circle").css "opacity" , 1
+    $(this).parent().find(".cc_circle").css "top" , $(this).position().top+14+"px"
+
+  $(".cc_listcontainer").mouseout ->
+    $(this).find(".cc_circle").css "opacity" , 0
