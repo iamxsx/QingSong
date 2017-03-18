@@ -3,6 +3,11 @@
   provide :page_tag, @page_tag
   provide :user_email, current_user.email
   @last_login_time = current_user.updated_at
+
+
+  #添加新课程系统的表单提交到哪里:
+  provide :add_course_sys_submit_to , "xxx"
+
 %>
 
 <div class="page_warp">
@@ -20,25 +25,33 @@
 <div class="remodal" data-remodal-id="add_course_sys_modal">
   <button data-remodal-action="close" class="remodal-close"></button>
   <h1>课程系统开发申请表</h1>
+
+  <%= form_for(yield(:add_course_sys_submit_to), :html => {id: "add_course_sys_form"}) do |f| %>
   <div class="add_csmd_inputgroup">
-    <label for="add_csmd_name"><span class="fa fa-book"></span>&nbsp;&nbsp;课程系统名称</label>
+    <%= f.label(:course_sys_name_cn,
+                content_tag(:span, "    课程系统名称", class: "fa fa-book"))
+    %>
     <div>
-      <input id="add_csmd_name" placeholder="公司中使用的某个办公系统的名字,例如:青松财务系统">
+      <%= f.text_field(:course_sys_name_cn, placeholder: "公司中使用的某个办公系统的名字,例如:青松财务系统") %>
     </div>
   </div>
   <div class="add_csmd_inputgroup">
-    <label for="add_csmd_desc"><span class="fa fa-pencil"></span>&nbsp;&nbsp;课程系统描述</label>
+    <%= f.label(:course_sys_desc,
+                content_tag(:span, "    课程系统描述", class: "fa fa-pencil"))
+    %>
     <div>
-      <input id="add_csmd_desc" placeholder="请描述简要您的系统">
+      <%= f.text_field(:course_sys_desc, placeholder: "请描述简要您的系统") %>
     </div>
   </div>
   <div class="add_csmd_filewarp">
     <div id="uploadcover"><span class="fa fa-upload"></span>&nbsp;&nbsp;上传系统封面图</div>
-    <input id="add_csmd_cover" placeholder="请描述简要您的系统" type="file">
+    <%= f.file_field(:course_sys_cover,class: "add_csmd_cover")%>
   </div>
+  <% end %>
 
 
   <br>
+  <p id="add_csmd_errinfo"></p>
   <button data-remodal-action="cancel" class="btn_red" id="add_couse_sys_cancel">取消</button>
   <button data-remodal-action="confirm" class="btn-green" id="add_couse_sys_confirm">提交表格</button>
 </div>

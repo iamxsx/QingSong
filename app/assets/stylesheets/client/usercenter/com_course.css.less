@@ -97,7 +97,7 @@
     line-height:40px;
   }
 
-  #add_csmd_cover{
+  .add_csmd_cover{
     position: absolute;
     top:0;
     left: 0;
@@ -107,14 +107,22 @@
     height:40px;
     cursor: pointer;
 
-    &:hover,&:focus{
 
-      #uploadcover{
-          background-color: lighten(@darkbluetext_color,10%);
-      }
-    }
 
   }
 
+  &:hover,&:focus{
+
+    #uploadcover{
+      background-color: lighten(@darkbluetext_color,10%);
+    }
+  }
+
+}
+
+
+#add_csmd_errinfo{
+  color: @errortext_color;
+  margin:20px 0;
 
 }
