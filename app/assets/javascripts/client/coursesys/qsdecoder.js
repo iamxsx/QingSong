@@ -53,16 +53,16 @@ function qsdecoder(){
         router: "/sys/load-course",
 
         //请求保存页面的路径
-        saveapi: "/sys/save-page",
+        saveapi: "/sys/save-unfinished-page",
 
         //请求加载之前保存页面的路径
-        loadapi: "api/load-page",
+        loadapi: "/sys/load-unfinished-page",
 
         //保存完之后跳转的链接
         saveRedirect: "http://localhost:3000/users/emp-course",
 
         //考试完成发送分数到这个链接
-        examscoreapi: "api/send-score",
+        examscoreapi: "/sys/send-score",
 
         //用来适配产品环境的 '/preview' 和 '/ultimate' 两个版本的路径设置
         publishfolder: "/preview"

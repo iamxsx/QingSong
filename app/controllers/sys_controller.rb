@@ -1,6 +1,7 @@
 class SysController < ApplicationController
 
   layout false
+
   def course_sys
     @course_sys_name = params[:sys_name]
     @company_id = params[:company_id]
@@ -37,6 +38,50 @@ class SysController < ApplicationController
     end
   end
 
+  def save_unfinished_page
+    html_content = params[:html]
+    course_id = params[:course_file_id]
+    step = params[:step]
+    action = params[:action]
+    progress = params[:progress]
 
+    if UserCourse.save({
+                           :html_file => html_content,
+                           :course_id => course_id,
+                           :step => step,
+                           :action => action,
+                           :progress => progress
+                       })
+      render :json => {status: 'success'}
+    else
+      render :json => {status: 'failed'}
+    end
+  end
+
+  def load_unfinished_page
+    course_id = params[:course_file_id]
+    @user_course = UserCourse.find_by({
+                                          :course_id => course_id,
+                                          :user_id => current_user.id
+                                      })
+    render :json => {
+        :html => @user_course.html_file,
+        :progress => @user_course.progress,
+        :action => @user_course.action,
+        :step => @user_course.step
+    }
+  end
+
+  def send_score
+    course_id = params[:course_file_id]
+    score = params[:score]
+
+    user_course = UserCourse.find_by({
+                                         :course_id => course_id,
+                                         :user_id => current_user.id
+                                     })
+
+    user_course.update(:score => score)
+  end
 
 end

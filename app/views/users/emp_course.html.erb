@@ -1,7 +1,7 @@
 <%
   provide :title, '青松 - 我的课程'
   provide :page_tag, @page_tag
-  provide :user_email, "1234567890@xxx.com"
+  provide :user_email, current_user.email
 
   @last_login_time = "2017-01-02"
 
@@ -56,9 +56,6 @@
             <div class="cc_hr"></div>
             <div class="cc_circle"></div>
             <% lesson.courses.each do |course| %>
-                <!--
-                  judge whether current user is assigned this course
-                -->
                 <% user_course = course.user_courses.where({:user_id => @current_user_id}).first %>
                 <% if user_course %>
                     <div class="cc_itemline">
