@@ -32,6 +32,8 @@ gem 'jquery-validation-rails'
 gem 'jquery-ui-rails', '~> 6.0', '>= 6.0.1'
 # 图标依赖
 gem 'font-awesome-less', '~> 4.7'
+# vue库
+gem 'vuejs-rails', '~> 2.2', '>= 2.2.1'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
