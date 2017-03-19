@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312144836) do
+ActiveRecord::Schema.define(version: 20170319042152) do
 
   create_table "admin_admin_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email"
@@ -73,7 +73,6 @@ ActiveRecord::Schema.define(version: 20170312144836) do
   create_table "user_courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
     t.integer  "course_id"
-    t.integer  "lesson_id"
     t.text     "html_file",   limit: 65535
     t.integer  "step"
     t.integer  "action"
@@ -83,7 +82,6 @@ ActiveRecord::Schema.define(version: 20170312144836) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.index ["course_id"], name: "index_user_courses_on_course_id", using: :btree
-    t.index ["lesson_id"], name: "index_user_courses_on_lesson_id", using: :btree
     t.index ["user_id"], name: "index_user_courses_on_user_id", using: :btree
   end
 

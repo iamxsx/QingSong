@@ -12,19 +12,19 @@
   @course_file_id= @course_id
 
   #是否加载上次进度 <- 新增 (去掉新增两个字)
-  @load_progress = false;
+  @load_progress = @load_progress
 
   #这节课的课程url地址 <- 新增 (去掉新增两个字)
-  @url_course = "";
+  @url_course = "/course-sys/#{@course_sys_name}/#{@json_filename}/#{@type}/new/#{@company_id}/#{@course_id}/#{@course_sort}"
 
   #这节课的考核url地址 <- 新增 (去掉新增两个字)
-  @url_exam = "";
+  @url_exam = "/course-sys/#{@course_sys_name}/#{@json_filename}/exam/new/#{@company_id}/#{@course_id}/#{@course_sort}"
 
   #公司id
   @company_id = @company_id
 
   #课程中文名
-  @couse_sys_name_cn = "某某系统";
+  @couse_sys_name_cn = @lesson_sys.lesson_name;
 
 
   @index_file = read_course_config(@course_sys_name, @company_id)['indexfile']

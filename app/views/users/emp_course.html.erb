@@ -55,23 +55,38 @@
           <div class="cc_listcontainer" data-panel="lesson-<%= lesson.id %>" style="">
             <div class="cc_hr"></div>
             <div class="cc_circle"></div>
+
             <% lesson.courses.each do |course| %>
                 <% user_course = course.user_courses.where({:user_id => @current_user_id}).first %>
+
                 <% if user_course %>
                     <div class="cc_itemline">
+
                       <% if user_course.is_finished %>
                           <div class="cc_done">已完成</div>
                       <% else %>
                           <div class="cc_done">完成 <%= user_course.progress %>%</div>
                       <% end %>
+
                       <div class="cc_index"><%= course.sort %></div>
-                      <a target="_blank" class="cc_link" href="/course-sys/<%= lesson.lesson_file_name %>/<%= course.filename[0...-5] %>/course/<%= lesson.company_id %>/<%= course.id %>/<%= course.sort %>">
-                        <%= course.course_name %>
-                      </a>
+                      <% if user_course.progress == 0 || user_course.progress == 100 %>
+
+                          <a target="_blank" class="cc_link" href="/course-sys/<%= lesson.lesson_file_name %>/<%= course.filename[0...-5] %>/course/new/<%= lesson.company_id %>/<%= course.id %>/<%= course.sort %>">
+                            <%= course.course_name %>
+                          </a>
+                      <% else %>
+                          <a target="_blank" class="cc_link" href="/course-sys/<%= lesson.lesson_file_name %>/<%= course.filename[0...-5] %>/course/continue/<%= lesson.company_id %>/<%= course.id %>/<%= course.sort %>">
+                            <%= course.course_name %>
+                          </a>
+
+                      <% end %>
                     </div>
 
+
                 <% end %>
+
             <% end %>
+
           </div>
         </div>
 
