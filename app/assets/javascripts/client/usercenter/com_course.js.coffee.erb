@@ -85,6 +85,23 @@
     }
   ]
 }
+
+
+#将 分配之后的内容发送到 这个url
+@send_distribute_to = "/xxx"
+
+#上面这个url,前端发送的内容就像下面这样
+#    {
+#      "course_sys_id": 12,           <-课程系统的id
+#      "diff_pack":{                  <-差异分析包(已经在前端分析了分配情况 修改前和修改后的区别)
+#        "f-1":{ "add": [1,2,3] , "delete": [5]},
+#        "f-3":{ "delete": [3,4]}
+#      }
+#    }
+#
+#    f-n 中的 n 表示 课程文件(具体的某节课)的id
+#    add / delete 表示需要在数据库中新增/删除的项  ,他里面的值是用户id, 上面的例子中, id为3的课程文件取消了对用户id为3和4的分配.
+#    如果没有变化的内容不会显示在里面,按照上面来说,f-2就没有任何变化,f-3没有新增项
 %>
 
 course_sys_json = <%= JSON.generate(@course_sys_json) %>
@@ -170,7 +187,7 @@ $ ->
     #读取缓存
     if course_modified_data["c-"+CourseSysId] == undefined
       course_modified_data["c-"+CourseSysId] = course_data_pack["c-"+CourseSysId]
-      course_modified_data["all"] = false
+      course_modified_data["c-"+CourseSysId]["all"] = false
 
     #计算容器高度
     $(".qs_course_list_container[data-id=#{CourseSysId}]").find(".qs_course_inner").css("height",
@@ -199,7 +216,7 @@ $ ->
       $(this).addClass("active")
       courseFileId = $(this).attr("data-id")
       #获取数据库中已经存在的员工选择
-      if course_modified_data["all"]
+      if course_modified_data["c-"+CourseSysId]["all"]
         empListContainer.find("label[data-id]").find("input").prop("checked",true)
       else
         emplist = course_modified_data["c-"+CourseSysId]["course_list"]
@@ -215,7 +232,7 @@ $ ->
             empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
 
     #初始化第一个模块的员工选择
-    if course_modified_data["all"]
+    if course_modified_data["c-"+CourseSysId]["all"]
       empListContainer.find("label[data-id]").find("input").prop("checked",true)
     else
       courseFileId = courseListContainer.find(".qs_course_distribute:first-child").attr("data-id")
@@ -241,17 +258,17 @@ $ ->
         break
     if allSelected
       $(".qs_distribute_to_all").find("input").prop("checked",allSelected)
-      course_modified_data["all"] = true
+      course_modified_data["c-"+CourseSysId]["all"] = true
 
 
     #分配所有课程给所有员工按钮
     $(".qs_distribute_to_all").find("input").change ->
       checked = $(this).is(":checked")
       if checked
-        course_modified_data["all"] = true
+        course_modified_data["c-"+CourseSysId]["all"] = true
         empListContainer.find("label[data-id]").find("input").prop("checked",true)
       else
-        course_modified_data["all"] = false
+        course_modified_data["c-"+CourseSysId]["all"] = false
         emplist = course_modified_data["c-"+CourseSysId]["course_list"]
         for emp in emplist
           if emp["course_file_id"]+"" == courseFileId
@@ -291,9 +308,9 @@ $ ->
           break
       if allSelected
         $(".qs_distribute_to_all").find("input").prop("checked",allSelected)
-        course_modified_data["all"] = true
+        course_modified_data["c-"+CourseSysId]["all"] = true
       else
-        course_modified_data["all"] = false
+        course_modified_data["c-"+CourseSysId]["all"] = false
         $(".qs_distribute_to_all").find("input").removeAttr("checked")
         modifyCourseData(CourseSysId)
 #          empListContainer.find("label[data-id]").find("input").removeAttr("checked")
@@ -348,11 +365,13 @@ $ ->
       course_data_pack["c-"+courseSysId] = {}
       $.get("<%= @request_for_distribute %>",{"course_sys_id":courseSysId}, (data) ->
         course_data_pack["c-"+courseSysId] = data
-        course_modified_data["c-"+courseSysId] = data
+        data2 = JSON.parse(JSON.stringify(data))
+        course_modified_data["c-"+courseSysId] = data2
       ).fail(()->
         data = <%= JSON.generate(@distribute) %>
         course_data_pack["c-"+courseSysId] = data
-        course_modified_data["c-"+courseSysId] = data
+        data2 = JSON.parse(JSON.stringify(data))
+        course_modified_data["c-"+courseSysId] = data2
       ).always ()->
         #把数据更新到视图中
         renderCourseList(courseSysId)
@@ -372,6 +391,68 @@ $ ->
   $(".qs_distribute_submit").click ->
     #课程系统id
     courseSysId = $(this).parent().attr("data-id")
+
+    #差别分析 - 分析分配前和分配后的区别
+    diff_pack = {}
+
+    #如果是分配所有课程给所有员工,将把所有的实际修改给填充到 course_modified_data 中去
+    if course_modified_data["c-"+courseSysId]["all"]
+      #员工列表
+      emplist = []
+      for emp in course_modified_data["c-"+courseSysId]["emp_list"]
+        emplist.push(emp["id"])
+
+      for course in course_modified_data["c-"+courseSysId]["course_list"]
+        course['distribute'] = emplist
+
+
+    #差别分析过程
+    for oriCourse,i in course_data_pack["c-"+courseSysId]["course_list"]
+      originDistribute = oriCourse["distribute"]
+      for ori,k in originDistribute
+        originDistribute[k] = parseInt(ori)
+      courseFileId = oriCourse["course_file_id"]
+      targetDistribute = course_modified_data["c-"+courseSysId]["course_list"][i]["distribute"]
+      for tar,k in targetDistribute
+        targetDistribute[k] = parseInt(tar)
+
+      diff_pack["f-"+courseFileId] = {}
+
+#      分析被删掉的
+      diff_pack["f-"+courseFileId]["delete"] = []
+      for emp in originDistribute
+        if targetDistribute.indexOf(emp) == -1
+          diff_pack["f-"+courseFileId]["delete"].push(emp)
+
+#      分析新添加的
+      diff_pack["f-"+courseFileId]["add"] = []
+      for emp in targetDistribute
+        if originDistribute.indexOf(emp) == -1
+          diff_pack["f-"+courseFileId]["add"].push(emp)
+
+    #去除空值
+    for f,v of diff_pack
+      if v["delete"].length == 0 && v["add"].length == 0
+        delete diff_pack[f]
+      if v["delete"].length == 0
+        delete v["delete"]
+      if v["add"].length == 0
+        delete v["add"]
+
+    $.ajax(
+      url: "<%= @send_distribute_to %>"
+      type: "post"
+      data:
+        "course_sys_id": courseSysId
+        "diff_pack": diff_pack
+      success: (data)->
+        $(".expand_btn[data-id='#{courseSysId}']").click()
+
+      error: (data)->
+        alert("提交过程中出现了网络问题,请重新尝试")
+        $(".expand_btn[data-id='#{courseSysId}']").click()
+
+    )
 
 
 
