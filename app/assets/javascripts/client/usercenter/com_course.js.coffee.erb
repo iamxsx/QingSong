@@ -1,13 +1,98 @@
 #= require client/usercenter/usercenter
 #= require jquery.validate
 #= require remodal
+#= require vue
 #= require_self
 
 <%
 #新增课程系统表单前缀
 @add_course_form_prefix = "xxx";
+
+#课程系统的信息
+@course_sys_json = [
+  {
+    :course_sys_id => 12,
+    :title=> "一个开发完成的系统",
+    :desc=> "这是一行描述",
+    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
+    :state=> "production"
+  },
+  {
+    :course_sys_id => 13,
+    :title=> "xxx系统",
+    :desc=> "description goes here",
+    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
+    :state=> "wait"
+
+  },
+  {
+    :course_sys_id => 14,
+    :title=> "xxx系统",
+    :desc=> "description goes here",
+    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
+    :state=> "verified"
+
+  },
+  {
+    :course_sys_id => 15,
+    :title=> "xxx系统",
+    :desc=> "description goes here",
+    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
+    :state=> "dev"
+  }
+
+]
+
+#请求课程列表和分配情况的url
+@request_for_distribute = "/xxx"
+
+#这是一个上面url请求返回内容的例子
+@distribute = {
+
+  :emp_list =>[
+    {
+      :id => 1,
+      :name => "张三",
+      :email => "12345@qq.com"
+    },
+    {
+      :id => 2,
+      :name => "李斯",
+      :email => "1122345@qq.com"
+    },
+    {
+      :id => 3,
+      :name => "国文",
+      :email => "112211345@qq.com"
+    },
+    {
+      :id => 4,
+      :name => "少星",
+      :email => "12556745@qq.com"
+    }
+  ],
+
+  :course_list =>[
+    {
+      :course_file_id => 1,
+      :course_name => "这是课程的名字",
+      :distribute => []
+    },
+    {
+      :course_file_id => 2,
+      :course_name => "这是课程的名字2",
+      :distribute => [1,3,4]
+    },
+  ]
+}
 %>
 
+course_sys_json = <%= JSON.generate(@course_sys_json) %>
+
+#用来储存所有的状态
+course_data_pack = {}
+#用来储存变动后的zhuangtai
+course_modified_data = {}
 $ ->
 
   $("#add_course_sys_form").validate(
@@ -34,4 +119,186 @@ $ ->
   $("#add_course_sys_confirm").click ->
     console.log(JSON.stringify($("#<%= @add_course_form_prefix%>_course_sys_cover").val()))
     $("#add_course_sys_form").submit()
+
+
+
+
+
+
+  #注册
+  Vue.component("qs-courseblock",{
+    template: "#qs-courseblock",
+    props: ["state","course-sys-id"],
+    computed:
+#    该课程系统是否处于开发的任意阶段
+      waitState: () ->
+        if(this.state == "wait" || this.state == "dev" || this.state == "verified")
+          return true
+        else
+          return false
+      devInfo: () ->
+        switch this.state
+          when "wait" then return "您的申请表已经提交,等待审核通过"
+          when "verified" then return "您的申请已经审核通过,请等待青松客服与您联系"
+          when "dev" then return "您的系统正在开发中,请耐心等候开发结果"
+      CourseSysId: () ->
+        return this.courseSysId
+
+
+
+
+  })
+
+  Vue.component("qs-course-distribute",{
+    template: "#qs-course-list-container"
+  })
+  #创建根实例
+  new Vue({
+    el: '.page_warp'
+    data:
+      course_syses: course_sys_json
+
+  })
+
+  #渲染课程列表
+  renderCourseList = (CourseSysId) ->
+
+    courseListContainer = $(".qs_course_list_container[data-id=#{CourseSysId}]").find(".qs_course_list")
+    empListContainer = $(".qs_course_list_container[data-id=#{CourseSysId}]").find(".qs_course_emp_list")
+
+    #读取缓存
+    if course_modified_data["c-"+CourseSysId] == undefined
+      course_modified_data["c-"+CourseSysId] = course_data_pack["c-"+CourseSysId]
+
+    #渲染课程列表
+    for course in course_modified_data["c-"+CourseSysId]["course_list"]
+
+      courseListContainer.append("<div class=\"qs_course_distribute\" data-id=\"#{course["course_file_id"]}\">#{course["course_name"]}</div>")
+
+    #渲染员工列表
+    for emp in course_modified_data["c-"+CourseSysId]["emp_list"]
+      empListContainer.append("<label data-id=\"#{emp["id"]}\">\n"+
+                                "<input type=\"checkbox\">\n"+
+                                "<span class=\"fa-stack icon\">\n"+
+                                "<i class=\"fa fa-square-o fa-stack-2x\"></i>\n"+
+                                      "<i class=\"fa fa-check fa-stack-1x\"></i>\n"+
+                                "</span>\n"+
+                                    "<span class=\"content\">#{emp["name"]}(#{emp["email"]})</span>\n"+
+                              "</label>")
+
+    #绑定事件
+    courseListContainer.find(".qs_course_distribute:first-child").addClass("active")
+    courseListContainer.find(".qs_course_distribute").click ->
+      courseListContainer.find(".qs_course_distribute").removeClass("active")
+      $(this).addClass("active")
+      courseFileId = $(this).attr("data-id")
+      #获取数据库中已经存在的员工选择
+      emplist = course_modified_data["c-"+CourseSysId]["course_list"]
+      for emp in emplist
+        if emp["course_file_id"]+"" == courseFileId
+          emplist = emp
+          break
+      empListContainer.find("input[type='checkbox']").removeAttr("checked")
+      if emplist["distribute"].length == empListContainer.find("label[data-id]").length - 1
+        empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
+      for emp in emplist["distribute"]
+        if empListContainer.find("label[data-id='#{emp}']").length>0
+          empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
+
+    #初始化第一个模块的员工选择
+    courseFileId = courseListContainer.find(".qs_course_distribute:first-child").attr("data-id")
+    emplist = course_modified_data["c-"+CourseSysId]["course_list"]
+    for emp in emplist
+      if emp["course_file_id"]+"" == courseFileId
+        emplist = emp
+        break
+    empListContainer.find("input[type='checkbox']").removeAttr("checked")
+    if emplist["distribute"].length == empListContainer.find("label[data-id]").length - 1
+      empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
+    for emp in emplist["distribute"]
+      if empListContainer.find("label[data-id='#{emp}']").length>0
+        empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
+
+
+
+    #人员全选按钮
+    empListContainer.find("label[data-id='all']").change ->
+
+
+    empListContainer.find("label[data-id]").change ->
+      emplist = course_modified_data["c-"+CourseSysId]["emp_list"]
+      dataId = $(this).attr("data-id")
+      if dataId == "all"
+        if $(this).find("input").is(":checked")
+          empListContainer.find("label[data-id]").find("input").prop("checked",true)
+        else
+          empListContainer.find("label[data-id]").find("input").removeAttr("checked")
+      else
+      empListContainer.find("label[data-id='all']").find("input").removeAttr("checked")
+      if emplist.length == empListContainer.find("label[data-id]").find("input:checked").length
+          console.log("allchecked")
+          empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
+        else
+          empListContainer.find("label[data-id='all']").find("input").removeAttr("checked")
+      modifyCourseData(CourseSysId)
+
+
+  #修改缓存的选中情况
+  modifyCourseData = (CourseSysId) ->
+    courseListContainer = $(".qs_course_list_container[data-id=#{CourseSysId}]").find(".qs_course_list")
+    empListContainer = $(".qs_course_list_container[data-id=#{CourseSysId}]").find(".qs_course_emp_list")
+
+    #当前激活的课程id
+    activeCourseId = courseListContainer.find(".qs_course_distribute.active").attr("data-id")
+
+    emplist = []
+    for empItem in empListContainer.find("label[data-id]")
+      if $(empItem).attr("data-id") == "all" && $(empItem).find("input[type='checkbox']").is(":checked")
+        for emp in course_modified_data["c-"+CourseSysId]['emp_list']
+          emplist.push(emp["id"])
+        break
+      else
+        if $(empItem).find("input[type='checkbox']").is(":checked")
+          emplist.push($(empItem).attr('data-id'))
+
+    for course in course_modified_data["c-"+CourseSysId]['course_list']
+      if course['course_file_id']+"" == activeCourseId
+        course['distribute'] = emplist
+        break
+
+
+
+  #扩展按钮
+  $(".expand_btn").click ->
+    courseSysId = $(this).attr("data-id")
+    btn_self = $(this)
+
+
+    #如果还没有读取过数据就读取一次
+    if course_data_pack["c-"+courseSysId] == undefined
+      btn_self.html("<span class=\"fa fa-angle-up\"></span>&nbsp;&nbsp;加载中")
+      course_data_pack["c-"+courseSysId] = {}
+      $.get("<%= @request_for_distribute %>",{"course_sys_id":courseSysId}, (data) ->
+        course_data_pack["c-"+courseSysId] = data
+        course_modified_data["c-"+courseSysId] = data
+      ).fail(()->
+        data = <%= JSON.generate(@distribute) %>
+        course_data_pack["c-"+courseSysId] = data
+        course_modified_data["c-"+courseSysId] = data
+      ).always ()->
+        #把数据更新到视图中
+        renderCourseList(courseSysId)
+        #切换状态
+        $(".qs_course_list_container[data-id='#{courseSysId}']").slideToggle("fast")
+        btn_self.html("<span class=\"fa fa-angle-up\"></span>&nbsp;&nbsp;收起面板")
+    else
+      #切换状态
+      $(".qs_course_list_container[data-id='#{courseSysId}']").slideToggle("fast")
+      if btn_self.html() == "<span class=\"fa fa-angle-down\"></span>&nbsp;&nbsp;分配给员工"
+        btn_self.html("<span class=\"fa fa-angle-up\"></span>&nbsp;&nbsp;收起面板")
+      else
+        btn_self.html("<span class=\"fa fa-angle-down\"></span>&nbsp;&nbsp;分配给员工")
+
+
+
 

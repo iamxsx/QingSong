@@ -17,11 +17,25 @@
       <div class="btn-ghost-green" id="add_course_sys" data-remodal-target="add_course_sys_modal"><span class="fa fa-plus-circle"></span>&nbsp;&nbsp;申请开发课程系统</div>
     </div>
 
-
+    <template v-for="(courseSys,index) in course_syses">
+      <div class="big_courseblock">
+        <qs-courseblock :data-id="courseSys.course_sys_id"
+                        :course-sys-id="courseSys.course_sys_id"
+                        :state="courseSys.state">
+          <img slot="cover" :src="courseSys.cover" >
+          <h1 slot="title">{{ courseSys.title }}</h1>
+          <p slot="desc">{{ courseSys.desc }}</p>
+        </qs-courseblock>
+        <qs-course-distribute v-if="courseSys.state == 'production'"
+                              :data-id="courseSys.course_sys_id">
+        </qs-course-distribute>
+      </div>
+    </template>
   </div>
 </div>
 
 
+<!--课程系统开发表单模态窗-->
 <div class="remodal" data-remodal-id="add_course_sys_modal">
   <button data-remodal-action="close" class="remodal-close"></button>
   <h1>课程系统开发申请表</h1>
@@ -55,3 +69,46 @@
   <button data-remodal-action="cancel" class="btn_red" id="add_course_sys_cancel">取消</button>
   <button class="btn-green" id="add_course_sys_confirm">提交表格</button>
 </div>
+
+<template id="qs-courseblock">
+  <div class="qsc_course_block">
+    <slot name="cover">
+      <img src="">
+    </slot>
+    <div class="basic_info">
+      <slot name="title">
+        <h1>金税三期税收管理系统</h1>
+      </slot>
+      <slot name="desc">
+        <p>这是关于这个系统的描述</p>
+      </slot>
+      <div v-if="waitState" class="dev_info">
+        <span class="fa fa-warning"></span>{{devInfo}}
+      </div>
+      <div v-if="!waitState" class="btn-ghost-green expand_btn" :data-id="CourseSysId"><span class="fa fa-angle-down"></span>&nbsp;&nbsp;分配给员工</div>
+
+    </div>
+  </div>
+</template>
+
+<template id="qs-course-list-container">
+  <div class="qs_course_list_container">
+    <div class="qs_course_inner">
+      <div class="qs_course_list">
+      </div>
+      <div class="qs_course_emp_list">
+
+        <label data-id="all">
+          <input type="checkbox">
+          <span class="fa-stack icon">
+            <i class="fa fa-square-o fa-stack-2x"></i>
+            <i class="fa fa-check fa-stack-1x"></i>
+          </span>
+          <span class="content">全选</span>
+        </label>
+
+      </div>
+      <br style="clear:both">
+    </div>
+  </div>
+</template>
