@@ -274,12 +274,12 @@ $ ->
         else
           empListContainer.find("label[data-id]").find("input").removeAttr("checked")
       else
-      empListContainer.find("label[data-id='all']").find("input").removeAttr("checked")
-      if emplist.length == empListContainer.find("label[data-id]").find("input:checked").length
-          console.log("allchecked")
-          empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
-        else
-          empListContainer.find("label[data-id='all']").find("input").removeAttr("checked")
+        empListContainer.find("label[data-id='all']").find("input").removeAttr("checked")
+        if emplist.length == empListContainer.find("label[data-id]").find("input:checked").length
+            console.log("allchecked")
+            empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
+          else
+            empListContainer.find("label[data-id='all']").find("input").removeAttr("checked")
       modifyCourseData(CourseSysId)
       #判断是否分配给所有员工
       emplist = course_modified_data["c-"+CourseSysId]["emp_list"]
@@ -295,18 +295,19 @@ $ ->
       else
         course_modified_data["all"] = false
         $(".qs_distribute_to_all").find("input").removeAttr("checked")
-        empListContainer.find("label[data-id]").find("input").removeAttr("checked")
-        emplist = course_modified_data["c-"+CourseSysId]["course_list"]
-        for emp in emplist
-          if emp["course_file_id"]+"" == courseFileId
-            emplist = emp
-            break
-        empListContainer.find("input[type='checkbox']").removeAttr("checked")
-        if emplist["distribute"].length == empListContainer.find("label[data-id]").length - 1
-          empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
-        for emp in emplist["distribute"]
-          if empListContainer.find("label[data-id='#{emp}']").length>0
-            empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
+        modifyCourseData(CourseSysId)
+#          empListContainer.find("label[data-id]").find("input").removeAttr("checked")
+#          emplist = course_modified_data["c-"+CourseSysId]["course_list"]
+#          for emp in emplist
+#            if emp["course_file_id"]+"" == courseFileId
+#              emplist = emp
+#              break
+#          empListContainer.find("input[type='checkbox']").removeAttr("checked")
+#          if emplist["distribute"].length == empListContainer.find("label[data-id]").length - 1
+#            empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
+#          for emp in emplist["distribute"]
+#            if empListContainer.find("label[data-id='#{emp}']").length>0
+#              empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
 
 
 
@@ -366,6 +367,11 @@ $ ->
       else
         btn_self.html("<span class=\"fa fa-angle-down\"></span>&nbsp;&nbsp;分配给员工")
 
+
+  #提交分配情况
+  $(".qs_distribute_submit").click ->
+    #课程系统id
+    courseSysId = $(this).parent().attr("data-id")
 
 
 
