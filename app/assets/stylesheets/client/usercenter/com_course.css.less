@@ -204,6 +204,7 @@
 }
 
 .qs_course_inner{
+  position: relative;
   background: #f8f8f8;
   display: block;
   width:100%;
@@ -216,6 +217,7 @@
   float: left;
   width: 70%;
   min-height: 270px;
+  height:100%;
 }
 
 .qs_course_emp_list{
@@ -224,6 +226,7 @@
   width: 30%;
   min-height:270px;
   background: #fff;
+  height:100%;
 }
 
 .qs_course_distribute{
@@ -260,7 +263,9 @@
   }
 }
 
-.qs_course_emp_list{
+
+
+.qs_course_emp_list,.qs_distribute_to_all{
 
   label{
     display: block;
@@ -318,4 +323,18 @@
     color: #555;
   }
 
+}
+
+.qs_distribute_to_all{
+  position: absolute;
+  padding:0 16px 0 8px;
+  bottom:16px;
+  left:20px;
+  height:40px;
+  background: #fff;
+  border-radius: 5px;
+  label{
+    margin:0;
+    padding-left:0;
+  }
 }

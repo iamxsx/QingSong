@@ -76,13 +76,13 @@
     {
       :course_file_id => 1,
       :course_name => "这是课程的名字",
-      :distribute => []
+      :distribute => [2,3]
     },
     {
       :course_file_id => 2,
       :course_name => "这是课程的名字2",
-      :distribute => [1,3,4]
-    },
+      :distribute => [1,2,3,4]
+    }
   ]
 }
 %>
@@ -163,12 +163,18 @@ $ ->
   #渲染课程列表
   renderCourseList = (CourseSysId) ->
 
+
     courseListContainer = $(".qs_course_list_container[data-id=#{CourseSysId}]").find(".qs_course_list")
     empListContainer = $(".qs_course_list_container[data-id=#{CourseSysId}]").find(".qs_course_emp_list")
 
     #读取缓存
     if course_modified_data["c-"+CourseSysId] == undefined
       course_modified_data["c-"+CourseSysId] = course_data_pack["c-"+CourseSysId]
+      course_modified_data["all"] = false
+
+    #计算容器高度
+    $(".qs_course_list_container[data-id=#{CourseSysId}]").find(".qs_course_inner").css("height",
+                                                course_modified_data["c-"+CourseSysId]["course_list"].length * 40 + 71 +"px")
 
     #渲染课程列表
     for course in course_modified_data["c-"+CourseSysId]["course_list"]
@@ -193,6 +199,26 @@ $ ->
       $(this).addClass("active")
       courseFileId = $(this).attr("data-id")
       #获取数据库中已经存在的员工选择
+      if course_modified_data["all"]
+        empListContainer.find("label[data-id]").find("input").prop("checked",true)
+      else
+        emplist = course_modified_data["c-"+CourseSysId]["course_list"]
+        for emp in emplist
+          if emp["course_file_id"]+"" == courseFileId
+            emplist = emp
+            break
+        empListContainer.find("input[type='checkbox']").removeAttr("checked")
+        if emplist["distribute"].length == empListContainer.find("label[data-id]").length - 1
+          empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
+        for emp in emplist["distribute"]
+          if empListContainer.find("label[data-id='#{emp}']").length>0
+            empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
+
+    #初始化第一个模块的员工选择
+    if course_modified_data["all"]
+      empListContainer.find("label[data-id]").find("input").prop("checked",true)
+    else
+      courseFileId = courseListContainer.find(".qs_course_distribute:first-child").attr("data-id")
       emplist = course_modified_data["c-"+CourseSysId]["course_list"]
       for emp in emplist
         if emp["course_file_id"]+"" == courseFileId
@@ -205,26 +231,40 @@ $ ->
         if empListContainer.find("label[data-id='#{emp}']").length>0
           empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
 
-    #初始化第一个模块的员工选择
-    courseFileId = courseListContainer.find(".qs_course_distribute:first-child").attr("data-id")
-    emplist = course_modified_data["c-"+CourseSysId]["course_list"]
-    for emp in emplist
-      if emp["course_file_id"]+"" == courseFileId
-        emplist = emp
+    #判断是否分配给所有员工
+    emplist = course_modified_data["c-"+CourseSysId]["emp_list"]
+    empCount = emplist.length
+    allSelected = true
+    for course in course_modified_data["c-"+CourseSysId]["course_list"]
+      if course["distribute"].length != empCount
+        allSelected = false
         break
-    empListContainer.find("input[type='checkbox']").removeAttr("checked")
-    if emplist["distribute"].length == empListContainer.find("label[data-id]").length - 1
-      empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
-    for emp in emplist["distribute"]
-      if empListContainer.find("label[data-id='#{emp}']").length>0
-        empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
+    if allSelected
+      $(".qs_distribute_to_all").find("input").prop("checked",allSelected)
+      course_modified_data["all"] = true
 
 
+    #分配所有课程给所有员工按钮
+    $(".qs_distribute_to_all").find("input").change ->
+      checked = $(this).is(":checked")
+      if checked
+        course_modified_data["all"] = true
+        empListContainer.find("label[data-id]").find("input").prop("checked",true)
+      else
+        course_modified_data["all"] = false
+        emplist = course_modified_data["c-"+CourseSysId]["course_list"]
+        for emp in emplist
+          if emp["course_file_id"]+"" == courseFileId
+            emplist = emp
+            break
+        empListContainer.find("input[type='checkbox']").removeAttr("checked")
+        if emplist["distribute"].length == empListContainer.find("label[data-id]").length - 1
+          empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
+        for emp in emplist["distribute"]
+          if empListContainer.find("label[data-id='#{emp}']").length>0
+            empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
 
-    #人员全选按钮
-    empListContainer.find("label[data-id='all']").change ->
-
-
+    #分配勾选按钮(人名前的按钮)
     empListContainer.find("label[data-id]").change ->
       emplist = course_modified_data["c-"+CourseSysId]["emp_list"]
       dataId = $(this).attr("data-id")
@@ -241,6 +281,33 @@ $ ->
         else
           empListContainer.find("label[data-id='all']").find("input").removeAttr("checked")
       modifyCourseData(CourseSysId)
+      #判断是否分配给所有员工
+      emplist = course_modified_data["c-"+CourseSysId]["emp_list"]
+      empCount = emplist.length
+      allSelected = true
+      for course in course_modified_data["c-"+CourseSysId]["course_list"]
+        if course["distribute"].length != empCount
+          allSelected = false
+          break
+      if allSelected
+        $(".qs_distribute_to_all").find("input").prop("checked",allSelected)
+        course_modified_data["all"] = true
+      else
+        course_modified_data["all"] = false
+        $(".qs_distribute_to_all").find("input").removeAttr("checked")
+        empListContainer.find("label[data-id]").find("input").removeAttr("checked")
+        emplist = course_modified_data["c-"+CourseSysId]["course_list"]
+        for emp in emplist
+          if emp["course_file_id"]+"" == courseFileId
+            emplist = emp
+            break
+        empListContainer.find("input[type='checkbox']").removeAttr("checked")
+        if emplist["distribute"].length == empListContainer.find("label[data-id]").length - 1
+          empListContainer.find("label[data-id='all']").find("input").prop("checked",true)
+        for emp in emplist["distribute"]
+          if empListContainer.find("label[data-id='#{emp}']").length>0
+            empListContainer.find("label[data-id='#{emp}']").find("input").prop("checked",true)
+
 
 
   #修改缓存的选中情况
