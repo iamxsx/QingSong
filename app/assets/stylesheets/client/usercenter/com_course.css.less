@@ -3,5 +3,378 @@
  * = require normalize
  * = require font-awesome-importer
  * = require client/usercenter/common
+ * = require remodal
+ * = require remodal-default-theme
  * = require_self
  */
+
+@ff : "HanHei SC","PingHei","PingFang SC","STHeitiSC-Light","Helvetica Neue","Helvetica","微软雅黑","黑体","Arial",sans-serif;
+
+@normaltext_color: #4A4A4A;
+@darkbluetext_color: #34495e;
+@darkgreentext_color: #53898e;
+@errortext_color: #e14a4a;
+
+@color_btn_green: #61d09c;
+
+.page_warp{
+  text-align: left;
+  padding-right: 70px;
+  padding-left: 40px;
+  padding-top:20px;
+}
+
+#add_course_sys{
+  position: absolute;
+  right:20px;
+  top:20px;
+  font-size:14px;
+}
+
+.remodal h1{
+  font-size: 24px;
+}
+
+.add_csmd_inputgroup{
+  display: inline-block;
+  width:80%;
+  box-sizing: border-box;
+  margin:0 0 32px 0;
+  text-align: left;
+
+  &:nth-of-type(1){
+    margin-top: 56px;
+  }
+
+
+  label{
+    display: block;
+    color: @darkbluetext_color;
+  }
+
+  &>div{
+    display: inline-block;
+    width:100%;
+    height:40px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  input{
+    background: transparent;
+    line-height: 40px;
+    height:40px;
+    width:100%;
+    outline: 0;
+    outline-style: none;
+    box-shadow: 0;
+    border: 0;
+    font-weight: normal;
+  }
+
+}
+
+.add_csmd_filewarp{
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  margin-bottom:56px;
+  width:80%;
+  height: 40px;
+
+  #uploadcover{
+    position: absolute;
+    transition: background 280ms cubic-bezier(.4,0,.2,1),
+    color 280ms cubic-bezier(.4,0,.2,1);
+    top:0;
+    left: 0;
+    display: inline-block;
+    border-radius: 3px;
+    width:200px;
+    height:40px;
+    background: @darkbluetext_color;
+    color: #fff;
+    font-size: 14px;
+    line-height:40px;
+  }
+
+  .add_csmd_cover{
+    position: absolute;
+    top:0;
+    left: 0;
+    display: inline-block;
+    opacity:0;
+    width:200px;
+    height:40px;
+    cursor: pointer;
+
+
+
+  }
+
+  &:hover,&:focus{
+
+    #uploadcover{
+      background-color: lighten(@darkbluetext_color,10%);
+    }
+  }
+
+}
+
+
+#add_csmd_errinfo{
+  color: @errortext_color;
+  margin:20px 0;
+
+}
+
+.big_courseblock{
+  margin-bottom: 25px;
+}
+
+.qsc_course_block{
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 136px;
+  background: #fcfcfc;
+  box-sizing: border-box;
+  padding:20px;
+
+  img{
+    float: left;
+    display: block;
+    width:96px;
+    height:96px;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+  }
+
+  .basic_info{
+    float: left;
+    display: block;
+    margin-left:20px;
+    width:50%;
+    height:96px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+
+    h1{
+      margin:0;
+      font-size: 24px;
+      color: @darkbluetext_color;
+    }
+
+    p{
+      margin:12px 0 0 0;
+      font-size:14px;
+      color: #b8b8b8;
+    }
+
+  }
+
+  .dev_info{
+    display: inline-block;
+    height:33px;
+    background: #f0f0f0;
+    color: #989898;
+    line-height: 33px;
+    font-size: 12px;
+    margin-top: 9px;
+    padding: 0 16px 0 8px;
+
+    span{
+      margin-right: 8px;
+    }
+  }
+
+  .production_preview_block{
+    position: absolute;
+    right:20px;
+    bottom:20px;
+  }
+
+  .version_block{
+    position: absolute;
+    right:20px;
+    top:20px;
+    color: #b8b8b8;
+  }
+
+  .expand_btn{
+    padding: 7px 12px;
+    font-size: 12px;
+    margin-top: 12px;
+  }
+
+}
+
+.qs_course_list_container{
+  display: none;
+  width:100%;
+  background: #dfdfdf;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.qs_course_inner{
+  position: relative;
+  background: #f8f8f8;
+  display: block;
+  width:100%;
+  min-height: 270px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.qs_course_list{
+  display: block;
+  float: left;
+  width: 70%;
+  min-height: 270px;
+  height:100%;
+}
+
+.qs_course_emp_list{
+  display: block;
+  float: left;
+  width: 30%;
+  min-height:270px;
+  background: #fff;
+  height:100%;
+}
+
+.qs_course_distribute{
+  display: block;
+  width:100%;
+  height: 40px;
+  line-height:40px;
+  font-size: 14px;
+  color: #555;
+  text-align: left;
+  padding-left: 20px;
+  border-left: 3px solid transparent;
+
+  //不许选中文字
+  -moz-user-select:none;
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  -khtml-user-select:none;
+  user-select:none;
+
+  cursor: pointer;
+
+  &:hover{
+    color: #777;
+  }
+}
+
+.qs_course_distribute.active{
+  background: #fff;
+  border-left: 3px solid @color_btn_green;
+
+  &:hover{
+    color: #555;
+  }
+}
+
+
+
+.qs_course_emp_list,.qs_distribute_to_all{
+
+  label{
+    display: block;
+    width:100%;
+    height:40px;
+    line-height: 40px;
+    padding-left:24px;
+
+    //不许选中文字
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
+
+    &:hover{
+      .content{
+        color:lighten(@darkbluetext_color,20%);
+      }
+    }
+  }
+
+
+
+  .icon{
+    font-size: 12px;
+    vertical-align: middle;
+    margin-right:8px;
+
+    i:last-child{
+      display: none;
+    }
+
+    i:first-child{
+      color:#ccc;
+    }
+
+  }
+
+  input[type="checkbox"]{
+    display: none;
+
+    &:checked{
+      &+span i:last-child{
+        color: lighten(@darkbluetext_color,20%);
+        display: inline;
+      }
+
+    }
+  }
+
+  .content{
+    font-size:14px;
+    vertical-align: middle;
+    color: #555;
+  }
+
+}
+
+.qs_distribute_to_all{
+  position: absolute;
+  padding:0 16px 0 8px;
+  bottom:16px;
+  left:20px;
+  height:40px;
+  background: #fff;
+  border-radius: 5px;
+  label{
+    margin:0;
+    padding-left:0;
+  }
+}
+
+.qs_distribute_submit{
+  display: block;
+  float: right;
+  margin-top:20px;
+  text-align: center;
+}
+
+.btn_text_green{
+  color: @color_btn_green;
+  text-decoration: none;
+  cursor: pointer;
+
+
+  //不许选中文字
+  -moz-user-select:none;
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  -khtml-user-select:none;
+  user-select:none;
+
+
+  &:hover{
+    text-decoration: underline;
+  }
+}

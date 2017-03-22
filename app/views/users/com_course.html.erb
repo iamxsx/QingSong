@@ -3,8 +3,139 @@
   provide :page_tag, @page_tag
   provide :user_email, current_user.email
   @last_login_time = current_user.updated_at
+
+
+  #添加新课程系统的表单提交到哪里:
+  provide :add_course_sys_submit_to , "xxx"
+
 %>
 
 <div class="page_warp">
-  <h1>课程管理</h1>
+  <div class="panel">
+    <div class="panelcontainer">
+      <h1>公司名下拥有的课程系统</h1>
+      <div class="btn-ghost-green" id="add_course_sys" data-remodal-target="add_course_sys_modal"><span class="fa fa-plus-circle"></span>&nbsp;&nbsp;申请开发课程系统</div>
+    </div>
+
+    <template v-for="(courseSys,index) in course_syses">
+      <div class="big_courseblock">
+        <qs-courseblock :data-id="courseSys.course_sys_id"
+                        :course-sys-id="courseSys.course_sys_id"
+                        :preview="courseSys.preview"
+                        :preview-url="courseSys.preview_url"
+                        :version="courseSys.version"
+                        :state="courseSys.state">
+          <img slot="cover" :src="courseSys.cover" >
+          <h1 slot="title">{{ courseSys.title }}</h1>
+          <p slot="desc">{{ courseSys.desc }}</p>
+        </qs-courseblock>
+        <qs-course-distribute v-if="courseSys.state == 'production'"
+                              :data-id="courseSys.course_sys_id">
+        </qs-course-distribute>
+      </div>
+    </template>
+  </div>
 </div>
+
+
+<!--课程系统开发表单模态窗-->
+<div class="remodal" data-remodal-id="add_course_sys_modal">
+  <button data-remodal-action="close" class="remodal-close"></button>
+  <h1>课程系统开发申请表</h1>
+
+  <%= form_for(yield(:add_course_sys_submit_to), :html => {id: "add_course_sys_form"}) do |f| %>
+  <div class="add_csmd_inputgroup">
+    <%= f.label(:course_sys_name_cn,
+                content_tag(:span, "    课程系统名称", class: "fa fa-book"))
+    %>
+    <div>
+      <%= f.text_field(:course_sys_name_cn, placeholder: "公司中使用的某个办公系统的名字,例如:青松财务系统") %>
+    </div>
+  </div>
+  <div class="add_csmd_inputgroup">
+    <%= f.label(:course_sys_desc,
+                content_tag(:span, "    课程系统描述", class: "fa fa-pencil"))
+    %>
+    <div>
+      <%= f.text_field(:course_sys_desc, placeholder: "请描述简要您的系统") %>
+    </div>
+  </div>
+  <div class="add_csmd_filewarp">
+    <div id="uploadcover"><span class="fa fa-upload"></span>&nbsp;&nbsp;上传系统封面图</div>
+    <%= f.file_field(:course_sys_cover,class: "add_csmd_cover",accept: "image/jpg,image/gif,image/png,image/bmp")%>
+  </div>
+  <% end %>
+
+
+  <br>
+  <p id="add_csmd_errinfo"></p>
+  <button data-remodal-action="cancel" class="btn_red" id="add_course_sys_cancel">取消</button>
+  <button class="btn-green" id="add_course_sys_confirm">提交表格</button>
+</div>
+
+<template id="qs-courseblock">
+  <div class="qsc_course_block">
+    <slot name="cover">
+      <img src="">
+    </slot>
+    <div class="basic_info">
+      <slot name="title">
+        <h1>金税三期税收管理系统</h1>
+      </slot>
+      <slot name="desc">
+        <p>这是关于这个系统的描述</p>
+      </slot>
+      <div v-if="waitState && !previewState" class="dev_info">
+        <span class="fa fa-warning"></span>{{devInfo}}
+      </div>
+      <div v-if="waitState && previewState" class="dev_info">
+        <span class="fa fa-check"></span>开发已完成&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="btn_text_green" :href="previewUrl" target="_blank">查看预览版</a>&nbsp;&nbsp;
+        <a class="btn_text_green" data-for="publish" :data-id="CourseSysId">发布</a>
+      </div>
+      <div v-if="!waitState && previewState" class="dev_info production_preview_block">
+        <span class="fa fa-cloud-upload"></span>发现课程系统可以更新&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="btn_text_green" :href="previewUrl" target="_blank">查看预览版</a>&nbsp;&nbsp;
+        <a class="btn_text_green" data-for="publish" :data-id="CourseSysId">发布</a>
+      </div>
+      <div v-if="!waitState" class="btn-ghost-green expand_btn" :data-id="CourseSysId"><span class="fa fa-angle-down"></span>&nbsp;&nbsp;分配给员工</div>
+      <div v-if="!waitState" class="version_block">版本&nbsp;{{version}}</div>
+      <!--<div v-if="!waitState" class="version_block">{{version}}<span class="fa fa-angle-down"></span></div>-->
+
+    </div>
+  </div>
+</template>
+
+<template id="qs-course-list-container">
+  <div class="qs_course_list_container">
+    <div class="qs_course_inner">
+      <div class="qs_course_list">
+      </div>
+      <div class="qs_distribute_to_all">
+        <label data-id="all">
+          <input type="checkbox">
+          <span class="fa-stack icon">
+            <i class="fa fa-square-o fa-stack-2x"></i>
+            <i class="fa fa-check fa-stack-1x"></i>
+          </span>
+          <span class="content">分配所有课程给所有员工</span>
+        </label>
+      </div>
+      <div class="qs_course_emp_list">
+
+        <label data-id="all">
+          <input type="checkbox">
+          <span class="fa-stack icon">
+            <i class="fa fa-square-o fa-stack-2x"></i>
+            <i class="fa fa-check fa-stack-1x"></i>
+          </span>
+          <span class="content">全选</span>
+        </label>
+
+      </div>
+      <br style="clear:both">
+    </div>
+    <div class="btn-green qs_distribute_submit">确认分配</div>
+    <br style="clear:both">
+  </div>
+</template>
