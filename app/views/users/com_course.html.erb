@@ -21,6 +21,9 @@
       <div class="big_courseblock">
         <qs-courseblock :data-id="courseSys.course_sys_id"
                         :course-sys-id="courseSys.course_sys_id"
+                        :preview="courseSys.preview"
+                        :preview-url="courseSys.preview_url"
+                        :version="courseSys.version"
                         :state="courseSys.state">
           <img slot="cover" :src="courseSys.cover" >
           <h1 slot="title">{{ courseSys.title }}</h1>
@@ -82,10 +85,22 @@
       <slot name="desc">
         <p>这是关于这个系统的描述</p>
       </slot>
-      <div v-if="waitState" class="dev_info">
+      <div v-if="waitState && !previewState" class="dev_info">
         <span class="fa fa-warning"></span>{{devInfo}}
       </div>
+      <div v-if="waitState && previewState" class="dev_info">
+        <span class="fa fa-check"></span>开发已完成&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="btn_text_green" :href="previewUrl" target="_blank">查看预览版</a>&nbsp;&nbsp;
+        <a class="btn_text_green" data-for="publish" :data-id="CourseSysId">发布</a>
+      </div>
+      <div v-if="!waitState && previewState" class="dev_info production_preview_block">
+        <span class="fa fa-cloud-upload"></span>发现课程系统可以更新&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="btn_text_green" :href="previewUrl" target="_blank">查看预览版</a>&nbsp;&nbsp;
+        <a class="btn_text_green" data-for="publish" :data-id="CourseSysId">发布</a>
+      </div>
       <div v-if="!waitState" class="btn-ghost-green expand_btn" :data-id="CourseSysId"><span class="fa fa-angle-down"></span>&nbsp;&nbsp;分配给员工</div>
+      <div v-if="!waitState" class="version_block">版本&nbsp;{{version}}</div>
+      <!--<div v-if="!waitState" class="version_block">{{version}}<span class="fa fa-angle-down"></span></div>-->
 
     </div>
   </div>

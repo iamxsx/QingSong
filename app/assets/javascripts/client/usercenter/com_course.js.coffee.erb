@@ -15,30 +15,46 @@
     :title=> "一个开发完成的系统",
     :desc=> "这是一行描述",
     :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
-    :state=> "production"
+    :state=> "production",
+    :version=> "1.1.0",
+    :preview=> true,
+    :preview_url=> "/xxxx"
   },
   {
     :course_sys_id => 13,
     :title=> "xxx系统",
     :desc=> "description goes here",
     :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
-    :state=> "wait"
-
+    :state=> "wait",
+    :preview=> false,
+    :preview_url=> ""
   },
   {
     :course_sys_id => 14,
     :title=> "xxx系统",
     :desc=> "description goes here",
     :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
-    :state=> "verified"
-
+    :state=> "verified",
+    :preview=> false,
+    :preview_url=> ""
   },
   {
     :course_sys_id => 15,
     :title=> "xxx系统",
     :desc=> "description goes here",
     :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
-    :state=> "dev"
+    :state=> "dev",
+    :preview=> false,
+    :preview_url=> ""
+  },
+  {
+    :course_sys_id => 15,
+    :title=> "xxx系统",
+    :desc=> "description goes here",
+    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
+    :state=> "dev",
+    :preview=> true,
+    :preview_url=> "/xxxx"
   }
 
 ]
@@ -87,7 +103,7 @@
 }
 
 
-#将 分配之后的内容发送到 这个url
+#将 分配之后的内容发送到 这个url (post 形式)
 @send_distribute_to = "/xxx"
 
 #上面这个url,前端发送的内容就像下面这样
@@ -102,6 +118,10 @@
 #    f-n 中的 n 表示 课程文件(具体的某节课)的id
 #    add / delete 表示需要在数据库中新增/删除的项  ,他里面的值是用户id, 上面的例子中, id为3的课程文件取消了对用户id为3和4的分配.
 #    如果没有变化的内容不会显示在里面,按照上面来说,f-2就没有任何变化,f-3没有新增项
+
+
+#发布课程将提交到这个url (post 形式)
+@publish_request_to = "/xxx"
 %>
 
 course_sys_json = <%= JSON.generate(@course_sys_json) %>
@@ -145,11 +165,16 @@ $ ->
   #注册
   Vue.component("qs-courseblock",{
     template: "#qs-courseblock",
-    props: ["state","course-sys-id"],
+    props: ["state","version","course-sys-id","preview","preview-url"],
     computed:
 #    该课程系统是否处于开发的任意阶段
       waitState: () ->
         if(this.state == "wait" || this.state == "dev" || this.state == "verified")
+          return true
+        else
+          return false
+      previewState: () ->
+        if(this.preview == true )
           return true
         else
           return false
@@ -454,5 +479,24 @@ $ ->
 
     )
 
+
+
+
+  $("[data-for='publish']").click ->
+    courseSysId = $(this).attr("data-id")
+    $.ajax(
+      url: "<%= @publish_request_to %>"
+      type: "post"
+      data:
+        "course_sys_id": courseSysId
+        "do": "publish"
+      success: (data)->
+        window.location.reload(true)
+
+      error: (data)->
+        alert("发布过程中出现了网络问题,请重新尝试")
+        window.location.reload(true)
+
+    )
 
 
