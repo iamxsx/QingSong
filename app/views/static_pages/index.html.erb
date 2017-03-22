@@ -12,9 +12,9 @@
     <nav class="pic_nav">
       <a class="brand_logo"></a>
       <ul>
-        <li><a>功能</a></li>
-        <li><a>服务流程</a></li>
-        <li><a>联系我们</a></li>
+        <li><a href="#functions">功能</a></li>
+        <li><a href="#steps">服务流程</a></li>
+        <li><a href="#contactus">联系我们</a></li>
             <li><%= link_to "登录", login_url, class: "loginbtn" %></li>
             <li><%= link_to '注册', register_choose_url %></li>
       </ul>
@@ -22,6 +22,37 @@
     <h1>工作实训从未如此轻松</h1>
     <%= link_to '免费注册', register_choose_url, class: "big_regbtn" %>
   </div>
+</div>
+<div id="functions" class="bigblock">
+  <h2>简单的功能,青松的服务</h2>
+  <div class="img_block">
+    <%= image_tag("indexpages/f1.png" , class: 'left') %>
+    <div class="funtions_intro">
+      <h1>办公系统学习训练</h1>
+      <p>友好的引导式动画，与现实环境一模一样的界面和操作，助您立马上手熟悉办公软件，除去复杂的文字，只剩下简单的操作，降低上岗难度。</p>
+    </div>
+  </div>
+  <div class="img_block">
+    <%= image_tag("indexpages/f2.png" , class: 'left') %>
+    <div class="funtions_intro">
+      <h1>操作考核演练</h1>
+      <p>如果您是员工，您可以在这里对公司办公系统的操作进行演练考核，得知自己的考核情况并巩固学习，如果您是管理员，您可以看到员工的考核成绩，从而评测其工作质量。</p>
+    </div>
+  </div>
+  <div class="img_block">
+    <%= image_tag("indexpages/f3.png" , class: 'left') %>
+    <div class="funtions_intro">
+      <h1>员工管理</h1>
+      <p>管理员可以一目了然地管理整个公司的员工，可以对其学习和考核情况进行管理和操作。甚至可以只让部分员工参与某个课程的学习。</p>
+    </div>
+  </div>
+</div>
+<div class="bigblock blue" id="steps">
+  <h1>服务流程</h1>
+  <%= image_tag("indexpages/steps.png" , class: 'left') %>
+</div>
+<div class="bigblock darkblue" id="contactus">
+  <h3>详情请致电 XXXXXXXXXXX</h3>
 </div>
 
 </body>
