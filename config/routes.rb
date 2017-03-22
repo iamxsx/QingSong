@@ -46,12 +46,13 @@ Rails.application.routes.draw do
   patch '/users/update-attr' => 'users#update_attr'
 
   # sys
-  get '/course-sys/:sys_name/:json_filename/:type/:company_id/:course_id/:course_sort' => 'sys#course_sys'
-
+  get '/course-sys/:sys_name/:json_filename/:type/:status/:company_id/:course_id/:course_sort' => 'sys#course_sys'
   get '/sys/load-course' => 'sys#load_course'
-
   get '/public/course-sys/*file_url.*type' => 'sys#load_file'
 
+  post '/sys/save-unfinished-page' => 'sys#save_unfinished_page'
+  post '/sys/load-unfinished-page' => 'sys#load_unfinished_page'
+  get '/sys/send-score' => 'sys#send_score'
 
   # 注意resources 后面是有个s的，没有加s生成的url不一样
   resources :scores

@@ -1,6 +1,7 @@
 class SysController < ApplicationController
 
   layout false
+
   def course_sys
     @course_sys_name = params[:sys_name]
     @company_id = params[:company_id]
@@ -8,8 +9,16 @@ class SysController < ApplicationController
     @course_sort = params[:course_sort]
     @type = params[:type]
     @course_id = params[:course_id]
+    @status = params[:status]
+
+    if @status == 'new'
+      @load_progress = false
+    else
+      @load_progress = true
+    end
 
     @lesson_sys = Lesson.find_by_lesson_name @course_sys_name
+
     @course_json_content = get_file_content @company_id, @course_sys_name, @json_filename
   end
 
@@ -37,6 +46,68 @@ class SysController < ApplicationController
     end
   end
 
+  def save_unfinished_page
+    user_course = UserCourse.find_by(
+        {
+            :course_id => params[:course_file_id],
+            :user_id => current_user.id
+        }
+    )
 
+    is_finished = false;
+
+    if params[:progress] == '100'
+      is_finished = true
+    end
+
+    if user_course.update(
+        {
+            :html_file => params[:html],
+            :course_id => params[:course_file_id],
+            :step => params[:step],
+            :action => params[:action],
+            :progress => params[:progress],
+            :user_id => current_user.id,
+            :is_finished => is_finished
+        }
+    )
+      render :json => {status: 'success'}
+    else
+      render :json => {status: 'failed'}
+    end
+  end
+
+  def load_unfinished_page
+    user_course = UserCourse.find_by(
+        {
+            :course_id => params[:course_file_id],
+            :user_id => current_user.id
+        }
+    )
+    render :json => {
+        :html => user_course.html_file,
+        :progress => user_course.progress,
+        :action => user_course.action,
+        :step => user_course.step
+    }
+  end
+
+  def send_score
+    course_id = params[:course_file_id]
+    score = params[:score]
+
+    user_course = UserCourse.find_by(
+        {
+            :course_id => course_id,
+            :user_id => current_user.id
+        }
+    )
+
+    if user_course.update(:score => score)
+      render :json => {status: 'success'}
+    else
+      render :json => {status: 'failed'}
+    end
+  end
 
 end

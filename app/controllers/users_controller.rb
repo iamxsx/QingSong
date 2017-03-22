@@ -139,19 +139,11 @@ class UsersController < ApplicationController
     @page_tag = "emp_course"
 
     user = current_user
-
     @lessons = user.lessons
-
     courses = user.user_courses
     @total_courses_count = courses.size
     @course_finished_count = courses.where({'is_finished': true}).size
     @current_user_id = user.id
-
-
-
-    # how to seperate the courses which assign to the user in lesson.courses
-    # user_id + lesson_id => course
-
   end
 
   # 用户-我的考核页面
@@ -253,15 +245,13 @@ class UsersController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
+
   def set_user
     @user = User.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     params.require(:user).permit(:username, :email, :password, :password_confirmation, :invite_code, :phone)
-    # params.permit(:emp_id, :do)
   end
 
 end
