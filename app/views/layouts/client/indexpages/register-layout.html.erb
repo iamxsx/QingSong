@@ -13,9 +13,9 @@
   <div class="container">
     <%= link_to "",root_path,class:"brand_logo" %>
     <ul>
-      <li><a>功能</a></li>
-      <li><a>服务流程</a></li>
-      <li><a>联系我们</a></li>
+      <li><a href="/#functions">功能</a></li>
+      <li><a href="/#steps">服务流程</a></li>
+      <li><a href="/#contactus">联系我们</a></li>
       <% if yield(:page_tag) != "login" %>
         <li><%= link_to "登录",login_url,class: "loginbtn" %></li>
       <% else %>
