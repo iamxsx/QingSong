@@ -2,6 +2,7 @@ class SysController < ApplicationController
 
   layout false
 
+  # Load the course system
   def course_sys
     @course_sys_name = params[:sys_name]
     @company_id = params[:company_id]
@@ -33,7 +34,8 @@ class SysController < ApplicationController
     render html: html_content.html_safe
   end
 
-  # public/course-sys/2/preview/JinSanQi/assets/img/login/logo.png
+  # According to the url to load the file
+  # Url like: public/course-sys/2/preview/JinSanQi/assets/img/login/logo.png
   def load_file
     file_url = params[:file_url]
     type = params[:type]
@@ -92,6 +94,7 @@ class SysController < ApplicationController
     }
   end
 
+  # Send the exam score
   def send_score
     course_id = params[:course_file_id]
     score = params[:score]
@@ -110,4 +113,66 @@ class SysController < ApplicationController
     end
   end
 
+  def apply_new_course_system
+    applyLesson = ApplyLesson.new(
+        {
+            :course_sys_name_cn => params[:course_sys_name_cn],
+            :course_sys_desc => params[:course_sys_desc],
+            :course_sys_cover => params[:course_sys_cover]
+        }
+    )
+
+    if applyLesson.save
+      redirect_to '/users/com-course'
+    end
+  end
+
+  def get_lesson_users
+    lesson_id = params[:course_sys_id]
+    lesson = Lesson.find lesson_id
+    users = current_user.company.users.select('id, username as name, email')
+    courses = lesson.courses.select('id, id as course_file_id, course_name')
+
+    courses.each do |course|
+      course.distribute = course.user_courses.select('id').map { |e| e.id }
+    end
+
+    render :json => {
+        :emp_list => users,
+        :course_list => courses
+    }
+  end
+
+  def send_distribute
+    lesson_id = params[:course_sys_id]
+    diff_pack = params[:diff_pack]
+    keys = diff_pack.keys
+
+    keys.each do |key|
+      course_id = key[2..-1]
+      add = diff_pack[key].add
+      delete = diff_pack[key].delete
+
+      if !delete.nil?
+        UserCourse.where(['course_id = ? AND user_id IN (?)', course_id, delete]).destroy_all
+      end
+
+      if !add.nil?
+        add.each do |user_id|
+          UserCourse.new({:course_id => course_id, :user_id => user_id})
+        end
+      end
+    end
+  end
+
+  def public_preview_system
+    lesson_id = params[:course_sys_id]
+    action = params[:do]
+
+    if action == 'publish'
+      lesson = Lesson.find lesson_id
+      lesson.update_attribute :preview, true
+    end
+
+  end
 end

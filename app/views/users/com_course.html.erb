@@ -2,13 +2,15 @@
   provide :title, '青松 - 课程管理'
   provide :page_tag, @page_tag
   provide :user_email, current_user.email
+  provide :course_sys_json, JSON.generate(@course_sys_json)
   @last_login_time = current_user.updated_at
 
-
   #添加新课程系统的表单提交到哪里:
-  provide :add_course_sys_submit_to , "xxx"
+  provide :add_course_sys_submit_to, "/sys/apply-new-lesson-system"
 
+  course_sys_json = JSON.generate(@course_sys_json)
 %>
+<input id="course_sys_json" type="hidden" value="<%=course_sys_json %>" />
 
 <div class="page_warp">
   <div class="panel">
@@ -43,29 +45,28 @@
   <button data-remodal-action="close" class="remodal-close"></button>
   <h1>课程系统开发申请表</h1>
 
-  <%= form_for(yield(:add_course_sys_submit_to), :html => {id: "add_course_sys_form"}) do |f| %>
+  <%= form_tag(yield(:add_course_sys_submit_to), id: "add_course_sys_form") do %>
   <div class="add_csmd_inputgroup">
-    <%= f.label(:course_sys_name_cn,
-                content_tag(:span, "    课程系统名称", class: "fa fa-book"))
+    <%= label_tag(:course_sys_name_cn,
+                content_tag(:span,"    课程系统名称", class: "fa fa-book"))
     %>
     <div>
-      <%= f.text_field(:course_sys_name_cn, placeholder: "公司中使用的某个办公系统的名字,例如:青松财务系统") %>
+      <%= text_field_tag(:course_sys_name_cn, nil, placeholder: "公司中使用的某个办公系统的名字,例如:青松财务系统") %>
     </div>
   </div>
   <div class="add_csmd_inputgroup">
-    <%= f.label(:course_sys_desc,
+    <%= label_tag(:course_sys_desc,
                 content_tag(:span, "    课程系统描述", class: "fa fa-pencil"))
     %>
     <div>
-      <%= f.text_field(:course_sys_desc, placeholder: "请描述简要您的系统") %>
+      <%= text_field_tag(:course_sys_desc, nil, placeholder: "请描述简要您的系统") %>
     </div>
   </div>
   <div class="add_csmd_filewarp">
     <div id="uploadcover"><span class="fa fa-upload"></span>&nbsp;&nbsp;上传系统封面图</div>
-    <%= f.file_field(:course_sys_cover,class: "add_csmd_cover",accept: "image/jpg,image/gif,image/png,image/bmp")%>
+    <%= file_field_tag(:course_sys_cover, class: "add_csmd_cover", accept: "image/jpg,image/gif,image/png,image/bmp")%>
   </div>
   <% end %>
-
 
   <br>
   <p id="add_csmd_errinfo"></p>
@@ -101,7 +102,6 @@
       <div v-if="!waitState" class="btn-ghost-green expand_btn" :data-id="CourseSysId"><span class="fa fa-angle-down"></span>&nbsp;&nbsp;分配给员工</div>
       <div v-if="!waitState" class="version_block">版本&nbsp;{{version}}</div>
       <!--<div v-if="!waitState" class="version_block">{{version}}<span class="fa fa-angle-down"></span></div>-->
-
     </div>
   </div>
 </template>

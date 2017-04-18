@@ -10,13 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170319042152) do
+ActiveRecord::Schema.define(version: 20170329180037) do
 
   create_table "admin_admin_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email"
     t.string   "password_digest"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "apply_lessons", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "course_sys_name_cn"
+    t.string   "course_sys_desc"
+    t.string   "course_sys_cover"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   create_table "companies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -61,6 +69,10 @@ ActiveRecord::Schema.define(version: 20170319042152) do
     t.datetime "updated_at",       null: false
     t.string   "lesson_file_url"
     t.string   "lesson_file_name"
+    t.string   "state"
+    t.string   "version"
+    t.boolean  "preview"
+    t.string   "preview_url"
     t.index ["company_id"], name: "index_lessons_on_company_id", using: :btree
   end
 

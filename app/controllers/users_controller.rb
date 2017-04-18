@@ -127,6 +127,21 @@ class UsersController < ApplicationController
   # 公司-课程管理页面
   def com_course
     @page_tag = "com_course"
+
+    lessons = Lesson.where({:company_id => current_user.company_id})
+    @course_sys_json = []
+    lessons.each do |lesson|
+      @course_sys_json.push({
+                                'course_sys_id': lesson.id,
+                                'title': lesson.lesson_name,
+                                'desc': lesson.lesson_desc,
+                                'cover': lesson.lesson_cover,
+                                'state': lesson.state,
+                                'version': lesson.version,
+                                'preview': lesson.preview,
+                                'preview_url': lesson.preview_url
+                            })
+    end
   end
 
   # 用户-个人资料页面
@@ -149,6 +164,15 @@ class UsersController < ApplicationController
   # 用户-我的考核页面
   def emp_exam
     @page_tag = "emp_exam"
+
+    user = current_user
+    @lessons = user.lessons
+    courses = user.user_courses
+    # 多少个课程
+    @total_courses_count = courses.size
+    # 已经完成的考核有多少个
+    @course_finished_count = courses.where.not({'score': nil}).size
+    @current_user_id = user.id
   end
 
 

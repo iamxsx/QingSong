@@ -53,6 +53,10 @@ Rails.application.routes.draw do
   post '/sys/save-unfinished-page' => 'sys#save_unfinished_page'
   post '/sys/load-unfinished-page' => 'sys#load_unfinished_page'
   get '/sys/send-score' => 'sys#send_score'
+  post '/sys/apply-new-lesson-system' => 'sys#apply_new_course_system'
+  get '/sys/get-lesson-users' => 'sys#get_lesson_users'
+  post 'sys/send-distribute' => 'sys#send_distribute'
+  post '/sys/publish-preview-system' => 'sys#public_preview_system'
 
   # 注意resources 后面是有个s的，没有加s生成的url不一样
   resources :scores

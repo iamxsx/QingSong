@@ -1,14 +1,9 @@
 <%
-provide :title, '青松 - 我的考核'
-provide :page_tag, @page_tag
-provide :user_email, "1234567890@xxx.com"
+  provide :title, '青松 - 我的考核'
+  provide :page_tag, @page_tag
+  provide :user_email, "1234567890@xxx.com"
 
-@last_login_time = "2017-01-02"
-
-  #多少个课程
-  @total_courses_count = 2;
-  #已经完成的考核有多少个
-  @course_finished_count = 0;
+  @last_login_time = "2017-01-02"
 
   #请注意第69行的course.exam_score ..你需要进行设定,考试考了多少分将显示在列表前面
 %>
@@ -30,17 +25,12 @@ provide :user_email, "1234567890@xxx.com"
 
         <a class="btn-green" id="continuetolearn"><span class="fa fa-arrow-circle-right"></span>&nbsp;&nbsp;进行考核</a>
       </div>
-
     </div>
-
-
   </div>
-
   <div class="panel">
     <div class="panelcontainer">
       <h1>考核列表</h1>
     </div>
-
     <% @lessons.each do |lesson| %>
         <!--课程系统-->
         <div class="coursesys_container">
@@ -59,28 +49,25 @@ provide :user_email, "1234567890@xxx.com"
             <div class="cc_hr"></div>
             <div class="cc_circle"></div>
             <% lesson.courses.each do |course| %>
-                <!--
-                  judge whether current user is assigned this course
-                -->
                 <% user_course = course.user_courses.where({:user_id => @current_user_id}).first %>
                 <% if user_course %>
                     <div class="cc_itemline">
                       <% if user_course.is_finished %>
-                          <div class="cc_done"><%= course.exam_score %>分</div>
+                          <% if !user_course.score.nil? %>
+                              <div class="cc_done"><%= user_course.score %>分</div>
+                          <% else %>
+                              <div class="cc_done">尚未考试</div>
+                          <% end %>
+                          <div class="cc_index"><%= course.sort %></div>
+                          <a target="_blank" class="cc_link" href="/course-sys/<%= lesson.lesson_file_name %>/<%= course.filename[0...-5] %>/exam/none/<%= lesson.company_id %>/<%= course.id %>/<%= course.sort %>">
+                            <%= course.course_name %>
+                          </a>
                       <% end %>
-                      <div class="cc_index"><%= course.sort %></div>
-                      <a target="_blank" class="cc_link" href="/course-sys/<%= lesson.lesson_file_name %>/<%= course.filename[0...-5] %>/course/<%= lesson.company_id %>/<%= course.id %>/<%= course.sort %>">
-                        <%= course.course_name %>
-                      </a>
                     </div>
-
                 <% end %>
             <% end %>
           </div>
         </div>
-
     <% end %>
-
   </div>
-
 </div>

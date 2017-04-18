@@ -9,128 +9,26 @@
 @add_course_form_prefix = "xxx";
 
 #课程系统的信息
-@course_sys_json = [
-  {
-    :course_sys_id => 12,
-    :title=> "一个开发完成的系统",
-    :desc=> "这是一行描述",
-    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
-    :state=> "production",
-    :version=> "1.1.0",
-    :preview=> true,
-    :preview_url=> "/xxxx"
-  },
-  {
-    :course_sys_id => 13,
-    :title=> "xxx系统",
-    :desc=> "description goes here",
-    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
-    :state=> "wait",
-    :preview=> false,
-    :preview_url=> ""
-  },
-  {
-    :course_sys_id => 14,
-    :title=> "xxx系统",
-    :desc=> "description goes here",
-    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
-    :state=> "verified",
-    :preview=> false,
-    :preview_url=> ""
-  },
-  {
-    :course_sys_id => 15,
-    :title=> "xxx系统",
-    :desc=> "description goes here",
-    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
-    :state=> "dev",
-    :preview=> false,
-    :preview_url=> ""
-  },
-  {
-    :course_sys_id => 15,
-    :title=> "xxx系统",
-    :desc=> "description goes here",
-    :cover=> "/assets/dev/cover-16033756505f3dad98f08bd0a142d579b5ad9a6039299b18783052112c1126a4.png",
-    :state=> "dev",
-    :preview=> true,
-    :preview_url=> "/xxxx"
-  }
-
-]
 
 #请求课程列表和分配情况的url
-@request_for_distribute = "/xxx"
-
-#这是一个上面url请求返回内容的例子
-@distribute = {
-
-  :emp_list =>[
-    {
-      :id => 1,
-      :name => "张三",
-      :email => "12345@qq.com"
-    },
-    {
-      :id => 2,
-      :name => "李斯",
-      :email => "1122345@qq.com"
-    },
-    {
-      :id => 3,
-      :name => "国文",
-      :email => "112211345@qq.com"
-    },
-    {
-      :id => 4,
-      :name => "少星",
-      :email => "12556745@qq.com"
-    }
-  ],
-
-  :course_list =>[
-    {
-      :course_file_id => 1,
-      :course_name => "这是课程的名字",
-      :distribute => [2,3]
-    },
-    {
-      :course_file_id => 2,
-      :course_name => "这是课程的名字2",
-      :distribute => [1,2,3,4]
-    }
-  ]
-}
-
+@request_for_distribute = "/sys/get-lesson-users"
 
 #将 分配之后的内容发送到 这个url (post 形式)
-@send_distribute_to = "/xxx"
-
-#上面这个url,前端发送的内容就像下面这样
-#    {
-#      "course_sys_id": 12,           <-课程系统的id
-#      "diff_pack":{                  <-差异分析包(已经在前端分析了分配情况 修改前和修改后的区别)
-#        "f-1":{ "add": [1,2,3] , "delete": [5]},
-#        "f-3":{ "delete": [3,4]}
-#      }
-#    }
-#
-#    f-n 中的 n 表示 课程文件(具体的某节课)的id
-#    add / delete 表示需要在数据库中新增/删除的项  ,他里面的值是用户id, 上面的例子中, id为3的课程文件取消了对用户id为3和4的分配.
-#    如果没有变化的内容不会显示在里面,按照上面来说,f-2就没有任何变化,f-3没有新增项
-
+@send_distribute_to = "/send-distribute"
 
 #发布课程将提交到这个url (post 形式)
 @publish_request_to = "/xxx"
 %>
-
-course_sys_json = <%= JSON.generate(@course_sys_json) %>
 
 #用来储存所有的状态
 course_data_pack = {}
 #用来储存变动后的zhuangtai
 course_modified_data = {}
 $ ->
+
+
+  course_sys_json = JSON.parse($("#course_sys_json").val())
+  console.log(course_sys_json)
 
   $("#add_course_sys_form").validate(
     rules:
@@ -498,5 +396,3 @@ $ ->
         window.location.reload(true)
 
     )
-
-
