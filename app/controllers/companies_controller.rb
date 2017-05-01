@@ -17,6 +17,7 @@ class CompaniesController < ApplicationController
                              :company_address => params[:company_address],
                              :company_tel => params[:company_tel]
       )
+
       if @company.save
         @user = User.new(:username => params[:username],
                          :password => params[:password],
@@ -25,6 +26,7 @@ class CompaniesController < ApplicationController
         )
         @user.company_id = @company.id
         @user.role_id = 2
+
         if @user.save
           render 'users/register_suspend'
           return
@@ -37,6 +39,7 @@ class CompaniesController < ApplicationController
     else
       flash.now[:verify_code_error] = '邮箱验证码错误'
     end
+
     render 'users/register_company'
   end
 

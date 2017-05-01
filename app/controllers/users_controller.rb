@@ -35,22 +35,26 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     # 查询邀请码
     invite_code = params[:user][:invite_code]
+
     # 邀请码存在且没有被使用
     if (invite_code && (code = InvitationCode.find_by_code(invite_code)) && !code.used?)
       @user.role_id = 1
       @user.company_id = code.company_id
+
       if @user.save
         flash.now[:success] = '注册成功'
         code.update_attribute(:used, true)
         code.update_attribute(:invited_at, Time.zone.now)
+
         render 'users/register_success'
-        # redirect_to action: register_success, id: @user.id
       else
         flash.now[:error] = '注册失败'
+
         render :register_employee
       end
     else
       flash.now[:invite_code_error] = '查无此邀请码'
+
       render :register_employee
     end
   end
@@ -66,50 +70,48 @@ class UsersController < ApplicationController
     verify_code = User.generate_verify_code
     UserMailer.reset_password(email, verify_code).deliver_now
     session[:reset_password_verify_code] = verify_code
+
     render :json => {status: '200'}
   end
 
   def reset_password
     email, verify_code, password, password_confirmation = params[:email], params[:verifycode], params[:password], params[:password_confirmation]
     puts session[:reset_password_verify_code] == verify_code
+
     if session[:reset_password_verify_code] == verify_code
       user = User.find_by_email(email)
+
       if user.update({
                          :password => password,
                          :password_confirmation => password_confirmation
                      })
+
         redirect_to '/login'
       else
         flash.now[:reset_password_error] = '修改密码失败'
+
         render :forget_password
       end
     else
       flash.now[:reset_password_error] = '验证码错误'
+
       render :forget_password
     end
-
   end
-
-  ####################################################
-  ####################################################
-  ####################################################
-  ####################################################
-  ####################################################
-  # 后台页面
 
   # 用户个人中心
   def user_center
-    @page_tag = "user_center"
+    @page_tag = 'user_center'
   end
 
   # 公司-管理页面
   def com_profile
-    @page_tag = "com_profile"
+    @page_tag = 'com_profile'
   end
 
   # 公司-员工管理页面
   def com_employee
-    @page_tag = "com_employee"
+    @page_tag = 'com_employee'
 
     user = current_user
     company = user.company
@@ -126,10 +128,11 @@ class UsersController < ApplicationController
 
   # 公司-课程管理页面
   def com_course
-    @page_tag = "com_course"
+    @page_tag = 'com_course'
 
     lessons = Lesson.where({:company_id => current_user.company_id})
     @course_sys_json = []
+
     lessons.each do |lesson|
       @course_sys_json.push({
                                 'course_sys_id': lesson.id,
@@ -190,6 +193,7 @@ class UsersController < ApplicationController
       when 'downgrade'
         user.update_attribute(:role_id, 1)
     end
+
     render :json => {
         :status => 'success',
         :err => nil
@@ -201,6 +205,7 @@ class UsersController < ApplicationController
     user.update_attribute(:username, params[:user][:username])
     user.update_attribute(:email, params[:user][:email])
     user.update_attribute(:phone, params[:user][:phone])
+
     redirect_to '/users/emp-profile'
   end
 
@@ -231,6 +236,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     # 根据页面决定是哪种身注册方式
     @user.role_id = 1
+
     respond_to do |format|
       if @user.save
         # 发送邮件，等待激活
@@ -262,6 +268,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.destroy
+
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }

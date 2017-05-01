@@ -31,13 +31,12 @@ ActiveRecord::Schema.define(version: 20170329180037) do
     t.string   "company_name"
     t.text     "company_desc",    limit: 65535
     t.string   "company_logo"
-    t.string   "company_address"
-    t.string   "company_tel"
-    t.string   "FileUploader"
     t.boolean  "activated",                     default: false
     t.datetime "activated_at"
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
+    t.string   "company_address"
+    t.string   "company_tel"
   end
 
   create_table "courses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -52,11 +51,11 @@ ActiveRecord::Schema.define(version: 20170329180037) do
 
   create_table "invitation_codes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "code"
-    t.boolean  "used",       default: false,              comment: "是否使用"
+    t.boolean  "used",       default: false
     t.datetime "invited_at"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
-    t.integer  "company_id",                              comment: "邀请码所属公司"
+    t.integer  "company_id"
     t.index ["company_id"], name: "index_invitation_codes_on_company_id", using: :btree
   end
 
