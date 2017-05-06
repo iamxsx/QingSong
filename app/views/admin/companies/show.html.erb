@@ -1,29 +1,28 @@
 <p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Company name:</strong>
-  <%= @company.company_name %>
-</p>
-
-<p>
-  <strong>Company desc:</strong>
-  <%= @company.company_desc %>
-</p>
-
-<p>
-  <strong>Company logo:</strong>
-  <%= @company.company_logo %>
-</p>
-
-<p>
-  <strong>Activated:</strong>
-  <%= @company.activated %>
-</p>
-
-<p>
-  <strong>Activated at:</strong>
-  <%= @company.activated_at %>
-</p>
-
-<%= link_to 'Edit', edit_admin_company_path(@company) %> |
-<%= link_to 'Back', admin_companies_path %>
+<div class="four wide column"></div>
+<div class="six wide column">
+  <div class="ui form">
+    <div class="inline field">
+      <%= label_tag '公司名称:' %>
+      <%= @company.company_name %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '公司简介:' %>
+      <%= @company.company_desc %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '公司Logo:' %>
+      <%= @company.company_logo %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '是否通过验证:' %>
+      <%= @company.activated %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '验证时间:' %>
+      <%= @company.activated_at %>
+    </div>
+    <%= link_to '编辑', edit_admin_company_path(@company) %> |
+    <%= link_to '后退', admin_companies_path %>
+  </div>
+</div>

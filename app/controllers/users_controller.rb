@@ -134,12 +134,21 @@ class UsersController < ApplicationController
     @course_sys_json = []
 
     lessons.each do |lesson|
+      if lesson.state == 1
+        state_str = 'wait'
+      elsif lesson.state == 2
+        state_str = 'verified'
+      elsif lesson.state == 3
+        state_str = 'dev'
+      else
+        state_str = 'production'
+      end
       @course_sys_json.push({
                                 'course_sys_id': lesson.id,
                                 'title': lesson.lesson_name,
                                 'desc': lesson.lesson_desc,
                                 'cover': lesson.lesson_cover,
-                                'state': lesson.state,
+                                'state': state_str,
                                 'version': lesson.version,
                                 'preview': lesson.preview,
                                 'preview_url': lesson.preview_url

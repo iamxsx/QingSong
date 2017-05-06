@@ -4,7 +4,6 @@ require 'json'
 class LessonFileParseJob < ApplicationJob
   queue_as :lesson_parse_queue
 
-
   def perform(*args)
     lesson = args[0]
 
@@ -15,11 +14,10 @@ class LessonFileParseJob < ApplicationJob
 
     # 获得压缩文件的路径
     path = "public#{@lesson_file_url}"
-
     # 设定输出文件的路径
     @out_path = output_path
-
     course_infos = parse_zip_file path
+
     course_infos.each do |course_info|
       course = Course.new(
           course_name: course_info['course_name'],
@@ -67,7 +65,6 @@ class LessonFileParseJob < ApplicationJob
     f.close
   end
 
-
   # url替换
   def replace_css_urls(entry)
     content = entry.get_input_stream.read
@@ -77,6 +74,4 @@ class LessonFileParseJob < ApplicationJob
       "url('/public/course-sys/#{@company_id}/preview/#{@lesson_file_name}/assets/img/#{match[4..-2].gsub(' ', '')}')"
     end
   end
-
-
 end

@@ -1,3 +1,4 @@
+# 操作前台用户session的辅助类
 module SessionsHelper
 
   # 是否已登录
@@ -17,9 +18,8 @@ module SessionsHelper
     session[:user_id] = user.id
   end
 
+  # 用户退出登录
   def logout
     session.delete(:user_id)
   end
-
-
 end

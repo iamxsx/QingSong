@@ -1,0 +1,7 @@
+<div class="four wide column"></div>
+<div class="six wide column">
+  <h1>课程系统信息</h1>
+  <%= render 'form', lesson: @lesson %>
+  <%= link_to '详情', "/admin/lesson/#{@lesson.id}" %> |
+  <%= link_to '后退', admin_lessons_url %>
+</div>

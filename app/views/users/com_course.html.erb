@@ -1,7 +1,7 @@
 <%
   provide :title, '青松 - 课程管理'
   provide :page_tag, @page_tag
-  provide :user_email, current_user.email
+  provide :user_email, current_user.username
   provide :course_sys_json, JSON.generate(@course_sys_json)
   @last_login_time = current_user.updated_at
 
@@ -27,7 +27,7 @@
                         :preview-url="courseSys.preview_url"
                         :version="courseSys.version"
                         :state="courseSys.state">
-          <img slot="cover" :src="courseSys.cover" >
+          <img slot="cover" :src="courseSys.cover.url" >
           <h1 slot="title">{{ courseSys.title }}</h1>
           <p slot="desc">{{ courseSys.desc }}</p>
         </qs-courseblock>

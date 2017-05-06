@@ -1,14 +1,14 @@
 class Admin::SessionsController < Admin::AdminApplicationController
 
-  before_filter :logging?, :except => :create
+  before_filter :is_admin_and_login, :except => :create
 
   def destroy
     logout
   end
 
   def create
-    user = Admin::AdminUser.find_by_email(params['email'])
-    if user && user.authenticate(password = params['password'])
+    user = User.find_by_email(params['email'])
+    if user && user.authenticate(password = params['password']) && user.role.id == 3
       store_in_session user
       redirect_to '/admin/'
     else

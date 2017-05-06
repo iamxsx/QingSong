@@ -1,7 +1,7 @@
 <%
   provide :title, '青松 - 个人资料'
   provide :page_tag, @page_tag
-  provide :user_email, current_user.email
+  provide :user_email, current_user.username
 
   @current_user = current_user
   @company = @current_user.company

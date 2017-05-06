@@ -10,6 +10,11 @@
 
 <body>
   <%= render 'admin/commons/navbar' %>
-  <%= yield %>
+  <div class="ui grid">
+    <div class="row">
+      <div class="one wide column"></div>
+      <%= yield %>
+    </div>
+  </div>
 </body>
 </html>

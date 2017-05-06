@@ -4,14 +4,13 @@
       <img class="logo" src="<%= image_url('logo.png') %>" style="width: 60px; margin-right: 12px;">
       QingSong
     </div>
-    <a href="/admin" class="active item">首页 </a>
-    <a href="/admin/users" class="item">前台用户管理 </a>
-    <a href="/admin/admin_users" class="item">后台用户管理 </a>
+    <a href="/admin/users" class="item">消息管理 </a>
+    <a href="/admin/users" class="item">用户管理 </a>
     <a href="/admin/lessons" class="item">课程管理 </a>
     <a href="/admin/companies" class="item">公司管理 </a>
     <% if current_user %>
         <a href="javascript:void(0)" class="ui right floated dropdown item">
-          欢迎您：<%= current_user.email %>
+          欢迎您：<%= current_admin.username %>
           <i class="dropdown icon"></i>
           <div class="menu">
             <div class="item" onclick="logout()">注销</div>

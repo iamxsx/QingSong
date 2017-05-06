@@ -1,0 +1,50 @@
+<div class="ui form">
+  <%= form_for([:admin, @lesson]) do |f| %>
+      <% if lesson.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(lesson.errors.count, "error") %> prohibited this lesson from being saved:</h2>
+            <ul>
+              <% lesson.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+      <div class="field">
+        <%= f.label :lesson_name, '课程名' %>
+        <%= f.text_field :lesson_name %>
+      </div>
+      <div class="field">
+        <%= f.label :lesson_desc, '课程简介' %>
+        <%= f.text_area :lesson_desc %>
+      </div>
+      <div class="field">
+        <%= f.label :company_id, '选择公司' %>
+        <%= f.select :company_id, options_from_collection_for_select(Company.all, :id, :company_name) %>
+      </div>
+      <div class="inline field">
+        <%= f.label :state, '发布状态' %>
+        <input value="1" name="lesson[state]" id="lesson_state_1" type="radio"><label for="lesson_state_1">等待审核</label>
+        <input value="2" name="lesson[state]" id="lesson_state_2" type="radio"><label for="lesson_state_2">审核通过</label>
+        <input value="3" name="lesson[state]" id="lesson_state_3" type="radio"><label for="lesson_state_3">开发中</label>
+        <input value="4" name="lesson[state]" id="lesson_state_4" type="radio"><label for="lesson_state_4">已发布</label>
+      </div>
+      <div class="field">
+        <%= f.label :version, '版本号' %>
+        <%= f.text_field :version %>
+      </div>
+      <div class="field">
+        <%= f.label :lesson_cover, '课程封面' %>
+        <%= f.file_field :lesson_cover, accept: 'image/jpeg,image/gif,image/png' %>
+      </div>
+      <div class="field">
+        <%= f.label :lesson_file_url, '课程压缩文件' %>
+        <%= f.file_field :lesson_file_url, accept: 'application/zip' %>
+      </div>
+      <div class="actions">
+        <%= f.submit '确认发布', class: 'fluid ui blue submit button' %>
+      </div>
+  <% end %>
+</div>
+
+

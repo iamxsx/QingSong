@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   # 后台管理系统的控制器
   namespace :admin do
-    root 'static_pages#index'
+    root 'users#index'
     get 'sessions/create'
     get 'login' => 'login_and_register#login' #登录页
     post 'login' => 'sessions#create' #登录操作
@@ -12,8 +12,7 @@ Rails.application.routes.draw do
     resources :users
     resources :lessons
     resources :companies
-    resources :admin_users
-  end
+    end
 
   root 'static_pages#index'
   get 'login' => 'sessions#login'

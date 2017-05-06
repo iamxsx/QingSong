@@ -15,8 +15,6 @@ class SessionsController < ApplicationController
     user = User.find_by_email(params[:session][:email])
     if user && user.authenticate(params[:session][:password])
       store_in_session user
-      $last_login_time = cookies[:last_login_time] ? cookies[:last_login_time] : '首次登陆'
-      cookies[:last_login_time] = current_time
       user.update_attribute(:last_login_time, current_time)
       redirect_to '/users/user-center'
     else

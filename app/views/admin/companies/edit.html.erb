@@ -1,6 +1,6 @@
-<h1>Editing Company</h1>
-
-<%= render 'form', company: @company %>
-
-<%= link_to 'Show', @company %> |
-<%= link_to 'Back', admin_companies_path %>
+<div class="fourteen wide column">
+  <h1>Editing Company</h1>
+  <%= render 'form', company: @company %>
+  <%= link_to '详情', "/admin/companies/#{@company.id}" %> ||
+  <%= link_to '后退', admin_companies_path %>
+</div>

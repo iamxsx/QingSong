@@ -1,0 +1,31 @@
+<div class="four wide column"></div>
+<div class="six wide column">
+  <div class="ui form">
+    <div class="inline field">
+      <%= label_tag '用户编号:' %>
+      <%= @user.id %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '用户名:' %>
+      <%= @user.email %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '邮箱:' %>
+      <%= @user.email %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '手机号码:' %>
+      <%= @user.phone %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '角色:' %>
+      <%= @user.role.role_name %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '所属公司:' %>
+      <%= @user.company.company_name %>
+    </div>
+    <%= link_to '编辑', edit_admin_user_path(@user) %> |
+    <%= link_to '后退', admin_users_path %>
+  </div>
+</div>

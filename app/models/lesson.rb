@@ -8,5 +8,4 @@ class Lesson < ApplicationRecord
 
   mount_uploader :lesson_cover, FileUploader
   mount_uploader :lesson_file_url, LessonCompressFileUploader
-
 end

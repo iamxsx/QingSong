@@ -1,0 +1,6 @@
+<div class="fourteen wide column">
+  <h1>编辑用户</h1>
+  <%= render 'form', user: @user %>
+  <%= link_to '详情', "/admin/users/#{@user.id}" %> |
+  <%= link_to '后退', admin_users_url %>
+</div>

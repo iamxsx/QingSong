@@ -1,7 +1,7 @@
 <%
   provide :title, '青松 - 我的考核'
   provide :page_tag, @page_tag
-  provide :user_email, "1234567890@xxx.com"
+  provide :user_email, current_user.username
 
   @last_login_time = "2017-01-02"
 
@@ -51,9 +51,9 @@
             <% lesson.courses.each do |course| %>
                 <% user_course = course.user_courses.where({:user_id => @current_user_id}).first %>
                 <% if user_course %>
-                    <div class="cc_itemline">
-                      <% if user_course.is_finished %>
-                          <% if !user_course.score.nil? %>
+                    <% if user_course.is_finished %>
+                        <div class="cc_itemline">
+                          <% if user_course.score != 0 %>
                               <div class="cc_done"><%= user_course.score %>分</div>
                           <% else %>
                               <div class="cc_done">尚未考试</div>
@@ -62,8 +62,8 @@
                           <a target="_blank" class="cc_link" href="/course-sys/<%= lesson.lesson_file_name %>/<%= course.filename[0...-5] %>/exam/none/<%= lesson.company_id %>/<%= course.id %>/<%= course.sort %>">
                             <%= course.course_name %>
                           </a>
-                      <% end %>
-                    </div>
+                        </div>
+                    <% end %>
                 <% end %>
             <% end %>
           </div>

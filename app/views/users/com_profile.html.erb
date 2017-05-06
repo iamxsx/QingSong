@@ -4,7 +4,7 @@
 
   @current_user = current_user
   @current_company = @current_user.company
-  provide :user_email, @current_user.email
+  provide :user_email, @current_user.username
 
   @current_company_name = @current_company.company_name
   @current_company_address = @current_company.company_address

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170329180037) do
+ActiveRecord::Schema.define(version: 20170506103822) do
 
   create_table "admin_admin_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "email"
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 20170329180037) do
     t.datetime "updated_at",       null: false
     t.string   "lesson_file_url"
     t.string   "lesson_file_name"
-    t.string   "state"
+    t.integer  "state"
     t.string   "version"
     t.boolean  "preview"
     t.string   "preview_url"
@@ -87,11 +87,11 @@ ActiveRecord::Schema.define(version: 20170329180037) do
     t.text     "html_file",   limit: 65535
     t.integer  "step"
     t.integer  "action"
-    t.integer  "progress"
-    t.boolean  "is_finished"
-    t.integer  "score"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "progress",                  default: 0
+    t.boolean  "is_finished",               default: false
+    t.integer  "score",                     default: 0
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.index ["course_id"], name: "index_user_courses_on_course_id", using: :btree
     t.index ["user_id"], name: "index_user_courses_on_user_id", using: :btree
   end

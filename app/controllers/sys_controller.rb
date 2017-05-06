@@ -2,14 +2,21 @@ class SysController < ApplicationController
 
   layout false
 
-  # Load the course system
+  # 加载课程系统
   def course_sys
+    # 课程系统名
     @course_sys_name = params[:sys_name]
+    # 公司id
     @company_id = params[:company_id]
+    # 读取的json文件名称
     @json_filename = params[:json_filename]
+    # 课程的序号
     @course_sort = params[:course_sort]
+    # 课程的类型
     @type = params[:type]
+    # 课程的id
     @course_id = params[:course_id]
+    # 课程的学习状态
     @status = params[:status]
 
     if @status == 'new'
@@ -17,8 +24,6 @@ class SysController < ApplicationController
     else
       @load_progress = true
     end
-
-    @lesson_sys = Lesson.find_by_lesson_name @course_sys_name
 
     @course_json_content = get_file_content @company_id, @course_sys_name, @json_filename
   end
@@ -86,6 +91,7 @@ class SysController < ApplicationController
             :user_id => current_user.id
         }
     )
+
     render :json => {
         :html => user_course.html_file,
         :progress => user_course.progress,
@@ -127,14 +133,19 @@ class SysController < ApplicationController
     end
   end
 
+  # 获得用户列表，课程列表及课程的分配情况
   def get_lesson_users
     lesson_id = params[:course_sys_id]
     lesson = Lesson.find lesson_id
+    # 获取当前登录用户所在公司的所有员工
     users = current_user.company.users.select('id, username as name, email')
+    # 获取课程系统的所有课节
     courses = lesson.courses.select('id, id as course_file_id, course_name')
 
+    # 查询课程的分配情况
     courses.each do |course|
-      course.distribute = course.user_courses.select('id').map { |e| e.id }
+      # 获取每一个课程被分配给的用户的id
+      course.distribute = course.user_courses.select('user_id').map { |e| e.user_id }
     end
 
     render :json => {
@@ -143,23 +154,31 @@ class SysController < ApplicationController
     }
   end
 
+  # 将课程的课节分配给用户
   def send_distribute
-    lesson_id = params[:course_sys_id]
+    # 获得课程系统id
+    course_sys_id = params[:course_sys_id]
+    # 获得差异包
     diff_pack = params[:diff_pack]
     keys = diff_pack.keys
 
     keys.each do |key|
+      # 获得要操作的课节id
       course_id = key[2..-1]
-      add = diff_pack[key].add
-      delete = diff_pack[key].delete
+      # 获得要增加课节的用户id数组
+      add = diff_pack[key]['add']
+      # 获得要删除课节用户id的数组
+      delete = diff_pack[key]['delete']
 
       if !delete.nil?
-        UserCourse.where(['course_id = ? AND user_id IN (?)', course_id, delete]).destroy_all
+        # 解除用户和课节的关系
+        delete_user_courses course_id, delete
       end
 
       if !add.nil?
         add.each do |user_id|
-          UserCourse.new({:course_id => course_id, :user_id => user_id})
+          # 对每个用户分配课程
+          distribute_lesson_and_courses course_sys_id, course_id, user_id
         end
       end
     end

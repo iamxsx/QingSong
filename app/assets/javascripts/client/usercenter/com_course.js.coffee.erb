@@ -14,7 +14,7 @@
 @request_for_distribute = "/sys/get-lesson-users"
 
 #将 分配之后的内容发送到 这个url (post 形式)
-@send_distribute_to = "/send-distribute"
+@send_distribute_to = "/sys/send-distribute"
 
 #发布课程将提交到这个url (post 形式)
 @publish_request_to = "/xxx"
@@ -26,6 +26,9 @@ course_data_pack = {}
 course_modified_data = {}
 $ ->
 
+  $.ajaxSetup
+    headers:
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
 
   course_sys_json = JSON.parse($("#course_sys_json").val())
   console.log(course_sys_json)

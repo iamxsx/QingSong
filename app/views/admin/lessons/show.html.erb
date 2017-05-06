@@ -1,0 +1,49 @@
+<div class="four wide column"></div>
+<div class="six wide column">
+  <div class="ui form">
+    <div class="inline field">
+      <%= label_tag '课程编号:' %>
+      <%= @lesson.id %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '课程名:' %>
+      <%= @lesson.lesson_name %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '课程简介:' %>
+      <%= @lesson.lesson_desc %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '课程封面:' %>
+      <%= image_tag @lesson.lesson_cover, width: '240' %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '课程文件:' %>
+      <%= @lesson.lesson_file_name %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '所属公司:' %>
+      <%= @lesson.company.company_name %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '发布状态:' %>
+      <%=
+        if @lesson.state == 4
+          '已发布'
+        elsif @lesson.state == 3
+          '开发中'
+        elsif @lesson.state == 2
+          '审核过'
+        else
+          '审核中'
+        end
+      %>
+    </div>
+    <div class="inline field">
+      <%= label_tag '当前版本:' %>
+      <%= @lesson.version %>
+    </div>
+    <%= link_to '编辑', edit_admin_lesson_path(@lesson) %> |
+    <%= link_to '后退', admin_lessons_path %>
+  </div>
+</div>
