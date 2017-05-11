@@ -16,6 +16,16 @@ class Admin::CompaniesController < Admin::AdminApplicationController
   def edit
   end
 
+  def active
+    company_id = params[:company_id]
+    company = Company.find(company_id)
+    company.update_columns({
+                               :activated => 1,
+                               :activated_at => Time.now
+                           })
+    redirect_to '/admin/notices'
+  end
+
   def create
     @company = Company.new(company_params)
     respond_to do |format|
@@ -29,8 +39,6 @@ class Admin::CompaniesController < Admin::AdminApplicationController
     end
   end
 
-  # PATCH/PUT /companies/1
-  # PATCH/PUT /companies/1.json
   def update
     respond_to do |format|
       if @company.update(company_params)
@@ -43,8 +51,6 @@ class Admin::CompaniesController < Admin::AdminApplicationController
     end
   end
 
-  # DELETE /companies/1
-  # DELETE /companies/1.json
   def destroy
     @company.destroy
     respond_to do |format|
@@ -54,12 +60,10 @@ class Admin::CompaniesController < Admin::AdminApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
   def set_company
     @company = Company.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def company_params
     params.require(:company).permit(:company_name, :company_desc, :company_logo, :activated, :activated_at)
   end

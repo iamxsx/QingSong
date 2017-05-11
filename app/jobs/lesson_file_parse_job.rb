@@ -49,6 +49,7 @@ class LessonFileParseJob < ApplicationJob
     end
     # delete the zip
     File.delete(path)
+
     return course_info
   end
 

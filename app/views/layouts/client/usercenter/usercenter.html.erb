@@ -1,6 +1,6 @@
 <%
   #用户类型 com(公司高管) 还是 emp(普通员工)
-usertype = "com"
+  usertype = current_user.role_id == 1 ? "emp" : 'com'
 %>
 
 <!DOCTYPE html>
@@ -44,65 +44,65 @@ usertype = "com"
 
       <!--后台主页-->
       <%= link_to (content_tag(:div) do
-                    concat content_tag(:span,nil,:class => "fa fa-dashboard")
-                    concat content_tag(:span,"管理中心")
-                  end),
+        concat content_tag(:span, nil, :class => "fa fa-dashboard")
+        concat content_tag(:span, "管理中心")
+      end),
                   :users_user_center,
-                  :class => set_active_class(yield(:page_tag),"user_center")
+                  :class => set_active_class(yield(:page_tag), "user_center")
       %>
 
       <% if usertype == "com" %>
-      <!--公司管理模块-->
-      <div class="nav_gutter">公司管理</div>
+          <!--公司管理模块-->
+          <div class="nav_gutter">公司管理</div>
 
-      <%= link_to (content_tag(:div) do
-        concat content_tag(:span,nil,:class => "fa fa-building")
-        concat content_tag(:span,"公司资料")
-      end),
-                  :users_com_profile,
-                  :class => set_active_class(yield(:page_tag),"com_profile")
-      %>
+          <%= link_to (content_tag(:div) do
+            concat content_tag(:span, nil, :class => "fa fa-building")
+            concat content_tag(:span, "公司资料")
+          end),
+                      :users_com_profile,
+                      :class => set_active_class(yield(:page_tag), "com_profile")
+          %>
 
-      <%= link_to (content_tag(:div) do
-        concat content_tag(:span,nil,:class => "fa fa-users")
-        concat content_tag(:span,"员工管理")
-      end),
-                  :users_com_employee,
-                  :class => set_active_class(yield(:page_tag),"com_employee")
-      %>
+          <%= link_to (content_tag(:div) do
+            concat content_tag(:span, nil, :class => "fa fa-users")
+            concat content_tag(:span, "员工管理")
+          end),
+                      :users_com_employee,
+                      :class => set_active_class(yield(:page_tag), "com_employee")
+          %>
 
-      <%= link_to (content_tag(:div) do
-        concat content_tag(:span,nil,:class => "fa fa-book")
-        concat content_tag(:span,"课程管理")
-      end),
-                  :users_com_course,
-                  :class => set_active_class(yield(:page_tag),"com_course")
-      %>
+          <%= link_to (content_tag(:div) do
+            concat content_tag(:span, nil, :class => "fa fa-book")
+            concat content_tag(:span, "课程管理")
+          end),
+                      :users_com_course,
+                      :class => set_active_class(yield(:page_tag), "com_course")
+          %>
 
-      <div class="nav_gutter">我的账号</div>
+          <div class="nav_gutter">我的账号</div>
       <% end %>
       <%= link_to (content_tag(:div) do
-        concat content_tag(:span,nil,:class => "fa fa-book")
-        concat content_tag(:span,"我的课程")
+        concat content_tag(:span, nil, :class => "fa fa-book")
+        concat content_tag(:span, "我的课程")
       end),
                   :users_emp_course,
-                  :class => set_active_class(yield(:page_tag),"emp_course")
+                  :class => set_active_class(yield(:page_tag), "emp_course")
       %>
 
       <%= link_to (content_tag(:div) do
-        concat content_tag(:span,nil,:class => "fa fa-pencil")
-        concat content_tag(:span,"我的考核")
+        concat content_tag(:span, nil, :class => "fa fa-pencil")
+        concat content_tag(:span, "我的考核")
       end),
                   :users_emp_exam,
-                  :class => set_active_class(yield(:page_tag),"emp_exam")
+                  :class => set_active_class(yield(:page_tag), "emp_exam")
       %>
 
       <%= link_to (content_tag(:div) do
-        concat content_tag(:span,nil,:class => "fa fa-user")
-        concat content_tag(:span,"个人资料")
+        concat content_tag(:span, nil, :class => "fa fa-user")
+        concat content_tag(:span, "个人资料")
       end),
                   :users_emp_profile,
-                  :class => set_active_class(yield(:page_tag),"emp_profile")
+                  :class => set_active_class(yield(:page_tag), "emp_profile")
       %>
     </div>
   </nav>
@@ -111,7 +111,7 @@ usertype = "com"
       <div class="account_dropdownmenu">
         <div class="ac_display">
           <span class="fa fa-user"></span>&nbsp;&nbsp;
-          <span><%= yield(:user_email)%></span>&nbsp;&nbsp;
+          <span><%= yield(:user_email) %></span>&nbsp;&nbsp;
           <span class="fa fa-angle-down"></span>
         </div>
         <div class="ac_dropdown">

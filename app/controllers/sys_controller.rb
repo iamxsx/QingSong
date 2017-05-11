@@ -128,6 +128,8 @@ class SysController < ApplicationController
         }
     )
 
+    ApplyLesson.create
+
     if applyLesson.save
       redirect_to '/users/com-course'
     end

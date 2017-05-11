@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     get 'logout' => 'sessions#destroy' #注销
     get 'register' => 'login_and_register#register' #注册页
     post 'register' => 'admin_users#create'
+    get 'notices' => 'notices#index'
+    get 'company/active/:company_id' => 'companies#active'
     resources :users
     resources :lessons
     resources :companies

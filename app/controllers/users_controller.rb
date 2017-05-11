@@ -211,9 +211,11 @@ class UsersController < ApplicationController
 
   def update_attr
     user = current_user
-    user.update_attribute(:username, params[:user][:username])
-    user.update_attribute(:email, params[:user][:email])
-    user.update_attribute(:phone, params[:user][:phone])
+    user.update_columns({
+                            :username => params[:user][:username],
+                            :email => params[:user][:email],
+                            :phone => params[:user][:phone]
+                        })
 
     redirect_to '/users/emp-profile'
   end

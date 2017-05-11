@@ -1,18 +1,21 @@
 class SessionsController < ApplicationController
 
-
-  # before_action :is_login?
-
   layout 'client/indexpages/register-layout'
   # GET /login
   def login
-    @page_tag = "login";
+    if current_user == nil
+      @page_tag = "login";
+    else
+      redirect_to root_path
+    end
+
   end
 
   # 登陆
   # POST /login
   def create
     user = User.find_by_email(params[:session][:email])
+
     if user && user.authenticate(params[:session][:password])
       store_in_session user
       user.update_attribute(:last_login_time, current_time)

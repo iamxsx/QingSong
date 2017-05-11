@@ -45,7 +45,7 @@
   <button data-remodal-action="close" class="remodal-close"></button>
   <h1>课程系统开发申请表</h1>
 
-  <%= form_tag(yield(:add_course_sys_submit_to), id: "add_course_sys_form") do %>
+  <%= form_tag(yield(:add_course_sys_submit_to), id: "add_course_sys_form", multipart: true) do %>
   <div class="add_csmd_inputgroup">
     <%= label_tag(:course_sys_name_cn,
                 content_tag(:span,"    课程系统名称", class: "fa fa-book"))

@@ -4,7 +4,7 @@ Rails.application.configure do
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
+  config.cache_classes = true
 
   # Do not eager load code on boot.
   config.eager_load = false
@@ -28,7 +28,7 @@ Rails.application.configure do
 
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.delivery_method = :smtp
 
@@ -56,14 +56,14 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.(debug模式将取消 连接 和 预处理 assets)
   # This option may cause significant delays in view rendering with a large (这个选项将会导致 渲染views时 产生巨大的时间延迟)
   # number of complex assets.
-  config.assets.debug = true
+  config.assets.debug = false
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
   config.assets.js_compressor = :uglifier
 
-  config.assets.compile = true
+  config.assets.compile = false
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
